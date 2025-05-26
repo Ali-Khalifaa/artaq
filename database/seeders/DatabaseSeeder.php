@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguageSeeder::class);
         $this->call(JoinUsSeeder::class);
         $this->call(CountrySeeder::class);
+        $this->call(PreservationMethodSeeder::class);
     }
 }
