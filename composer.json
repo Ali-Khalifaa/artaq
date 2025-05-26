@@ -20,7 +20,6 @@
         "nwidart/laravel-modules": "^11.0",
         "psr/log": "2.0",
         "pusher/pusher-php-server": "^7.2",
-        "socialiteproviders/apple": "^5.6",
         "spatie/laravel-permission": "^6.9",
         "tymon/jwt-auth": "^2.1"
     },
