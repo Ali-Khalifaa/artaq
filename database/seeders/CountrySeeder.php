@@ -19,7 +19,7 @@ class CountrySeeder extends Seeder
         Country::truncate();
 
         Country::create([
-            'name' => 'المملكة العربية السعودية',
+            'name' => 'السعودية',
             'phone_code'   => '+966',
             'alpha_code' =>'SA',
             'number_of_phone_digits' =>9,

@@ -17,41 +17,41 @@ class LanguageSeeder extends Seeder
         // Schema::disableForeignKeyConstraints();
         Language::truncate();
 
-        $language = Language::create([
-            'code'   => 'en',
-            'status' => 1,
-        ]);
+        // $language = Language::create([
+        //     'code'   => 'en',
+        //     'status' => 1,
+        // ]);
 
-        $language->setTranslations([
-            'ar' => [
-                'title'       => 'إنجليزي',
-                'description' => 'إنجليزي',
-            ],
-            'en' => [
-                'title'       => 'English',
-                'description' => 'English',
-            ],
-            'fr' => [
-                'title'       => 'Anglais',
-                'description' => 'Anglais',
-            ],
-            'hi' => [
-                'title'       => 'अंग्रेज़ी',
-                'description' => 'अंग्रेज़ी',
-            ],
-            'ms' => [
-                'title'       => 'Inggeris',
-                'description' => 'Inggeris',
-            ],
-            'ur' => [
-                'title'       => 'انگلش',
-                'description' => 'انگلش',
-            ],
-            'zh' => [
-                'title'       => '英语',
-                'description' => '英语',
-            ],
-        ]);
+        // $language->setTranslations([
+        //     'ar' => [
+        //         'title'       => 'إنجليزي',
+        //         'description' => 'إنجليزي',
+        //     ],
+        //     'en' => [
+        //         'title'       => 'English',
+        //         'description' => 'English',
+        //     ],
+        //     'fr' => [
+        //         'title'       => 'Anglais',
+        //         'description' => 'Anglais',
+        //     ],
+        //     'hi' => [
+        //         'title'       => 'अंग्रेज़ी',
+        //         'description' => 'अंग्रेज़ी',
+        //     ],
+        //     'ms' => [
+        //         'title'       => 'Inggeris',
+        //         'description' => 'Inggeris',
+        //     ],
+        //     'ur' => [
+        //         'title'       => 'انگلش',
+        //         'description' => 'انگلش',
+        //     ],
+        //     'zh' => [
+        //         'title'       => '英语',
+        //         'description' => '英语',
+        //     ],
+        // ]);
 
         $language = Language::create([
             'code'   => 'ar',

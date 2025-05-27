@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Dashboard\ChatChannelResource;
-use App\Http\Resources\Dashboard\ChatMessageResource;
 use App\Models\Admin;
-use App\Models\ChatChannel;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Driver\Models\Driver;
-use Modules\Rest\Models\RestOwner;
-use Modules\Showroom\Models\SRShowroom;
-use Modules\User\Models\User;
 
 class SendNotificationController extends Controller implements HasMiddleware
 {
@@ -23,17 +17,14 @@ class SendNotificationController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('can:admin send notification', only: ['sendToAdmin']),
-            new Middleware('can:user send notification', only: ['sendToUser']),
-            new Middleware('can:driver send notification', only: ['sendToDriver']),
-            new Middleware('can:car showroom send notification', only: ['sendToShowroom']),
-            new Middleware('can:restaurant send notification', only: ['sendToRestaurant']),
+            new Middleware('can:student send notification', only: ['sendToStudent']),
         ];
     }
 
     public function sendNotification(Request $request)
     {
         $request->validate([
-            'type' => 'required|in:'.Admin::class.','.Driver::class.','.User::class.','.SRShowroom::class.','.RestOwner::class,
+            'type' => 'required|in:'.Admin::class.','.Student::class,
             'title' => 'required',
             'message' => 'required',
             'to' => 'required',
@@ -45,17 +36,8 @@ class SendNotificationController extends Controller implements HasMiddleware
             case Admin::class:
                 $users = $this->sendToAdmin();
                 break;
-            case Driver::class:
-                $users = $this->sendToDriver();
-                break;
-            case User::class:
-                $users = $this->sendToUser();
-                break;
-            case SRShowroom::class:
-                $users = $this->sendToShowroom();
-                break;
-            case RestOwner::class:
-                $users = $this->sendToRestaurant();
+            case Student::class:
+                $users = $this->sendToStudent();
                 break;
         }
 
@@ -68,21 +50,9 @@ class SendNotificationController extends Controller implements HasMiddleware
     {
         return request()->to == 'all'? Admin::where('id','!=',auth('admin_api')->user()?->id)->get():Admin::findOrFail(request()->to);
     }
-    public function sendToUser()
+    public function sendToStudent()
     {
-        return request()->to == 'all'? User::get():User::findOrFail(request()->to);
-    }
-    public function sendToDriver()
-    {
-        return request()->to == 'all'? Driver::get():Driver::findOrFail(request()->to);
-    }
-    public function sendToShowroom()
-    {
-        return request()->to == 'all'? SRShowroom::get():SRShowroom::findOrFail(request()->to);
-    }
-    public function sendToRestaurant()
-    {
-        return request()->to == 'all'? RestOwner::get():RestOwner::findOrFail(request()->to);
+        return request()->to == 'all'? Student::get():Student::findOrFail(request()->to);
     }
 
 }

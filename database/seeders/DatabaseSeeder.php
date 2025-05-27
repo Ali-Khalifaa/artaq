@@ -19,5 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguageSeeder::class);
         $this->call(JoinUsSeeder::class);
         $this->call(CountrySeeder::class);
+        $this->call(CitySeeder::class);
+        $this->call(SettingSeeder::class);
+        $this->call(NationalitySeeder::class);
+        $this->call(CircleTypeSeeder::class);
     }
 }

@@ -11,8 +11,19 @@ import admin from "./adminRoute/admin.js";
 
 import banner from "./adminRoute/banner.js";
 import country from "./adminRoute/country.js";
+import city from "./adminRoute/city.js";
+import nationality from "./adminRoute/nationality.js";
 import joinUs from "./adminRoute/joinUs.js";
 import backup from "./adminRoute/backup.js";
+import memorizationAmount from "./adminRoute/memorizationAmount.js";
+import memorizationType from "./adminRoute/memorizationType.js";
+import setting from "./adminRoute/setting.js";
+import level from "./adminRoute/level.js";
+import digitalBadge from "./adminRoute/digitalBadge.js";
+import teacherBadge from "./adminRoute/teacherBadge.js";
+import student from "./adminRoute/student.js";
+import circleTypes from "./adminRoute/circleTypes.js";
+import circles from "./adminRoute/circles.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -45,10 +56,21 @@ const routes = [
             },
             ...admin,
             ...role,
-            ...country, 
+            ...country,
+            ...city,
             ...banner,
             ...joinUs,
             ...backup,
+            ...memorizationAmount,
+            ...memorizationType,
+            ...setting,
+            ...level,
+            ...digitalBadge,
+            ...teacherBadge,
+            ...nationality,
+            ...student,
+            ...circleTypes,
+            ...circles,
         ]
     },
     {

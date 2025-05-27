@@ -20,4 +20,14 @@ class Country extends Model
     {
         return asset('upload/general/'.$value);
     }
+
+    public function cities()
+    {
+        return $this->hasMany(City::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'country_id');
+    }
 }

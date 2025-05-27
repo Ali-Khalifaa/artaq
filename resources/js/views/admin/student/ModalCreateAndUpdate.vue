@@ -1,0 +1,879 @@
+<template>
+    <div class="modal fade" id="admin-modal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="adminModalLabel">
+                        {{ type == 'create' ? $t('global.add') : $t('global.update') }}
+                    </h6>
+                    <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ $t('global.name') }}</label>
+                            <input type="text" class="form-control" v-model="v$.name.$model"
+                                :placeholder="$t('global.name')" :class="{
+                                    'is-invalid': v$.name.$error || errors[`name`],
+                                    'is-valid': !v$.name.$invalid && !errors[`name`]
+                                }">
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.name.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+                                <span v-if="v$.name.minLength.$invalid">{{ $t('validation.TitleIsMustHaveAtLeast') }} {{
+                                    v$.name.minLength.$params.min
+                                    }} {{ $t('validation.Letters') }} <br />
+                                </span>
+                                <span v-if="v$.name.maxLength.$invalid">{{ $t('validation.TitleIsMustHaveAtMost') }} {{
+                                    v$.name.maxLength.$params.max
+                                    }} {{ $t('validation.Letters') }}
+                                </span>
+                            </div>
+                            <template v-if="errors[`name`]">
+                                <error-message v-for="(errorMessage, index) in errors[`name`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ $t('global.birth_date') }}</label>
+                            <input type="text" class="form-control" id="date" v-model="v$.birth_date.$model"
+                                 :class="{
+                                    'is-invalid': v$.birth_date.$error || errors[`birth_date`],
+                                    'is-valid': !v$.birth_date.$invalid && !errors[`birth_date`]
+                                }">
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.birth_date.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+
+                            </div>
+                            <template v-if="errors[`birth_date`]">
+                                <error-message v-for="(errorMessage, index) in errors[`birth_date`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                          <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.phone') }}</label>
+                            <input type="text" class="form-control" v-model.trim="v$.phone.$model"
+                                :class="{ 'is-invalid': v$.phone.$error || errors[`phone`], 'is-valid': !v$.phone.$invalid  && !errors[`phone`] }"
+                                :placeholder="$t('global.phone')">
+                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.phone.required.$invalid">{{
+                                    $t('global.PhoneIsRequired') }} <br /></span>
+                                <span v-if="v$.phone.minLength.$invalid">{{
+                                    $t('global.PhoneIsMustHaveAtLeast') }} {{
+                                        v$.phone.minLength.$params.min
+                                    }} {{ $t('global.Letters') }} <br /></span>
+                                <span v-if="v$.phone.maxLength.$invalid">{{
+                                    $t('global.PhoneIsMustHaveAtMost') }} {{
+                                        v$.phone.maxLength.$params.max
+                                    }} {{ $t('global.Letters') }} </span>
+                            </div>
+                            <template v-if="errors['phone']">
+                                <error-message v-for="(errorMessage, index) in errors['phone']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.guardian_phone') }}</label>
+                            <input type="text" class="form-control" v-model.trim="v$.guardian_phone.$model"
+                                :class="{ 'is-invalid': v$.guardian_phone.$error || errors[`guardian_phone`], 'is-valid': !v$.guardian_phone.$invalid  && !errors[`guardian_phone`] }"
+                                :placeholder="$t('global.guardian_phone')">
+                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.guardian_phone.required.$invalid">{{
+                                    $t('global.PhoneIsRequired') }} <br /></span>
+                                <span v-if="v$.guardian_phone.minLength.$invalid">{{
+                                    $t('global.PhoneIsMustHaveAtLeast') }} {{
+                                        v$.guardian_phone.minLength.$params.min
+                                    }} {{ $t('global.Letters') }} <br /></span>
+                                <span v-if="v$.guardian_phone.maxLength.$invalid">{{
+                                    $t('global.PhoneIsMustHaveAtMost') }} {{
+                                        v$.guardian_phone.maxLength.$params.max
+                                    }} {{ $t('global.Letters') }} </span>
+                            </div>
+                            <template v-if="errors['guardian_phone']">
+                                <error-message v-for="(errorMessage, index) in errors['guardian_phone']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label class="form-label">{{ $t('global.selectLevel') }}</label>
+
+                            <Select v-model="data.level_id" :filterFields="['id','title']" :options="levels" filter
+                                    :invalid="v$.level_id.$error || errors[`level_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.level_id.$error || errors[`level_id`], 'is-valid': !v$.level_id.$invalid && !errors[`level_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.level_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['level_id']">
+                                <error-message v-for="(errorMessage, index) in errors['level_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                          <div class="col-md-4 mt-3">
+                            <label class="form-label">{{ $t('global.selectMemorizationType') }}</label>
+
+                            <Select v-model="data.memorization_type_id" :filterFields="['id','title']" :options="types" filter
+                                    :invalid="v$.memorization_type_id.$error || errors[`memorization_type_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.memorization_type_id.$error || errors[`memorization_type_id`], 'is-valid': !v$.memorization_type_id.$invalid && !errors[`memorization_type_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.memorization_type_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['memorization_type_id']">
+                                <error-message v-for="(errorMessage, index) in errors['memorization_type_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                          <div class="col-md-4 mt-3">
+                            <label class="form-label">{{ $t('global.selectMemorizationAmount') }}</label>
+
+                            <Select v-model="data.memorization_amount_id" :filterFields="['id','title']" :options="amounts" filter
+                                    :invalid="v$.memorization_amount_id.$error || errors[`memorization_amount_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.memorization_amount_id.$error || errors[`memorization_amount_id`], 'is-valid': !v$.memorization_amount_id.$invalid && !errors[`memorization_amount_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.memorization_amount_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['memorization_amount_id']">
+                                <error-message v-for="(errorMessage, index) in errors['memorization_amount_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="row">
+                                <label class="form-label mb-1">{{$t('global.gender')}}</label>
+                                <div class="col-xl-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" v-model="data.gender" value="male" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            {{$t('global.male')}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" v-model="data.gender" value="female" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            {{$t('global.female')}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectNationality') }}</label>
+
+                            <Select v-model="data.nationality_id" :filterFields="['id','title']" :options="nationalities" filter
+                                    :invalid="v$.nationality_id.$error || errors[`nationality_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.nationality_id.$error || errors[`nationality_id`], 'is-valid': !v$.nationality_id.$invalid && !errors[`nationality_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.nationality_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['nationality_id']">
+                                <error-message v-for="(errorMessage, index) in errors['nationality_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectCountry') }}</label>
+
+                            <Select v-model="data.country_id" :filterFields="['id','title']" @change="getCitiesByCountryId" :options="countries" filter
+                                    :invalid="v$.country_id.$error || errors[`country_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.country_id.$error || errors[`country_id`], 'is-valid': !v$.country_id.$invalid && !errors[`country_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.country_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['country_id']">
+                                <error-message v-for="(errorMessage, index) in errors['country_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectCity') }}</label>
+
+                            <Select v-model="data.city_id" :filterFields="['id','title']" :options="cities" filter
+                                    :invalid="v$.city_id.$error || errors[`city_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.city_id.$error || errors[`city_id`], 'is-valid': !v$.city_id.$invalid && !errors[`city_id`] }]">
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.city_id.required.$invalid">{{$t('global.ThisFieldIsRequired') }}<br/></span>
+                            </div>
+                            <template v-if="errors['city_id']">
+                                <error-message v-for="(errorMessage, index) in errors['city_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6  mt-3">
+                            <label class="form-label">{{ $t('global.password')}}</label>
+                            <input type="password" v-model.trim="v$.password.$model" id="validationCustom09"
+                                :class="['form-control', { 'is-invalid': v$.password.$error || errors[`password`], 'is-valid': !v$.password.$invalid&& !errors[`password`] }]"
+                                :placeholder="$t('global.password')">
+                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.password.required.$invalid">{{ $t('global.PasswordIsRequired') }}<br />
+                                </span>
+                                <span v-if="v$.password.alphaNum.$invalid">{{ $t('global.MustBeLettersOrNumbers') }}
+                                    <br /></span>
+                                <span v-if="v$.password.minLength.$invalid">{{ $t('global.PasswordIsMustHaveAtLeast') }}
+                                    {{
+                                        v$.password.minLength.$params.min
+                                    }} {{ $t('global.Letters') }} <br /></span>
+                                <span v-if="v$.password.maxLength.$invalid">{{ $t('global.PasswordIsMustHaveAtMost') }}
+                                    {{
+                                        v$.password.maxLength.$params.max
+                                    }} {{ $t('global.Letters') }} </span>
+                            </div>
+                            <template v-if="errors['password']">
+                                <error-message v-for="(errorMessage, index) in errors['password']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6  mt-3">
+                            <label class="form-label">{{ $t('global.password_confirmation')}}</label>
+                            <input type="password" v-model.trim="v$.confirmation.$model" id="validationCustom10"
+                                :class="['form-control', { 'is-invalid': v$.confirmation.$error || errors[`confirmation`], 'is-valid': !v$.confirmation.$invalid && !errors[`confirmation`] }]"
+                                :placeholder="$t('global.password_confirmation')">
+                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.confirmation.required.$invalid">{{ $t('global.ConfirmIsRequired') }}<br />
+                                </span>
+                                <span v-if="v$.confirmation.sameAs.$invalid">{{
+                                    $t('global.ConfirmationMustMatchPassword') }}
+                                    <br /></span>
+                            </div>
+                            <template v-if="errors['confirmation']">
+                                <error-message v-for="(errorMessage, index) in errors['confirmation']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-4">
+                            <div class="custom-toggle-switch d-flex align-items-center mb-4">
+                                <input id="toggleswitchPrimary" v-model="data.status" type="checkbox">
+                                <label for="toggleswitchPrimary" class="label-primary"></label><span class="ms-3">{{
+                                    $t('global.status')
+                                }}</span>
+                            </div>
+                            <template v-if="errors['status']">
+                                <error-message v-for="(errorMessage, index) in errors['status']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-12 mt-3 row flex-fill">
+                            <div class="btn btn-outline-light waves-effect" style="width: 90%; height:90%">
+
+                                <span v-if="type != 'edit' && !numberOfImage" style="margin-top:30%;">
+                                    {{ $t('global.ChooseImages') }}
+                                    <br><i class="bi bi-cloud-upload fs-40"></i>
+                                    <i class="fas fa-cloud-upload-alt ml-3" aria-hidden="true"></i>
+                                </span>
+
+                                <div id="container-images" v-show="image && numberOfImage"></div>
+
+                                <div v-if="type == 'edit'" v-show="!numberOfImage">
+                                    <figure>
+                                        <figcaption>
+                                            <img class="img-fluid rounded" :src="`${imageUpload}`">
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                <input name="mediaPackage" type="file" @change="preview" id="mediaPackage"
+                                    accept="image/*">
+
+                                <template v-if="errors['file']">
+                                    <error-message v-for="(errorMessage, index) in errors['file']" :key="index">
+                                        {{ errorMessage }}
+                                    </error-message>
+                                </template>
+                                <template class="text-danger text-center" v-if="requiredn">
+                                    <error-message>{{ $t('global.ImagesIsMustHaveAtLeast1Photos')
+                                        }}<br /></error-message>
+                                </template>
+                            </div>
+                            <p class="num-of-files">{{ numberOfImage ? numberOfImage + $t('global.FilesSelected') :
+                                $t('global.NoFilesChosen') }}
+                            </p>
+
+                            <template v-if="errors[`image`]">
+                                <error-message v-for="(errorMessage, index) in errors[`image`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button v-if="type != 'edit'" :disabled="!is_disabled" @click.prevent="resetModal" type="button"
+                        class="btn btn-secondary">{{ $t('global.AddNewRecord') }}</button>
+                    <template v-if="!is_disabled">
+                        <button type="submit" v-if="!loading" @click.prevent="AddSubmit" class="btn btn-primary">{{
+                            $t('global.Submit') }}</button>
+
+                        <button class="btn btn-primary btn-loader" v-else>
+                            <span class="me-2">{{ $t('global.Loading') }}</span>
+                            <span class="loading"><i class="ri-loader-2-fill fs-16"></i></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { computed, onMounted, reactive, ref, toRefs, watch, nextTick } from "vue";
+import { useI18n } from "vue-i18n";
+import { maxLength, minLength, required, sameAs, alphaNum, requiredIf } from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import adminApi from "../../../api/adminAxios";
+
+export default {
+    name: "Admin",
+    props: {
+        type: { default: 'create' },
+        dataRow: { default: '' },
+    },
+    data() {
+        return {
+            errors: {}
+        }
+    },
+    setup(props) {
+        setTimeout(async () => {
+            let myModalEl = document.getElementById('admin-modal')
+            myModalEl.addEventListener('show.bs.modal', function (event) {
+                resetModal();
+            })
+            myModalEl.addEventListener('hidden.bs.modal', function (event) {
+                resetModalHidden();
+            })
+        }, 150);
+        const errors = ref([]);
+        let loading = ref(false);
+        let is_disabled = ref(false);
+        const { t } = useI18n({});
+        const id = ref(null);
+
+        let types = ref([]);
+        let levels = ref([]);
+        let amounts = ref([]);
+        let nationalities = ref([]);
+        let countries = ref([]);
+        let cities = ref([]);
+
+         onMounted(async ()=>{
+            flatpickr("#date", {});
+        })
+
+        let getLevels = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/levels/dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    levels.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+        let getMemorizationAmounts = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/memorization-amounts-dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    amounts.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+        let getMemorizationType = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/memorization-types-dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    types.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+        let getNationalities = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/nationalities-dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    nationalities.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+        let getCountries = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/countries/dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    countries.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+        let getCitiesByCountryId = () => {
+            cities.value = [];
+            submitdata.data.city_id = '';
+            loading.value = true;
+
+            adminApi.get(`dashboard/cities-by-country/${submitdata.data.country_id}`)
+                .then((res) => {
+                    let l = res.data.data;
+                    cities.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+
+        function defaultData() {
+            submitdata.data.status = true;
+            submitdata.data.name = '';
+            submitdata.data.birth_date = '';
+            submitdata.data.level_id = '';
+            submitdata.data.phone = '';
+            submitdata.data.guardian_phone = '';
+            submitdata.data.memorization_type_id = '';
+            submitdata.data.memorization_amount_id = '';
+            submitdata.data.nationality_id = '';
+            submitdata.data.country_id = '';
+            submitdata.data.city_id = '';
+            submitdata.data.gender = 'male';
+            submitdata.data.password = '';
+            submitdata.data.confirmation = '';
+            imageUpload.value = '';
+            is_disabled.value = false;
+            image.value = null
+            errors.value = [];
+            empty();
+        }
+        function resetModal() {
+            defaultData();
+            setTimeout(async () => {
+                getLevels();
+                getMemorizationType();
+                getMemorizationAmounts();
+                getNationalities();
+                getCountries();
+                if (props.type != 'edit') {
+                } else {
+                    id.value = props.dataRow.id;
+                    submitdata.data.name = props.dataRow.name;
+                    submitdata.data.birth_date = props.dataRow.birth_date;
+                    submitdata.data.level_id = props.dataRow.level_id;
+                    submitdata.data.phone = props.dataRow.phone;
+                    submitdata.data.guardian_phone = props.dataRow.guardian_phone;
+                    submitdata.data.memorization_type_id = props.dataRow.memorization_type_id;
+                    submitdata.data.memorization_amount_id = props.dataRow.memorization_amount_id;
+                    submitdata.data.nationality_id = props.dataRow.nationality_id;
+                    submitdata.data.country_id = props.dataRow.country_id;
+                    submitdata.data.gender = props.dataRow.gender;
+                    submitdata.data.status = props.dataRow.status == 1;
+                    imageUpload.value = props.dataRow.image;
+                    if (submitdata.data.country_id) {
+                        getCitiesByCountryId();
+                        submitdata.data.city_id = props.dataRow.city_id;
+                    }
+                }
+            }, 50);
+        }
+        function resetModalHidden() {
+            defaultData();
+            nextTick(() => { v$.value.$reset() });
+        }
+
+        //start design
+        let submitdata = reactive({
+            data: {
+                status: true,
+                name: '',
+                birth_date: '',
+                level_id: '',
+                phone: '',
+                guardian_phone: '',
+                memorization_type_id: '',
+                memorization_amount_id: '',
+                nationality_id: '',
+                country_id: '',
+                city_id: '',
+                gender: 'male',
+
+                password: '',
+                confirmation: '',
+                image: {}
+            }
+        });
+
+        const numberOfImage = ref(0);
+        const image = ref({});
+        const imageUpload = ref({});
+
+        let empty = () => {
+            numberOfImage.value = 0;
+            let clearInput = document.querySelector('#mediaPackage').value = '';
+            requiredn.value = false;
+        }
+
+        let preview = (e) => {
+
+            let containerImages = document.querySelector('#container-images');
+            containerImages.innerHTML = '';
+            image.value = {};
+
+            numberOfImage.value = e.target.files.length;
+
+            image.value = e.target.files[0];
+
+            let reader = new FileReader();
+            let figure = document.createElement('figure');
+            let figcap = document.createElement('figcaption');
+
+            figcap.innerText = image.value.name;
+            figure.appendChild(figcap);
+
+            reader.onload = () => {
+                let img = document.createElement('img');
+                img.setAttribute('src', reader.result);
+                img.classList.add('img-fluid', 'rounded');
+                figure.insertBefore(img, figcap);
+            }
+
+            containerImages.appendChild(figure);
+            reader.readAsDataURL(image.value);
+
+        }
+
+        // validation image
+        const requiredn = ref(false);
+
+        watch(numberOfImage, (count, prevCount) => {
+            if (!count) {
+                requiredn.value = true;
+            } else {
+                requiredn.value = false;
+            }
+        });
+
+        const rules = computed(() => {
+            return {
+                name: {
+                    minLength: minLength(3),
+                    maxLength: maxLength(100),
+                    required
+                },
+                birth_date: {
+                    required
+                },
+                level_id: {
+                    required
+                },
+                 phone: {
+                    required,
+                    minLength: minLength(8),
+                    maxLength: maxLength(20)
+                },
+                guardian_phone: {
+                    required,
+                    minLength: minLength(8),
+                    maxLength: maxLength(20)
+                },
+                memorization_type_id: {
+                    required
+                },
+                memorization_amount_id: {
+                    required
+                },
+                nationality_id: {
+                    required
+                },
+                country_id: {
+                    required
+                },
+                city_id: {
+                    required
+                },
+                password: {
+                    required : requiredIf(function(model){return props.type =='create';}),
+                    minLength: minLength(8),
+                    maxLength: maxLength(16),
+                    alphaNum
+                }
+                ,
+                confirmation: {
+                    required : requiredIf(function(model){return props.type =='create';}),
+                    sameAs: sameAs(submitdata.data.password)
+                },
+
+
+            }
+        });
+
+        const v$ = useVuelidate(rules, submitdata.data);
+
+        return {
+            t, id,levels,nationalities, countries, cities,getCitiesByCountryId,
+            loading, is_disabled, types,amounts,
+            resetModal, empty, preview, resetModalHidden,
+            imageUpload, image, ...toRefs(submitdata),
+            v$, numberOfImage, requiredn, errors
+        };
+    },
+    methods: {
+        AddSubmit() {
+
+            this.v$.$validate();
+            this.errors = {};
+
+            let formData = new FormData();
+
+            formData.append('status', this.data.status ? 1 : 0);
+            formData.append('name', this.data.name ?? '');
+            formData.append('birth_date', this.data.birth_date ?? '');
+            formData.append('level_id', this.data.level_id ?? '');
+            formData.append('phone', this.data.phone ?? '');
+            formData.append('guardian_phone', this.data.guardian_phone ?? '');
+            formData.append('memorization_type_id', this.data.memorization_type_id ?? '');
+            formData.append('memorization_amount_id', this.data.memorization_amount_id ?? '');
+            formData.append('nationality_id', this.data.nationality_id ?? '');
+            formData.append('country_id', this.data.country_id ?? '');
+            formData.append('city_id', this.data.city_id ?? '');
+            formData.append('gender', this.data.gender ?? '');
+            if(this.data.password) {
+                formData.append('password', this.data.password ?? '');
+                formData.append('confirmation', this.data.confirmation ?? '');
+            }
+
+
+            if (this.image) {
+                formData.append('image', this.image);
+            }
+            if (this.type !== 'edit') {
+                if (!this.v$.$error && this.numberOfImage) {
+                    this.is_disabled = false;
+                    this.loading = true;
+                    adminApi.post(`dashboard/student`, formData)
+                        .then((res) => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: `${this.t('global.AddedSuccessfully')}`,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            this.resetModalHidden();
+                        })
+                        .catch((err) => {
+                            this.errors = err.response.data.errors;
+                        })
+                        .finally(() => {
+                            if (Object.keys(this.errors).length === 0) {
+                                this.loading = false;
+                                this.is_disabled = true;
+                                this.$emit("created");
+                            } else {
+                                this.loading = false;
+                                this.is_disabled = false;
+                            }
+                        });
+                } else {
+                    if (!this.numberOfImage) {
+                        this.loading = false;
+                        this.is_disabled = false;
+                        this.requiredn = true;
+                    }
+                }
+            } else if (!this.v$.$error) {
+                this.is_disabled = false;
+                this.loading = true;
+                formData.append('_method', 'PUT');
+                adminApi.post(`dashboard/student/${this.id}`, formData)
+                    .then((res) => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: `${this.t('global.EditSuccessfully')}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+                    .catch((err) => {
+                        this.errors = err.response.data.errors;
+
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                        this.$emit("created");
+                    });
+            }
+
+        }
+    }
+}
+</script>
+
+<style scoped>
+.coustom-select {
+    height: 100px;
+}
+
+.card {
+    position: relative;
+}
+
+.package-feature ul li:first-child {
+    margin-top: 10px;
+}
+
+.package-feature ul li::before {
+    content: "\f00c";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 600;
+    color: #4B9F18;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.package-feature ul li:last-child {
+    margin-bottom: 10px;
+}
+
+.ml-3 {
+    margin-left: 1.5rem;
+}
+
+.waves-effect {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    line-height: 34px;
+    margin: auto;
+}
+
+input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+
+.num-of-files {
+    text-align: center;
+    margin: 20px 0 30px;
+}
+
+.container-images {
+    width: 90%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #f7f7f7;
+}
+</style>

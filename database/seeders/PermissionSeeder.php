@@ -39,11 +39,65 @@ class PermissionSeeder extends Seeder
             ['name' => 'country edit'  ,  'category' => 'Countries'],
             ['name' => 'country delete',  'category' => 'Countries'],
 
+            ['name' => 'city read'  ,  'category' => 'Cities'],
+            ['name' => 'city create',  'category' => 'Cities'],
+            ['name' => 'city edit'  ,  'category' => 'Cities'],
+            ['name' => 'city delete',  'category' => 'Cities'],
+
+            ['name' => 'nationality read'  ,  'category' => 'Nationalities'],
+            ['name' => 'nationality create',  'category' => 'Nationalities'],
+            ['name' => 'nationality edit'  ,  'category' => 'Nationalities'],
+            ['name' => 'nationality delete',  'category' => 'Nationalities'],
+
+            ['name' => 'memorization amount read'  ,  'category' => 'Memorization'],
+            ['name' => 'memorization amount create',  'category' => 'Memorization'],
+            ['name' => 'memorization amount edit'  ,  'category' => 'Memorization'],
+            ['name' => 'memorization amount delete',  'category' => 'Memorization'],
+
+            ['name' => 'memorization type read'  ,  'category' => 'Memorization'],
+            ['name' => 'memorization type create',  'category' => 'Memorization'],
+            ['name' => 'memorization type edit'  ,  'category' => 'Memorization'],
+            ['name' => 'memorization type delete',  'category' => 'Memorization'],
+
+            ['name' => 'level read'  ,  'category' => 'Levels'],
+            ['name' => 'level create',  'category' => 'Levels'],
+            ['name' => 'level edit'  ,  'category' => 'Levels'],
+            ['name' => 'level delete',  'category' => 'Levels'],
+
+            ['name' => 'digital badge read'  ,  'category' => 'Badges'],
+            ['name' => 'digital badge create',  'category' => 'Badges'],
+            ['name' => 'digital badge edit'  ,  'category' => 'Badges'],
+            ['name' => 'digital badge delete',  'category' => 'Badges'],
+
+            ['name' => 'teacher badge read'  ,  'category' => 'Badges'],
+            ['name' => 'teacher badge create',  'category' => 'Badges'],
+            ['name' => 'teacher badge edit'  ,  'category' => 'Badges'],
+            ['name' => 'teacher badge delete',  'category' => 'Badges'],
+
+            ['name' => 'student read'  ,  'category' => 'Students'],
+            ['name' => 'student create',  'category' => 'Students'],
+            ['name' => 'student edit'  ,  'category' => 'Students'],
+            ['name' => 'student delete',  'category' => 'Students'],
+            ['name' => 'student send notification',  'category' => 'Students'],
+
+            ['name' => 'circle type read'  ,  'category' => 'Circles'],
+            ['name' => 'circle type create',  'category' => 'Circles'],
+            ['name' => 'circle type edit'  ,  'category' => 'Circles'],
+            ['name' => 'circle type delete',  'category' => 'Circles'],
+
+            ['name' => 'circle read'  ,  'category' => 'Circles'],
+            ['name' => 'circle create',  'category' => 'Circles'],
+            ['name' => 'circle edit'  ,  'category' => 'Circles'],
+            ['name' => 'circle delete',  'category' => 'Circles'],
+
             ['name' => 'database backup read',  'category' => 'Database Backup'],
             ['name' => 'database backup create',  'category' => 'Database Backup'],
 
             ['name' => 'join us read',  'category' => 'Join Us'],
             ['name' => 'join us edit',  'category' => 'Join Us'],
+
+            ['name' => 'setting read',  'category' => 'Settings'],
+            ['name' => 'setting edit',  'category' => 'Settings'],
 
         ];
 

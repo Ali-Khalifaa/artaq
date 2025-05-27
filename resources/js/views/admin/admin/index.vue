@@ -89,7 +89,7 @@
                                                     :title="$t('global.update')">
                                                     <i class="ri-edit-line"></i>
                                                 </button>
-                                                <button v-if="permission.includes('admin edit')"
+                                                <!-- <button v-if="permission.includes('admin edit')"
                                                     @click.prevent="showModelReason(item, (item.status ? 'Deactivation' : 'Activation'))"
                                                     data-bs-toggle="modal" data-bs-target="#reason"
                                                     :class="[item.status ? 'btn-warning-transparent' : 'btn-success-transparent', 'btn btn-icon btn-sm rounded-pill']"
@@ -103,7 +103,7 @@
                                                     class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"
                                                     :title="$t('global.delete')">
                                                     <i class="ri-delete-bin-line"></i>
-                                                </button>
+                                                </button> -->
                                             </div>
                                         </td>
                                     </tr>
