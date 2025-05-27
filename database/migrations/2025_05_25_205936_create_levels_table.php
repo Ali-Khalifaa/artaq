@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(PreservationMethod::class, 'preservation_method_id');
             $table->string('name');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
