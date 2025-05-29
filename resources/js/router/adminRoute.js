@@ -24,6 +24,7 @@ import teacherBadge from "./adminRoute/teacherBadge.js";
 import student from "./adminRoute/student.js";
 import circleTypes from "./adminRoute/circleTypes.js";
 import circles from "./adminRoute/circles.js";
+import quran from "./adminRoute/quran.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -71,6 +72,7 @@ const routes = [
             ...student,
             ...circleTypes,
             ...circles,
+            ...quran,
         ]
     },
     {

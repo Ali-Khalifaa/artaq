@@ -1037,7 +1037,15 @@
         "StudentType":"نوع الطلاب",
         "day": "اليوم",
         "start_time":"وقت البداية",
-        "end_time":"وقت النهاية"
+        "end_time":"وقت النهاية",
+        "quran":"القرآن الكريم",
+        "surah_name":"اسم السورة",
+        "surah_number":"رقم السورة",
+        "revelation_type":"نوع النزول",
+        "Meccan":"مكية",
+        "Medinan":"مدنية",
+        "verse_count":"عدد الآيات",
+        "verse":"الآية"
 
     },
     "role_and_permissions":{
@@ -1131,6 +1139,9 @@
         "circle type create" : "اضافة نوع الحلقات",
         "circle type edit" : "تعديل نوع الحلقات",
         "circle type delete" : "حذف نوع الحلقات",
+
+        "Quran" : "القرآن الكريم",
+        "quran read" : "عرض القرآن الكريم",
 
         "Database Backup": "نسخه احتياطيه لقاعدة البيانات",
         "database backup create":"اضافة نسخه احتياطيه لقاعدة البيانات",

@@ -16,7 +16,7 @@ class CountrySeeder extends Seeder
     public function run(): void
     {
         // Schema::disableForeignKeyConstraints();
-        Country::truncate();
+        // Country::truncate();
 
         Country::create([
             'name' => 'السعودية',

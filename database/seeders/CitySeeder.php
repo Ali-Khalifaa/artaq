@@ -13,7 +13,7 @@ class CitySeeder extends Seeder
     public function run(): void
     {
         // Schema::disableForeignKeyConstraints();
-        City::truncate();
+        // City::truncate();
 
         City::create([
             'name' => 'الرياض',

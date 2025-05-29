@@ -14,10 +14,11 @@ use App\Http\Controllers\Dashboard\JoinUsController;
 use App\Http\Controllers\Dashboard\LanguageController;
 use App\Http\Controllers\Dashboard\LevelController;
 use App\Http\Controllers\Dashboard\MemorizationAmountController;
-use App\Http\Controllers\Dashboard\MemorizationTypeController;
+use App\Http\Controllers\Dashboard\PreservationMethodController;
 use App\Http\Controllers\Dashboard\NationalityController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\QuranController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SendNotificationController;
 use App\Http\Controllers\Dashboard\SettingController;
@@ -68,8 +69,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::get('memorization-amounts-dropdown',[MemorizationAmountController::class,'dropdown']);
         Route::apiResource('memorization-amounts', MemorizationAmountController::class);
 
-        Route::get('memorization-types-dropdown',[MemorizationTypeController::class,'dropdown']);
-        Route::apiResource('memorization-types', MemorizationTypeController::class);
+        Route::get('memorization-types-dropdown',[PreservationMethodController::class,'dropdown']);
+        Route::apiResource('memorization-types', PreservationMethodController::class);
 
         Route::apiResource('settings', SettingController::class);
 
@@ -86,6 +87,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('circle-types', CircleTypeController::class);
 
         Route::apiResource('circles', CircleController::class);
+
+        Route::apiResource('quran', QuranController::class);
 
         Route::post('logout', [AuthDashboardController::class,'logout']);
 

@@ -27,7 +27,7 @@ class Student extends Authenticatable implements JWTSubject
         'level_id',
         'phone',
         'guardian_phone',
-        'memorization_type_id',
+        'preservation_method_id',
         'gender',
         'nationality_id',
         'country_id',
@@ -78,9 +78,9 @@ class Student extends Authenticatable implements JWTSubject
         return $this->belongsTo(Level::class);
     }
 
-    public function memorizationType()
+    public function preservationMethod()
     {
-        return $this->belongsTo(MemorizationType::class);
+        return $this->belongsTo(PreservationMethod::class);
     }
 
     public function nationality()

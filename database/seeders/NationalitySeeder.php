@@ -14,7 +14,7 @@ class NationalitySeeder extends Seeder
     public function run(): void
     {
         // Schema::disableForeignKeyConstraints();
-        Nationality::truncate();
+        // Nationality::truncate();
 
         $now = now();
         $nationalities = [

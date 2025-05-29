@@ -6,12 +6,19 @@
         <!-- Start::main-sidebar-header -->
         <div class="main-sidebar-header">
             <router-link :to="{name:`dashboard${path}`}" class="header-logo">
-                <img src="/assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo">
+                <!-- <img src="/assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo">
                 <img src="/assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo">
                 <img src="/assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark">
                 <img src="/assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark">
                 <img src="/assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white">
-                <img src="/assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white">
+                <img src="/assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white"> -->
+
+                <img src="/assets/images/brand-logos/center.png" alt="logo" class="desktop-logo">
+                <img src="/assets/images/brand-logos/center.png" alt="logo" class="toggle-logo">
+                <img src="/assets/images/brand-logos/center.png" alt="logo" class="desktop-dark">
+                <img src="/assets/images/brand-logos/center.png" alt="logo" class="toggle-dark">
+                <img src="/assets/images/brand-logos/center.png" alt="logo" class="desktop-white">
+                <img src="/assets/images/brand-logos/center.png" alt="logo" class="toggle-white">
             </router-link>
         </div>
         <!-- End::main-sidebar-header -->
@@ -108,6 +115,13 @@
                         <router-link :to="{name:'circles'}" class="side-menu__item">
                             <i class="bx bx-circle side-menu__icon"></i>
                             <span class="side-menu__label">{{$t('global.circles')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('quran read')">
+                        <router-link :to="{name:'quran'}" class="side-menu__item">
+                            <i class="bx bx-book-open side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.quran')}}</span>
                         </router-link>
                     </li>
 

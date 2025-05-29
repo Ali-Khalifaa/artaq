@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('surahs', function (Blueprint $table) {
             $table->id();
             $table->integer('number')->unique();
-            $table->string('name'); // Arabic name4
-            $table->string('normalized_name');
-            $table->string('english_name');
-            $table->string('english_name_translation');
-            $table->string('revelation_type');
+            $table->string('name')->comment('الاسم بالتشكيل'); // Arabic name4
+            $table->string('normalized_name')->comment('الاسم بدون تشكيل'); // Normalized Arabic name
+            $table->string('english_name')->comment('الاسم بالانجليزية'); // English name
+            $table->string('english_name_translation')->comment('ترجمة الاسم بالانجليزية'); // English name translation
+            $table->string('revelation_type')->comment('نوع النزول'); // Revelation type (Meccan or Medinan)
             $table->timestamps();
         });
     }

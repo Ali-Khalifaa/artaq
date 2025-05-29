@@ -15,4 +15,9 @@ class PreservationMethod extends Model
 
     protected $table = "preservation_methods";
 
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'preservation_method_id');
+    }
+
 }

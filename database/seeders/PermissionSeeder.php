@@ -90,6 +90,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'circle edit'  ,  'category' => 'Circles'],
             ['name' => 'circle delete',  'category' => 'Circles'],
 
+            ['name' => 'quran read'  ,  'category' => 'Quran'],
+
             ['name' => 'database backup read',  'category' => 'Database Backup'],
             ['name' => 'database backup create',  'category' => 'Database Backup'],
 

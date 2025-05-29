@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // طرق الحفظ
         Schema::create('preservation_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name');

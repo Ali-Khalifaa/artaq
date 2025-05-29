@@ -15,15 +15,16 @@ return new class extends Migration
         Schema::create('ayahs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Surah::class, 'surah_id');
-            $table->integer('number'); // Global ayah number
+            $table->integer('number')->comment('رقم الاية بالنسبة للقران كله'); // Global ayah number
             $table->text('text');
-            $table->integer('number_in_surah');
-            $table->integer('juz');
-            $table->integer('manzil');
-            $table->integer('page');
-            $table->integer('ruku');
-            $table->integer('hizb_quarter');
-            $table->tinyInteger('sajda')->default(0); // 0 = No Sajda, 1 = Sajda recommended,2 = Sajda obligatory
+            $table->text('text_normalized')->comment('النص بدون تشكيل'); // Normalized text without diacritics
+            $table->integer('number_in_surah')->comment('رقم الاية بالنسبة للسورة'); // Ayah number within the Surah
+            $table->integer('juz')->comment('رقم الجزء'); // Juz number
+            $table->integer('manzil')->comment('رقم المنزلة'); // Manzil number
+            $table->integer('page')->comment('رقم الصفحة'); // Page number
+            $table->integer('ruku')->comment('رقم الركعة'); // Ruku number
+            $table->integer('hizb_quarter')->comment('ربع الحزب'); // Hizb quarter number
+            $table->tinyInteger('sajda')->default(0)->comment('السجده'); // 0 = No Sajda, 1 = Sajda recommended,2 = Sajda obligatory
             $table->timestamps();
         });
     }

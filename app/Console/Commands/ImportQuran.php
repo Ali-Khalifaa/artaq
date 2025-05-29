@@ -48,6 +48,7 @@ class ImportQuran extends Command
                     [
                         'surah_id' => $surahModel->id,
                         'text' => $ayah['text'],
+                        'text_normalized' => $this->normalizeArabic($ayah['text']),
                         'number_in_surah' => $ayah['numberInSurah'],
                         'juz' => $ayah['juz'],
                         'manzil' => $ayah['manzil'],
