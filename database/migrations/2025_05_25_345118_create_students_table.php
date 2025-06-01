@@ -33,6 +33,8 @@ return new class extends Migration
             $table->foreignIdFor(MemorizationAmount::class)->nullable()->comment('مقدار الحفظ');
             $table->string('password')->nullable()->comment('كلمة المرور');
             $table->string('image')->nullable();
+            $table->integer('otp_code')->nullable();
+            $table->timestamp('code_expired_at')->nullable();
             $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->softDeletes();

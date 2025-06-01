@@ -1,11 +1,7 @@
 <?php
 
-use Modules\Driver\Models\Driver;
-use Modules\Rest\Models\RestOwner;
-use Modules\Rest\Models\RestRestaurant;
-use Modules\Showroom\Models\SRShowroom;
-use Modules\Store\Models\StrOwner;
-use Modules\User\Models\User;
+use App\Models\Student;
+
 
 return [
 
@@ -43,32 +39,15 @@ return [
     */
 
     'guards' => [
-        'driver_api' => [
-            'driver' => 'jwt',
-            'provider' => 'drivers',
-        ],
 
-        'user_api' => [
+        'student_api' => [
             'driver' => 'jwt',
-            'provider' => 'users',
+            'provider' => 'students',
         ],
 
         'admin_api' => [
             'driver' => 'jwt',
             'provider' => 'admins',
-        ],
-
-        'rest_api' => [
-            'driver' => 'jwt',
-            'provider' => 'restaurants',
-        ],
-        'showroom_api' => [
-            'driver' => 'jwt',
-            'provider' => 'showrooms',
-        ],
-        'store_api' => [
-            'driver' => 'jwt',
-            'provider' => 'stores',
         ],
     ],
 
@@ -90,29 +69,13 @@ return [
     */
 
     'providers' => [
-        'drivers' => [
+        'student_api' => [
             'driver' => 'eloquent',
-            'model' => Driver::class,
-        ],
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => User::class,
+            'model' => Student::class,
         ],
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-        ],
-        'restaurants' => [
-            'driver' => 'eloquent',
-            'model' => RestOwner::class,
-        ],
-        'showrooms' => [
-            'driver' => 'eloquent',
-            'model' => SRShowroom::class,
-        ],
-        'stores' => [
-            'driver' => 'eloquent',
-            'model' => StrOwner::class,
         ],
     ],
 

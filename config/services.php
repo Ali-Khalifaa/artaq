@@ -38,14 +38,14 @@ return [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => '',
-//        'redirect' => 'https://admin.dorr.co/api/user/auth/facebook/callback',
+        //        'redirect' => 'https://admin.dorr.co/api/user/auth/facebook/callback',
 
     ],
 
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' =>''
+        'redirect' => ''
     ],
     'apple' => [
         'client_id' => env('APPLE_CLIENT_ID'),
@@ -53,5 +53,10 @@ return [
         'redirect' => '',
     ],
 
+    'twilio' => [
+        'sid'   => env('TWILIO_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'from'  => env('TWILIO_PHONE_NUMBER'),
+    ],
 
 ];
