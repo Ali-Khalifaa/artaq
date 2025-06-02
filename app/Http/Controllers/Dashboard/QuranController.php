@@ -33,4 +33,18 @@ class QuranController extends Controller implements HasMiddleware
         $ayahs = Ayah::where('surah_id',$id)->where('page',$request->page)->get();
         return responseJson($ayahs,'Data exited successfully',200);
     }
+
+    public function getSurahDropdown()
+    {
+        $surah = Surah::all();
+
+        return responseJson($surah,'Data exited successfully',200);
+    }
+
+    public function getAyahsBySurahId( $id)
+    {
+        $ayahs = Ayah::where('surah_id', $id)->get();
+        return responseJson($ayahs, 'Data exited successfully', 200);
+    }
+
 }

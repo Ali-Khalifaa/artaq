@@ -8,7 +8,7 @@
                     </h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="background-color: #e6e6e6" v-if="surah">
+                <div class="modal-body" style="background-color: #e6e6e6" v-if="surah && page && ayahs && ayahs.length > 0">
                     <div class="row">
 
                         <!-- <div class="col-md-12">
@@ -39,15 +39,15 @@
 
                         <div class="col-md-12">
                             <div id="quran-tab" class="quran quran-tab trans-tab" data="simple.305"
-                                style="font-size: 19px;">
+                                style="font-size: 19px; margin-right: 100px;">
                                 <div class="quranPageHeader ui-helper-clearfix">
                                     <div style="float: left; width: 35%; text-align: left"><span class="suraName">{{surah.name}}</span>
                                     </div>
                                     <div style="float: left; width: 30%;">
-                                        <a class="arrow-link arrow-left" href="javascript:changePage('left')"
+                                        <a class="arrow-link arrow-left" href="#" @click="showSurah(page + 1)"
                                             original-title="">◄</a>
-                                        &nbsp;<span class="pageNumber">{{makeNumberArabic(ayahs[0]?.page)}}</span>&nbsp;
-                                        <a class="arrow-link arrow-right" href="javascript:changePage('right')"
+                                        &nbsp;<span class="pageNumber">{{makeNumberArabic(page)}}</span>&nbsp;
+                                        <a class="arrow-link arrow-right" href="#" @click="showSurah(page - 1)"
                                             original-title="">►</a>
                                     </div>
                                     <div style="float: right"><span class="juzName">{{toOrdinalFraction(ayahs[0]?.juz)}}</span> </div>
@@ -57,9 +57,9 @@
                                 <div class="qFrame qFrameMiddle " id="middleFrame">
                                     <div class="quranText" id="quranText"
                                         style="font-family: hafs; font-size: 1.15em; text-align: justify; direction: rtl;">
-                                        <div class="suraHeaderFrame rtl">{{surah.name}}</div>
-                                        <div class="ayaText bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ </div>
-                                        <span v-for="(ayah, index) in ayahs" :key="index" id="19-1" class="aya selected">{{ ayah.text }} <span class="ayaNumber"
+                                        <div class="suraHeaderFrame rtl" v-if="page == surah.page">{{surah.name}}</div>
+                                        <div class="ayaText bism" v-if="page == surah.page">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ </div>
+                                        <span v-for="(ayah, index) in ayahs" :key="index" id="19-1" class="aya selected mx-1">{{ removePhrase(ayah.text,"بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ") }} <span class="ayaNumber"
                                                 style="font-size: 0.91em;">‎﴿{{makeNumberArabic(ayah.number_in_surah)}}﴾‏</span></span>
 
                                     </div>
@@ -71,7 +71,7 @@
                                 <div class="quranPageFooter">
                                     <a class="arrow-link arrow-left" href="javascript:changePage('left')"
                                         original-title="">◄</a>
-                                    &nbsp;<span class="pageNumber">{{makeNumberArabic(ayahs[0]?.page)}}</span>&nbsp;
+                                    &nbsp;<span class="pageNumber">{{makeNumberArabic(page)}}</span>&nbsp;
                                     <a class="arrow-link arrow-right" href="javascript:changePage('right')"
                                         original-title="">►</a>
                                 </div>
@@ -115,6 +115,7 @@ export default {
         const { t } = useI18n({});
         const id = ref(null);
         const surah = ref('');
+        let page = ref('');
         const ayahs = ref([]);
 
         function defaultData() {
@@ -128,11 +129,15 @@ export default {
             setTimeout(async () => {
                 id.value = props.dataRow.id;
                 surah.value = props.dataRow;
+                page.value = props.dataRow.page;
                 await showSurah(props.dataRow.page);
             }, 50);
         }
 
         let makeNumberArabic = (num) => {
+            if (typeof num !== 'number') {
+                return num; // Return as is if not a number
+            }
             return num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
         }
 
@@ -146,13 +151,18 @@ export default {
             return number >= 1 && number <= 30 ? `الجزء ${ordinals[number - 1]}` : `الجزء رقم ${number}`;
         }
 
+        function removePhrase(text, phrase) {
+            return text.replace(phrase, "").trim();
+        }
 
-        let showSurah = (page) => {
+
+        let showSurah = (change_page) => {
             loading.value = true;
-            adminApi.get(`dashboard/quran/${id.value}?page=${page}`)
+            adminApi.get(`dashboard/quran/${id.value}?page=${change_page}`)
                 .then((res) => {
                     let l = res.data.data;
                     if (l && l.length > 0) {
+                        page.value = change_page;
                         ayahs.value = l;
                     }
                 })
@@ -164,7 +174,7 @@ export default {
                 });
         }
 
-        return { t, id, loading, surah, ayahs,makeNumberArabic,toOrdinalFraction }
+        return { t, id, loading, surah, ayahs,makeNumberArabic,toOrdinalFraction,removePhrase,showSurah,page }
     }
 }
 </script>

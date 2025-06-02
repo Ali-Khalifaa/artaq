@@ -164,6 +164,21 @@
                             <span class="side-menu__label">{{$t('global.levels')}}</span>
                         </router-link>
                     </li>
+
+                    <li class="slide" v-show="permission.includes('level task read')">
+                        <router-link :to="{name:'levelTask'}" class="side-menu__item">
+                            <i class="bx bx-task side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.levelTask')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('track read')">
+                        <router-link :to="{name:'track'}" class="side-menu__item">
+                            <i class="bx bx-git-branch side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.tracks')}}</span>
+                        </router-link>
+                    </li>
+
                     <li class="slide has-sub" v-show="(permission.includes('digital badge read') || permission.includes('teacher badge read'))"
                         :class="[$route.name == 'digitalBadge' || $route.name == 'teacherBadge'  ? 'active open': '']"
                     >

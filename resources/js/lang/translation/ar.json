@@ -1045,7 +1045,13 @@
         "Meccan":"مكية",
         "Medinan":"مدنية",
         "verse_count":"عدد الآيات",
-        "verse":"الآية"
+        "verse":"الآية",
+        "levelTask":"المنهج",
+        "fromSurah":"من السورة",
+        "toSurah":"الى السورة",
+        "fromAyah":"من الآية",
+        "toAyah":"الى الآية",
+        "tracks":"المسارات"
 
     },
     "role_and_permissions":{
@@ -1108,6 +1114,12 @@
         "level edit" : "تعديل المستويات",
         "level delete" : "حذف المستويات",
 
+        "Tracks" : "المسارات",
+        "track read" : "عرض المسارات",
+        "track create" : "اضافة المسارات",
+        "track edit" : "تعديل المسارات",
+        "track delete" : "حذف المسارات",
+
         "Badges" : "الشارات",
         "digital badge read" : "عرض الشارات الرقمية للطلاب",
         "digital badge create" : "اضافة الشارات الرقمية للطلاب",
@@ -1117,6 +1129,12 @@
         "teacher badge create" : "اضافة الشارات الرقمية للمعلمين",
         "teacher badge edit" : "تعديل الشارات الرقمية للمعلمين",
         "teacher badge delete" : "حذف الشارات الرقمية للمعلمين",
+
+        "Level Tasks" : "المنهج",
+        "level task read" : "عرض المنهج",
+        "level task create" : "اضافة المنهج",
+        "level task edit" : "تعديل المنهج",
+        "level task delete" : "حذف المنهج",
 
         "Settings" : "الاعدادات",
         "setting read" : "عرض الاعدادات",

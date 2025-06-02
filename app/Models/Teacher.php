@@ -12,34 +12,30 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Student extends Authenticatable implements JWTSubject
+class Teacher extends Authenticatable implements JWTSubject
 {
     use HasFactory,Notifiable,SoftDeletes,HasApiTokens,SearchFilterTrait;
 
-    protected $guard_name = 'student_api';
+    protected $guard_name = 'teacher_api';
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
         'name',
-        'birth_date',
-        'level_id',
-        'track_id',
         'phone',
-        'guardian_phone',
-        'preservation_method_id',
+        'id_number',
         'gender',
+        'admin_id',
         'nationality_id',
         'country_id',
         'city_id',
-        'memorization_amount_id',
         'image',
         'status',
         'password',
     ];
 
-    protected $table = "students";
+    protected $table = "teachers";
 
     protected $hidden = [
         'password',
@@ -71,29 +67,18 @@ class Student extends Authenticatable implements JWTSubject
 
     public function receivesBroadcastNotificationsOn()
     {
-        return 'App.Models.Student.'.$this->id;
+        return 'App.Models.Teacher.'.$this->id;
     }
 
-    public function level()
+    public function admin()
     {
-        return $this->belongsTo(Level::class);
-    }
-
-    public function track()
-    {
-        return $this->belongsTo(Track::class);
-    }
-
-    public function preservationMethod()
-    {
-        return $this->belongsTo(PreservationMethod::class);
+        return $this->belongsTo(Admin::class);
     }
 
     public function nationality()
     {
         return $this->belongsTo(Nationality::class);
     }
-
 
     public function country()
     {
@@ -105,9 +90,9 @@ class Student extends Authenticatable implements JWTSubject
         return $this->belongsTo(City::class);
     }
 
-    public function memorizationAmount()
+    public function qualifications()
     {
-        return $this->belongsTo(MemorizationAmount::class);
+        return $this->hasMany(TeacherQualification::class, 'teacher_id');
     }
 
 }

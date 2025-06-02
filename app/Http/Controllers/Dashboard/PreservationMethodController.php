@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\MemorizationAmountRequest;
-use App\Http\Resources\Dashboard\MemorizationAmountResource;
+use App\Http\Requests\Dashboard\PreservationMethodRequest;
+use App\Http\Resources\Dashboard\PreservationMethodResource;
 use App\Models\PreservationMethod;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -28,12 +28,12 @@ class PreservationMethodController extends Controller implements HasMiddleware
     {
         $memorization = PreservationMethod::searchAndFilter()->latest()->paginate(10);
 
-        return responseJson(MemorizationAmountResource::collection($memorization->items()),'',200,getPaginates($memorization));
+        return responseJson(PreservationMethodResource::collection($memorization->items()),'',200,getPaginates($memorization));
     }
 
 
 
-    public function store(MemorizationAmountRequest $request)
+    public function store(PreservationMethodRequest $request)
     {
         $data = $request->validated();
         PreservationMethod::create($data);
@@ -47,7 +47,7 @@ class PreservationMethodController extends Controller implements HasMiddleware
         return responseJson($memorization,'Data exited successfully',200);
     }
 
-    public function update(MemorizationAmountRequest $request, $id)
+    public function update(PreservationMethodRequest $request, $id)
     {
         $data = $request->validated();
         $memorization = PreservationMethod::find($id);
@@ -73,6 +73,6 @@ class PreservationMethodController extends Controller implements HasMiddleware
     {
         $level = PreservationMethod::all();
 
-        return responseJson(MemorizationAmountResource::collection($level),'',200);
+        return responseJson(PreservationMethodResource::collection($level),'',200);
     }
 }

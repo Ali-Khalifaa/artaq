@@ -4,7 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LevelRequest extends FormRequest
+class PreservationMethodRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,6 @@ class LevelRequest extends FormRequest
     {
         return [
             'name' => "required|string",
-            "description" => "required|string",
-            'preservation_method_id' => "required|exists:preservation_methods,id",
         ];
     }
 }

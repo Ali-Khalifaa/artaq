@@ -1,11 +1,7 @@
 <?php
 
-use Modules\Driver\Models\Driver;
-use Modules\Rest\Models\RestOwner;
-use Modules\Rest\Models\RestRestaurant;
-use Modules\Showroom\Models\SRShowroom;
-use Modules\Store\Models\StrOwner;
-use Modules\User\Models\User;
+use App\Models\Student;
+use App\Models\Teacher;
 
 return [
 
@@ -43,33 +39,20 @@ return [
     */
 
     'guards' => [
-        'driver_api' => [
-            'driver' => 'jwt',
-            'provider' => 'drivers',
-        ],
-
-        'user_api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-        ],
-
         'admin_api' => [
             'driver' => 'jwt',
             'provider' => 'admins',
         ],
 
-        'rest_api' => [
+        'student_api' => [
             'driver' => 'jwt',
-            'provider' => 'restaurants',
+            'provider' => 'students',
         ],
-        'showroom_api' => [
+        'teacher_api' => [
             'driver' => 'jwt',
-            'provider' => 'showrooms',
+            'provider' => 'teachers',
         ],
-        'store_api' => [
-            'driver' => 'jwt',
-            'provider' => 'stores',
-        ],
+
     ],
 
     /*
@@ -90,30 +73,20 @@ return [
     */
 
     'providers' => [
-        'drivers' => [
-            'driver' => 'eloquent',
-            'model' => Driver::class,
-        ],
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => User::class,
-        ],
+
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-        'restaurants' => [
+        'students' => [
             'driver' => 'eloquent',
-            'model' => RestOwner::class,
+            'model' => Student::class,
         ],
-        'showrooms' => [
+        'teachers' => [
             'driver' => 'eloquent',
-            'model' => SRShowroom::class,
+            'model' => Teacher::class,
         ],
-        'stores' => [
-            'driver' => 'eloquent',
-            'model' => StrOwner::class,
-        ],
+
     ],
 
     /*
