@@ -19,12 +19,15 @@ import memorizationAmount from "./adminRoute/memorizationAmount.js";
 import memorizationType from "./adminRoute/memorizationType.js";
 import setting from "./adminRoute/setting.js";
 import level from "./adminRoute/level.js";
+import levelTask from "./adminRoute/levelTask.js";
 import digitalBadge from "./adminRoute/digitalBadge.js";
 import teacherBadge from "./adminRoute/teacherBadge.js";
 import student from "./adminRoute/student.js";
 import circleTypes from "./adminRoute/circleTypes.js";
 import circles from "./adminRoute/circles.js";
 import quran from "./adminRoute/quran.js";
+import track from "./adminRoute/track.js";
+import teacher from "./adminRoute/teacher.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -66,6 +69,7 @@ const routes = [
             ...memorizationType,
             ...setting,
             ...level,
+            ...levelTask,
             ...digitalBadge,
             ...teacherBadge,
             ...nationality,
@@ -73,6 +77,8 @@ const routes = [
             ...circleTypes,
             ...circles,
             ...quran,
+            ...track,
+            ...teacher,
         ]
     },
     {

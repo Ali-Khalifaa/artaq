@@ -15,6 +15,11 @@ class Level extends Model
 
     protected $table = "levels";
 
+    public function preservationMethod()
+    {
+        return $this->belongsTo(PreservationMethod::class, 'preservation_method_id');
+    }
+
      public function digitalBadges()
     {
         return $this->hasMany(DigitalBadge::class);
@@ -23,5 +28,10 @@ class Level extends Model
     public function students()
     {
         return $this->hasMany(Student::class, 'level_id');
+    }
+    
+    public function levelTasks()
+    {
+        return $this->hasMany(LevelTask::class, 'level_id');
     }
 }

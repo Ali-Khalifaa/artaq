@@ -26,7 +26,7 @@ class LevelController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $level = Level::searchAndFilter()->latest()->paginate(10);
+        $level = Level::with('preservationMethod')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(LevelResource::collection($level->items()),'',200,getPaginates($level));
     }
@@ -69,9 +69,13 @@ class LevelController extends Controller implements HasMiddleware
         return responseJson([],'Deleted Successfully',200);
     }
 
-     public function dropdown()
+     public function dropdown(Request $request)
     {
-        $level = Level::all();
+        if ($request->preservation_method_id) {
+            $level = Level::where('preservation_method_id', $request->preservation_method_id)->get();
+        } else {
+            $level = Level::all();
+        }
 
         return responseJson(LevelResource::collection($level),'',200);
     }

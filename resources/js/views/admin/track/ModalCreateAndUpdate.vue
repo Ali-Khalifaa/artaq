@@ -11,28 +11,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-
-                        <div class="col-md-6">
-                            <label class="form-label">{{ $t('global.selectMemorizationType') }}</label>
-
-                            <Select v-model="data.preservation_method_id" :filterFields="['id','title']" :options="types" filter
-                                    :invalid="v$.preservation_method_id.$error || errors[`preservation_method_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.preservation_method_id.$error || errors[`preservation_method_id`], 'is-valid': !v$.preservation_method_id.$invalid && !errors[`preservation_method_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.preservation_method_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['preservation_method_id']">
-                                <error-message v-for="(errorMessage, index) in errors['preservation_method_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
                         <div class="col-md-6 ">
                             <label for="name" class="form-label">{{$t('label.title')}}</label>
                             <input type="text" class="form-control" id="name" :placeholder="$t('label.title')"
@@ -44,25 +22,6 @@
                             </div>
                             <template v-if="errors['name']">
                                 <error-message v-for="(errorMessage, index) in errors['name']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-12 mt-3">
-                            <label class="form-label">{{ $t('label.description') }}</label>
-                            <textarea
-                                class="form-control summernote"
-                                rows="6"
-                                v-model.trim="v$.description.$model"
-                                :class="{'is-invalid': v$.description.$error ||errors[`description`],
-                                'is-valid':!v$.description.$invalid && !errors[`description`]}">
-                            </textarea>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.description.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
-                            </div>
-                            <template v-if="errors[`description`]">
-                                <error-message v-for="(errorMessage, index) in errors[`description`]" :key="index">
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
@@ -95,7 +54,7 @@ import useVuelidate from "@vuelidate/core";
 import adminApi from "../../../api/adminAxios";
 
 export default {
-    name: "levels",
+    name: "ModalCreateAndUpdate",
     props: {
         type: {default: 'create'},
         dataRow: {default: ''},
@@ -120,31 +79,12 @@ export default {
         let is_disabled = ref(false);
         const {t} = useI18n({});
         const id = ref(null);
-        const types = ref([]);
 
         onMounted(()=>{
         });
 
-         let getMemorizationType = () => {
-            loading.value = true;
-
-            adminApi.get(`dashboard/memorization-types-dropdown`)
-                .then((res) => {
-                    let l = res.data.data;
-                    types.value = l;
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                })
-                .finally(() => {
-                    loading.value = false;
-                })
-        }
-
        function defaultData(){
            submitdata.data.name = '';
-           submitdata.data.description = '';
-           submitdata.data.preservation_method_id = '';
            is_disabled.value = false;
            loading.value = false;
            errors.value = [];
@@ -153,14 +93,10 @@ export default {
        function resetModal() {
             defaultData();
             setTimeout(async () => {
-                getMemorizationType();
                 if (props.type != 'edit') {
                 } else {
                     id.value = props.dataRow.id;
                     submitdata.data.name = props.dataRow.name;
-                    submitdata.data.preservation_method_id = props.dataRow.preservation_method_id;
-                    submitdata.data.description = props.dataRow.description;
-
                 }
             }, 50);
         }
@@ -174,22 +110,18 @@ export default {
         let submitdata =  reactive({
             data:{
                 name: '',
-                description: '',
-                preservation_method_id: '',
             }
         });
 
         const rules = computed(() => {
             return {
                 name: {required},
-                description: {required},
-                preservation_method_id: {required},
             }
         });
 
         const v$ = useVuelidate(rules,submitdata.data);
 
-        return {t,id,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors,types};
+        return {t,id,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors};
     },
     methods: {
         AddSubmit() {
@@ -199,13 +131,11 @@ export default {
 
         let formData = new FormData();
         formData.append('name', this.data.name);
-        formData.append('description', this.data.description);
-        formData.append('preservation_method_id', this.data.preservation_method_id);
         if (this.type !== 'edit') {
             if (!this.v$.$error) {
                 this.is_disabled = false;
                 this.loading = true;
-                adminApi.post(`dashboard/levels`, formData)
+                adminApi.post(`dashboard/tracks`, formData)
                     .then((res) => {
                         Swal.fire({
                             icon: 'success',
@@ -232,7 +162,7 @@ export default {
             this.is_disabled = false;
             this.loading = true;
             formData.append('_method','PUT');
-            adminApi.post(`dashboard/levels/${this.id}`,formData)
+            adminApi.post(`dashboard/tracks/${this.id}`,formData)
                 .then((res) => {
                     Swal.fire({
                         icon: 'success',

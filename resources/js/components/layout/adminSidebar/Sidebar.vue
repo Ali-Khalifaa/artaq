@@ -42,6 +42,20 @@
                     </li>
                     <!-- End::Dashboard -->
 
+                    <li class="slide" v-show="permission.includes('teacher read')">
+                        <router-link :to="{name:'teacher'}" class="side-menu__item">
+                            <i class="bx bx-chalkboard side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.teachers')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('student read')">
+                        <router-link :to="{name:'student'}" class="side-menu__item">
+                            <i class="bx bx-user side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.students')}}</span>
+                        </router-link>
+                    </li>
+
                      <!-- Start::permissions -->
                     <li class="slide has-sub" v-show="(permission.includes('admin read') || permission.includes('role read'))"
                         :class="[$route.name == 'admin' || $route.name == 'role'  ? 'active open': '']"
@@ -50,13 +64,13 @@
                         :class="[$route.name == 'admin' || $route.name == 'role'  ? 'active': '']"
                         >
                             <i class="bx bx-user-plus side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.permissions')}}</span>
+                            <span class="side-menu__label">{{$t('global.admins')}}</span>
                             <i class="fe fe-chevron-right side-menu__angle"></i>
                         </a>
                         <ul class="slide-menu child1"
                         >
                             <li class="slide side-menu__label1">
-                                <a href="javascript:void(0)">{{$t('global.permissions')}}</a>
+                                <a href="javascript:void(0)">{{$t('global.admins')}}</a>
                             </li>
                             <li class="slide" v-if="permission.includes('admin read')">
                                 <router-link :to="{name:'admin'}" class="side-menu__item">{{$t('global.employees')}}</router-link>
@@ -67,42 +81,6 @@
                         </ul>
                     </li>
                     <!-- End::permissions -->
-
-
-                    <li class="slide" v-show="permission.includes('banner read')">
-                        <router-link :to="{name:'banner'}" class="side-menu__item">
-                            <i class="bx bx-image side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.banners')}}</span>
-                        </router-link>
-                    </li>
-
-                    <li class="slide" v-show="permission.includes('country read')">
-                        <router-link :to="{name:'country'}" class="side-menu__item">
-                            <i class="bx bx-globe side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.countries')}}</span>
-                        </router-link>
-                    </li>
-
-                    <li class="slide" v-show="permission.includes('city read')">
-                        <router-link :to="{name:'city'}" class="side-menu__item">
-                            <i class="bx bx-buildings side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.cities')}}</span>
-                        </router-link>
-                    </li>
-
-                    <li class="slide" v-show="permission.includes('nationality read')">
-                        <router-link :to="{name:'nationality'}" class="side-menu__item">
-                            <i class="bx bx-flag side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.nationalities')}}</span>
-                        </router-link>
-                    </li>
-
-                    <li class="slide" v-show="permission.includes('student read')">
-                        <router-link :to="{name:'student'}" class="side-menu__item">
-                            <i class="bx bx-user side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.students')}}</span>
-                        </router-link>
-                    </li>
 
                     <li class="slide" v-show="permission.includes('circle type read')">
                         <router-link :to="{name:'circleTypes'}" class="side-menu__item">
@@ -125,19 +103,9 @@
                         </router-link>
                     </li>
 
-                    <li class="slide" v-show="permission.includes('join us read')">
-                        <router-link :to="{name:'joinUs'}" class="side-menu__item">
-                            <i class="bx bx-user side-menu__icon"></i>
-                            <span class="side-menu__label">{{$t('global.joinUs')}}</span>
-                        </router-link>
-                    </li>
+                    
 
-                    <li class="slide" v-show="permission.includes('database backup read')">
-                        <router-link :to="{name:'backup'}" class="side-menu__item">
-                            <i class="bx bx-cloud-download side-menu__icon" aria-hidden="true"></i>
-                            <span class="side-menu__label">{{$t('global.databaseBackup')}}</span>
-                        </router-link>
-                    </li>
+                   
                     <li class="slide" v-show="permission.includes('memorization amount read')">
                         <router-link :to="{name:'memorizationAmount'}" class="side-menu__item">
                             <i class="bx bx-book-bookmark side-menu__icon" aria-hidden="true"></i>
@@ -151,12 +119,7 @@
                         </router-link>
                     </li>
 
-                    <li class="slide" v-show="permission.includes('setting read')">
-                        <router-link :to="{name:'setting'}" class="side-menu__item">
-                            <i class="bx bx-cog side-menu__icon" aria-hidden="true"></i>
-                            <span class="side-menu__label">{{$t('global.theSettings')}}</span>
-                        </router-link>
-                    </li>
+                   
 
                     <li class="slide" v-show="permission.includes('level read')">
                         <router-link :to="{name:'level'}" class="side-menu__item">
@@ -164,6 +127,21 @@
                             <span class="side-menu__label">{{$t('global.levels')}}</span>
                         </router-link>
                     </li>
+
+                    <li class="slide" v-show="permission.includes('level task read')">
+                        <router-link :to="{name:'levelTask'}" class="side-menu__item">
+                            <i class="bx bx-task side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.levelTask')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('track read')">
+                        <router-link :to="{name:'track'}" class="side-menu__item">
+                            <i class="bx bx-git-branch side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.tracks')}}</span>
+                        </router-link>
+                    </li>
+
                     <li class="slide has-sub" v-show="(permission.includes('digital badge read') || permission.includes('teacher badge read'))"
                         :class="[$route.name == 'digitalBadge' || $route.name == 'teacherBadge'  ? 'active open': '']"
                     >
@@ -186,6 +164,68 @@
                                 <router-link :to="{name:'teacherBadge'}" class="side-menu__item">{{$t('global.teacherBadges')}}</router-link>
                             </li>
                         </ul>
+                    </li>
+
+                    
+                    <!-- Start::areas -->
+                    <li class="slide has-sub" v-show="permission.includes('country read') || permission.includes('city read')"
+                        :class="[$route.name == 'country' || $route.name == 'city' ? 'active open': '']"
+                    >
+                        <a href="javascript:void(0);" class="side-menu__item"
+                        :class="[$route.name == 'country' || $route.name == 'city' ? 'active': '']"
+                        >
+                            <i class="bi bi-map side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.areaManagement')}}</span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
+                        <ul class="slide-menu child1">
+                            <li class="slide side-menu__label1">
+                                <a href="javascript:void(0)">{{$t('global.areaManagement')}}</a>
+                            </li>
+                            <li class="slide" v-if="permission.includes('country read')">
+                                <router-link :to="{name:'country'}" class="side-menu__item">{{$t('global.countries')}}</router-link>
+                            </li>
+                            <li class="slide" v-if="permission.includes('city read')">
+                                <router-link :to="{name:'city'}" class="side-menu__item">{{$t('global.cities')}}</router-link>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- End::areas -->
+                    
+
+                    <li class="slide" v-show="permission.includes('nationality read')">
+                        <router-link :to="{name:'nationality'}" class="side-menu__item">
+                            <i class="bx bx-flag side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.nationalities')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('banner read')">
+                        <router-link :to="{name:'banner'}" class="side-menu__item">
+                            <i class="bx bx-image side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.banners')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('join us read')">
+                        <router-link :to="{name:'joinUs'}" class="side-menu__item">
+                            <i class="bx bx-user side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.joinUs')}}</span>
+                        </router-link>
+                    </li>
+
+                     <li class="slide" v-show="permission.includes('setting read')">
+                        <router-link :to="{name:'setting'}" class="side-menu__item">
+                            <i class="bx bx-cog side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.theSettings')}}</span>
+                        </router-link>
+                    </li>
+
+                     <li class="slide" v-show="permission.includes('database backup read')">
+                        <router-link :to="{name:'backup'}" class="side-menu__item">
+                            <i class="bx bx-cloud-download side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.databaseBackup')}}</span>
+                        </router-link>
                     </li>
 
                 </ul>

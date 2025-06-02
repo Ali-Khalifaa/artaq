@@ -39,26 +39,6 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">{{ $t('global.birth_date') }}</label>
-                            <input type="text" class="form-control" id="date" v-model="v$.birth_date.$model"
-                                 :class="{
-                                    'is-invalid': v$.birth_date.$error || errors[`birth_date`],
-                                    'is-valid': !v$.birth_date.$invalid && !errors[`birth_date`]
-                                }">
-
-                            <div class="invalid-feedback">
-                                <span v-if="v$.birth_date.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
-                                </span>
-
-                            </div>
-                            <template v-if="errors[`birth_date`]">
-                                <error-message v-for="(errorMessage, index) in errors[`birth_date`]" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
                             <label class="form-label">{{ $t('global.phone') }}</label>
                             <input type="text" class="form-control" v-model.trim="v$.phone.$model"
                                 :class="{ 'is-invalid': v$.phone.$error || errors[`phone`], 'is-valid': !v$.phone.$invalid  && !errors[`phone`] }"
@@ -84,113 +64,25 @@
                         </div>
 
                         <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.guardian_phone') }}</label>
-                            <input type="text" class="form-control" v-model.trim="v$.guardian_phone.$model"
-                                :class="{ 'is-invalid': v$.guardian_phone.$error || errors[`guardian_phone`], 'is-valid': !v$.guardian_phone.$invalid  && !errors[`guardian_phone`] }"
-                                :placeholder="$t('global.guardian_phone')">
-                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+                            <label class="form-label">{{ $t('global.id_number') }}</label>
+                            <input type="number" class="form-control" v-model="v$.id_number.$model"
+                                 :class="{
+                                    'is-invalid': v$.id_number.$error || errors[`id_number`],
+                                    'is-valid': !v$.id_number.$invalid && !errors[`id_number`]
+                                }">
+
                             <div class="invalid-feedback">
-                                <span v-if="v$.guardian_phone.required.$invalid">{{
-                                    $t('global.PhoneIsRequired') }} <br /></span>
-                                <span v-if="v$.guardian_phone.minLength.$invalid">{{
-                                    $t('global.PhoneIsMustHaveAtLeast') }} {{
-                                        v$.guardian_phone.minLength.$params.min
-                                    }} {{ $t('global.Letters') }} <br /></span>
-                                <span v-if="v$.guardian_phone.maxLength.$invalid">{{
-                                    $t('global.PhoneIsMustHaveAtMost') }} {{
-                                        v$.guardian_phone.maxLength.$params.max
-                                    }} {{ $t('global.Letters') }} </span>
-                            </div>
-                            <template v-if="errors['guardian_phone']">
-                                <error-message v-for="(errorMessage, index) in errors['guardian_phone']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectMemorizationType') }}</label>
-
-                            <Select v-model="data.preservation_method_id" :filterFields="['id','name']" @change="getLevels" :options="types" filter
-                                    :invalid="v$.preservation_method_id.$error || errors[`preservation_method_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.preservation_method_id.$error || errors[`preservation_method_id`], 'is-valid': !v$.preservation_method_id.$invalid && !errors[`preservation_method_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.preservation_method_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
+                                <span v-if="v$.id_number.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
+
                             </div>
-                            <template v-if="errors['preservation_method_id']">
-                                <error-message v-for="(errorMessage, index) in errors['preservation_method_id']" :key="index">
+                            <template v-if="errors[`id_number`]">
+                                <error-message v-for="(errorMessage, index) in errors[`id_number`]" :key="index">
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectLevel') }}</label>
-
-                            <Select v-model="data.level_id" :filterFields="['id','name']" :options="levels" filter
-                                    :invalid="v$.level_id.$error || errors[`level_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.level_id.$error || errors[`level_id`], 'is-valid': !v$.level_id.$invalid && !errors[`level_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.level_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['level_id']">
-                                <error-message v-for="(errorMessage, index) in errors['level_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectMemorizationAmount') }}</label>
-
-                            <Select v-model="data.memorization_amount_id" :filterFields="['id','name']" :options="amounts" filter
-                                    :invalid="v$.memorization_amount_id.$error || errors[`memorization_amount_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.memorization_amount_id.$error || errors[`memorization_amount_id`], 'is-valid': !v$.memorization_amount_id.$invalid && !errors[`memorization_amount_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.memorization_amount_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['memorization_amount_id']">
-                                <error-message v-for="(errorMessage, index) in errors['memorization_amount_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectTrack') }}</label>
-
-                            <Select v-model="data.track_id" :filterFields="['id','name']" :options="tracks" filter
-                                    :invalid="v$.track_id.$error || errors[`track_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.track_id.$error || errors[`track_id`], 'is-valid': !v$.track_id.$invalid && !errors[`track_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.track_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['track_id']">
-                                <error-message v-for="(errorMessage, index) in errors['track_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
 
                         <div class="col-md-6 mt-3">
                             <div class="row">
@@ -434,9 +326,6 @@ export default {
         const { t } = useI18n({});
         const id = ref(null);
 
-        let types = ref([]);
-        let levels = ref([]);
-        let amounts = ref([]);
         let nationalities = ref([]);
         let countries = ref([]);
         let cities = ref([]);
@@ -446,53 +335,7 @@ export default {
             flatpickr("#date", {});
         })
 
-        let getLevels = () => {
-            loading.value = true;
-            levels.value = [];
-            submitdata.data.level_id = '';
-
-            adminApi.get(`dashboard/levels/dropdown?preservation_method_id=${submitdata.data.preservation_method_id}`)
-                .then((res) => {
-                    let l = res.data.data;
-                    levels.value = l;
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                })
-                .finally(() => {
-                    loading.value = false;
-                })
-        }
-        let getMemorizationAmounts = () => {
-            loading.value = true;
-
-            adminApi.get(`dashboard/memorization-amounts-dropdown`)
-                .then((res) => {
-                    let l = res.data.data;
-                    amounts.value = l;
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                })
-                .finally(() => {
-                    loading.value = false;
-                })
-        }
-        let getMemorizationType = () => {
-            loading.value = true;
-
-            adminApi.get(`dashboard/memorization-types-dropdown`)
-                .then((res) => {
-                    let l = res.data.data;
-                    types.value = l;
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                })
-                .finally(() => {
-                    loading.value = false;
-                })
-        }
+       
         let getNationalities = () => {
             loading.value = true;
 
@@ -540,32 +383,12 @@ export default {
                     loading.value = false;
                 })
         }
-        let getTracks = () => {
-            loading.value = true;
-
-            adminApi.get(`dashboard/tracks-dropdown`)
-                .then((res) => {
-                    let l = res.data.data;
-                    tracks.value = l;
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                })
-                .finally(() => {
-                    loading.value = false;
-                })
-        }
-
+      
         function defaultData() {
             submitdata.data.status = true;
             submitdata.data.name = '';
-            submitdata.data.birth_date = '';
-            submitdata.data.level_id = '';
+            submitdata.data.id_number = '';
             submitdata.data.phone = '';
-            submitdata.data.guardian_phone = '';
-            submitdata.data.preservation_method_id = '';
-            submitdata.data.memorization_amount_id = '';
-            submitdata.data.track_id = '';
             submitdata.data.nationality_id = '';
             submitdata.data.country_id = '';
             submitdata.data.city_id = '';
@@ -581,20 +404,15 @@ export default {
         function resetModal() {
             defaultData();
             setTimeout(async () => {
-                getTracks();
-                getMemorizationType();
-                getMemorizationAmounts();
+              
                 getNationalities();
                 getCountries();
                 if (props.type != 'edit') {
                 } else {
                     id.value = props.dataRow.id;
                     submitdata.data.name = props.dataRow.name;
-                    submitdata.data.birth_date = props.dataRow.birth_date;
                     submitdata.data.phone = props.dataRow.phone;
-                    submitdata.data.guardian_phone = props.dataRow.guardian_phone;
-                    submitdata.data.preservation_method_id = props.dataRow.preservation_method_id;
-                    submitdata.data.memorization_amount_id = props.dataRow.memorization_amount_id;
+                    submitdata.data.id_number = props.dataRow.id_number;
                     submitdata.data.nationality_id = props.dataRow.nationality_id;
                     submitdata.data.track_id = props.dataRow.track_id;
                     submitdata.data.country_id = props.dataRow.country_id;
@@ -606,8 +424,6 @@ export default {
                         submitdata.data.city_id = props.dataRow.city_id;
                     }
 
-                    getLevels();
-                    submitdata.data.level_id = props.dataRow.level_id;
                 }
             }, 50);
         }
@@ -621,18 +437,12 @@ export default {
             data: {
                 status: true,
                 name: '',
-                birth_date: '',
-                level_id: '',
                 phone: '',
-                guardian_phone: '',
-                preservation_method_id: '',
-                memorization_amount_id: '',
-                track_id: '',
                 nationality_id: '',
                 country_id: '',
                 city_id: '',
                 gender: 'male',
-
+                id_number: '',
                 password: '',
                 confirmation: '',
                 image: {}
@@ -696,10 +506,7 @@ export default {
                     maxLength: maxLength(100),
                     required
                 },
-                birth_date: {
-                    required
-                },
-                level_id: {
+                id_number: {
                     required
                 },
                  phone: {
@@ -707,20 +514,7 @@ export default {
                     minLength: minLength(8),
                     maxLength: maxLength(20)
                 },
-                guardian_phone: {
-                    required,
-                    minLength: minLength(8),
-                    maxLength: maxLength(20)
-                },
-                preservation_method_id: {
-                    required
-                },
-                memorization_amount_id: {
-                    required
-                },
-                track_id: {
-                    required
-                },
+               
                 nationality_id: {
                     required
                 },
@@ -749,11 +543,11 @@ export default {
         const v$ = useVuelidate(rules, submitdata.data);
 
         return {
-            t, id,levels,nationalities, countries, cities,getCitiesByCountryId,
-            loading, is_disabled, types,amounts,
+            t, id,nationalities, countries, cities,getCitiesByCountryId,
+            loading, is_disabled,
             resetModal, empty, preview, resetModalHidden,
             imageUpload, image, ...toRefs(submitdata),
-            v$, numberOfImage, requiredn, errors,getLevels,tracks
+            v$, numberOfImage, requiredn, errors,tracks
         };
     },
     methods: {
@@ -766,13 +560,8 @@ export default {
 
             formData.append('status', this.data.status ? 1 : 0);
             formData.append('name', this.data.name ?? '');
-            formData.append('birth_date', this.data.birth_date ?? '');
-            formData.append('level_id', this.data.level_id ?? '');
+            formData.append('id_number', this.data.id_number ?? '');
             formData.append('phone', this.data.phone ?? '');
-            formData.append('guardian_phone', this.data.guardian_phone ?? '');
-            formData.append('preservation_method_id', this.data.preservation_method_id ?? '');
-            formData.append('memorization_amount_id', this.data.memorization_amount_id ?? '');
-            formData.append('track_id', this.data.track_id ?? '');
             formData.append('nationality_id', this.data.nationality_id ?? '');
             formData.append('country_id', this.data.country_id ?? '');
             formData.append('city_id', this.data.city_id ?? '');
@@ -790,7 +579,7 @@ export default {
                 if (!this.v$.$error && this.numberOfImage) {
                     this.is_disabled = false;
                     this.loading = true;
-                    adminApi.post(`dashboard/student`, formData)
+                    adminApi.post(`dashboard/teacher`, formData)
                         .then((res) => {
                             Swal.fire({
                                 icon: 'success',
@@ -824,7 +613,7 @@ export default {
                 this.is_disabled = false;
                 this.loading = true;
                 formData.append('_method', 'PUT');
-                adminApi.post(`dashboard/student/${this.id}`, formData)
+                adminApi.post(`dashboard/teacher/${this.id}`, formData)
                     .then((res) => {
                         Swal.fire({
                             icon: 'success',

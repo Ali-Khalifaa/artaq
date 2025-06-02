@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Student;
-
+use App\Models\Teacher;
 
 return [
 
@@ -39,16 +39,20 @@ return [
     */
 
     'guards' => [
+        'admin_api' => [
+            'driver' => 'jwt',
+            'provider' => 'admins',
+        ],
 
         'student_api' => [
             'driver' => 'jwt',
             'provider' => 'students',
         ],
-
-        'admin_api' => [
+        'teacher_api' => [
             'driver' => 'jwt',
-            'provider' => 'admins',
+            'provider' => 'teachers',
         ],
+
     ],
 
     /*
@@ -69,14 +73,19 @@ return [
     */
 
     'providers' => [
-        'student_api' => [
-            'driver' => 'eloquent',
-            'model' => Student::class,
-        ],
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => Student::class,
+        ],
+        'teachers' => [
+            'driver' => 'eloquent',
+            'model' => Teacher::class,
+        ],
+
     ],
 
     /*

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LevelRequest extends FormRequest
+class TrackRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class LevelRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string",
-            "description" => "required|string",
-            'preservation_method_id' => "required|exists:preservation_methods,id",
+            'name' => "required|string|max:255|unique:tracks,name," . $this->route('track'),
         ];
     }
 }

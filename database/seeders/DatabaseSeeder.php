@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(NationalitySeeder::class);
         $this->call(CircleTypeSeeder::class);
         $this->call(PreservationMethodSeeder::class);
+        $this->call(TrackSeeder::class);
     }
 }

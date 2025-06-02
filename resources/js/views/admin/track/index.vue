@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <!-- Page Header -->
         <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-            <h1 class="page-title fw-semibold fs-18 mb-0">{{ $t('global.levels') }}</h1>
+            <h1 class="page-title fw-semibold fs-18 mb-0">{{ $t('global.tracks') }}</h1>
             <div class="ms-md-1 ms-0">
                 <nav>
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><router-link :to="{name: 'dashboard'}">{{$t('global.home')}}</router-link></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ $t('global.levels') }}</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $t('global.tracks') }}</li>
                     </ol>
                 </nav>
             </div>
@@ -22,7 +22,7 @@
                         <search-and-filters @search="(val) => search.searchKey = val" />
 
                         <div class="prism-toggle">
-                            <button v-if="permission.includes('level create')" @click="showModelCreate" class="btn btn-sm btn-primary-light" data-bs-toggle="modal" data-bs-target="#category-service">
+                            <button v-if="permission.includes('track create')" @click="showModelCreate" class="btn btn-sm btn-primary-light" data-bs-toggle="modal" data-bs-target="#category-service">
                                 <i class="ri-add-line me-1 fw-semibold align-middle"></i>{{ $t('global.add') }}
                             </button>
                         </div>
@@ -34,7 +34,6 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">{{ $t('label.title') }}</th>
-                                    <th scope="col">{{ $t('global.memorizationType') }}</th>
                                     <th scope="col">{{ $t('global.created_at') }}</th>
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
@@ -43,11 +42,10 @@
                                 <tr v-for="(item,index) in data" :key="item.id">
                                     <td scope="row">{{index + 1}}</td>
                                     <td>{{item.name}}</td>
-                                    <td>{{item.preservation_method?.name}}</td>
                                     <td>{{item.created_at}}</td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
-                                            <button v-if="permission.includes('level edit')"
+                                            <button v-if="permission.includes('track edit')"
                                                 @click.prevent="showEditMode(item)"
                                                 data-bs-toggle="modal" data-bs-target="#category-service"
                                                     class="btn btn-icon btn-sm btn-primary-transparent rounded-pill"
@@ -55,7 +53,7 @@
                                                 <i class="ri-edit-line"></i>
                                             </button>
 
-                                             <a href="#" @click.prevent="deleteData(item.id,index)" v-if="permission.includes('level delete')"
+                                             <a href="#" @click.prevent="deleteData(item.id,index)" v-if="permission.includes('track delete')"
                                                class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i
                                                 class="ri-delete-bin-line"></i></a>
                                         </div>
@@ -64,7 +62,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="5">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="4">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -106,16 +104,16 @@ export default {
             searchInTranslations: false,
             columns: ['id','name'],
             searchInRelations: [
-                {
-                    relation: 'preservationMethod',
-                    columns: ['name'],
-                    searchInRelationTranslations:false
-                }
+                // {
+                //     relation: 'country',
+                //     columns: ['name'],
+                //     searchInRelationTranslations:false
+                // }
             ]
         }
 
         onBeforeMount(() => {
-            uri.value = 'levels';
+            uri.value = 'tracks';
             getData();
         });
 

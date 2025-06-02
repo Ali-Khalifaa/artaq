@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\DigitalBadgeController;
 use App\Http\Controllers\Dashboard\JoinUsController;
 use App\Http\Controllers\Dashboard\LanguageController;
 use App\Http\Controllers\Dashboard\LevelController;
+use App\Http\Controllers\Dashboard\LevelTaskController;
 use App\Http\Controllers\Dashboard\MemorizationAmountController;
 use App\Http\Controllers\Dashboard\PreservationMethodController;
 use App\Http\Controllers\Dashboard\NationalityController;
@@ -24,6 +25,8 @@ use App\Http\Controllers\Dashboard\SendNotificationController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\TeacherBadgeController;
+use App\Http\Controllers\Dashboard\TeacherController;
+use App\Http\Controllers\Dashboard\TrackController;
 use App\Http\Controllers\Web\WebPagesController;
 use App\Http\Middleware\ChangeLang;
 use Illuminate\Http\Request;
@@ -77,18 +80,27 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::get('levels/dropdown',[LevelController::class,'dropdown']);
         Route::apiResource('levels', LevelController::class);
 
+        Route::apiResource('level-tasks', LevelTaskController::class);
+
         Route::apiResource('digital-badges', DigitalBadgeController::class);
 
         Route::apiResource('teacher-badges', TeacherBadgeController::class);
 
         Route::apiResource('student', StudentController::class);
 
+        Route::apiResource('teacher', TeacherController::class);
+
         Route::get('circle-types-dropdown',[CircleTypeController::class,'dropdown']);
         Route::apiResource('circle-types', CircleTypeController::class);
+
+        Route::get('tracks-dropdown',[TrackController::class,'dropdown']);
+        Route::apiResource('tracks', TrackController::class);
 
         Route::apiResource('circles', CircleController::class);
 
         Route::apiResource('quran', QuranController::class);
+        Route::get('surah-dropdown',[QuranController::class,'getSurahDropdown']);
+        Route::get('ayahs-by-surah/{id}',[QuranController::class,'getAyahsBySurahId']);
 
         Route::post('logout', [AuthDashboardController::class,'logout']);
 

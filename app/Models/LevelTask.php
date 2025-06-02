@@ -15,4 +15,29 @@ class LevelTask extends Model
 
     protected $table = "level_tasks";
 
+    public function level()
+    {
+        return $this->belongsTo(Level::class, 'level_id');
+    }
+    
+    public function fromSurah()
+    {
+        return $this->belongsTo(Surah::class, 'from_surah_id');
+    }
+
+    public function toSurah()
+    {
+        return $this->belongsTo(Surah::class, 'to_surah_id');
+    }
+
+    public function fromAyah()
+    {
+        return $this->belongsTo(Ayah::class, 'from_ayah_id');
+    }
+
+    public function toAyah()
+    {
+        return $this->belongsTo(Ayah::class, 'to_ayah_id');
+    }
+
 }

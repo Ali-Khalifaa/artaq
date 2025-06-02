@@ -45,34 +45,34 @@ class StudentController extends Controller implements HasMiddleware
 
     public function show($id)
     {
-        $nationality = Student::find($id);
-        return responseJson($nationality,'Data exited successfully',200);
+        $student = Student::find($id);
+        return responseJson($student,'Data exited successfully',200);
     }
 
     public function update(StudentRequest $request, $id)
     {
         $data = $request->validated();
-        $nationality = Nationality::find($id);
-        if (!$nationality) {
+        $student = Student::find($id);
+        if (!$student) {
             return responseJson([],'Data not found',404);
         }
 
          if($request->hasFile('image')){
-            unlink_image_by_path($nationality->getAttributes()['image']);
+            unlink_image_by_path($student->getAttributes()['image']);
             $data['image'] = store_single_image($request->image);
         }
-        $nationality->update($data);
-        return responseJson($nationality,'Updated Successfully',200);
+        $student->update($data);
+        return responseJson($student,'Updated Successfully',200);
     }
 
     public function destroy($id)
     {
-        $nationality = Nationality::find($id);
-        if (!$nationality) {
+        $student = Student::find($id);
+        if (!$student) {
             return responseJson([],'Data not found',404);
         }
-        unlink_image_by_path($nationality->getAttributes()['image']);
-        $nationality->delete();
+        unlink_image_by_path($student->getAttributes()['image']);
+        $student->delete();
         return responseJson([],'Deleted Successfully',200);
     }
 }

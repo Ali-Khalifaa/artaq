@@ -4,7 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LevelRequest extends FormRequest
+class LevelTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,11 @@ class LevelRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string",
-            "description" => "required|string",
-            'preservation_method_id' => "required|exists:preservation_methods,id",
+            'level_id' => "required|exists:levels,id",
+            'from_surah_id' => "required|exists:surahs,id",
+            'to_surah_id' => "required|exists:surahs,id",
+            'from_ayah_id' => "required|exists:ayahs,id",
+            'to_ayah_id' => "required|exists:ayahs,id",
         ];
     }
 }

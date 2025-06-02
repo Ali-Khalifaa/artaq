@@ -64,6 +64,16 @@ class PermissionSeeder extends Seeder
             ['name' => 'level edit'  ,  'category' => 'Levels'],
             ['name' => 'level delete',  'category' => 'Levels'],
 
+            ['name' => 'level task read'  ,  'category' => 'Level Tasks'],
+            ['name' => 'level task create',  'category' => 'Level Tasks'],
+            ['name' => 'level task edit'  ,  'category' => 'Level Tasks'],
+            ['name' => 'level task delete',  'category' => 'Level Tasks'],
+
+            ['name' => 'track read'  ,  'category' => 'Tracks'],
+            ['name' => 'track create',  'category' => 'Tracks'],
+            ['name' => 'track edit'  ,  'category' => 'Tracks'],
+            ['name' => 'track delete',  'category' => 'Tracks'],
+
             ['name' => 'digital badge read'  ,  'category' => 'Badges'],
             ['name' => 'digital badge create',  'category' => 'Badges'],
             ['name' => 'digital badge edit'  ,  'category' => 'Badges'],
@@ -79,6 +89,14 @@ class PermissionSeeder extends Seeder
             ['name' => 'student edit'  ,  'category' => 'Students'],
             ['name' => 'student delete',  'category' => 'Students'],
             ['name' => 'student send notification',  'category' => 'Students'],
+
+            ['name' => 'teacher read'  ,  'category' => 'Teachers'],
+            ['name' => 'teacher create',  'category' => 'Teachers'],
+            ['name' => 'teacher edit'  ,  'category' => 'Teachers'],
+            ['name' => 'teacher delete',  'category' => 'Teachers'],
+            ['name' => 'teacher send notification',  'category' => 'Teachers'],
+            ['name' => 'add admin to teacher',  'category' => 'Teachers'],
+            ['name' => 'add circle to teacher',  'category' => 'Teachers'],
 
             ['name' => 'circle type read'  ,  'category' => 'Circles'],
             ['name' => 'circle type create',  'category' => 'Circles'],

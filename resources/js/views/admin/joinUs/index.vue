@@ -122,31 +122,31 @@
                         </template>
                     </div>
                     <div class="col-md-12 mt-3">
-                        <label for="android_app_driver" class="form-label">{{$t('global.android_app_driver')}}</label>
-                        <input type="text" class="form-control" id="android_app_driver" :placeholder="$t('global.android_app_driver')"
-                            v-model.trim="v$.android_app_driver.$model"
-                            :class="{'is-invalid': v$.android_app_driver.$error ||errors[`android_app_driver`],
-                            'is-valid':!v$.android_app_driver.$invalid && !errors[`android_app_driver`]}">
+                        <label for="android_app_teacher" class="form-label">{{$t('global.android_app_teacher')}}</label>
+                        <input type="text" class="form-control" id="android_app_teacher" :placeholder="$t('global.android_app_teacher')"
+                            v-model.trim="v$.android_app_teacher.$model"
+                            :class="{'is-invalid': v$.android_app_teacher.$error ||errors[`android_app_teacher`],
+                            'is-valid':!v$.android_app_teacher.$invalid && !errors[`android_app_teacher`]}">
                         <div class="invalid-feedback">
-                            <span v-if="v$.android_app_driver.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
+                            <span v-if="v$.android_app_teacher.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
                         </div>
-                        <template v-if="errors['android_app_driver']">
-                            <error-message v-for="(errorMessage, index) in errors['android_app_driver']" :key="index">
+                        <template v-if="errors['android_app_teacher']">
+                            <error-message v-for="(errorMessage, index) in errors['android_app_teacher']" :key="index">
                                 {{ errorMessage }}
                             </error-message>
                         </template>
                     </div>
                     <div class="col-md-12 mt-3">
-                        <label for="ios_app_driver" class="form-label">{{$t('global.ios_app_driver')}}</label>
-                        <input type="text" class="form-control" id="ios_app_driver" :placeholder="$t('global.ios_app_driver')"
-                            v-model.trim="v$.ios_app_driver.$model"
-                            :class="{'is-invalid': v$.ios_app_driver.$error ||errors[`ios_app_driver`],
-                            'is-valid':!v$.ios_app_driver.$invalid && !errors[`ios_app_driver`]}">
+                        <label for="ios_app_teacher" class="form-label">{{$t('global.ios_app_teacher')}}</label>
+                        <input type="text" class="form-control" id="ios_app_teacher" :placeholder="$t('global.ios_app_teacher')"
+                            v-model.trim="v$.ios_app_teacher.$model"
+                            :class="{'is-invalid': v$.ios_app_teacher.$error ||errors[`ios_app_teacher`],
+                            'is-valid':!v$.ios_app_teacher.$invalid && !errors[`ios_app_teacher`]}">
                         <div class="invalid-feedback">
-                            <span v-if="v$.ios_app_driver.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
+                            <span v-if="v$.ios_app_teacher.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
                         </div>
-                        <template v-if="errors['ios_app_driver']">
-                            <error-message v-for="(errorMessage, index) in errors['ios_app_driver']" :key="index">
+                        <template v-if="errors['ios_app_teacher']">
+                            <error-message v-for="(errorMessage, index) in errors['ios_app_teacher']" :key="index">
                                 {{ errorMessage }}
                             </error-message>
                         </template>
@@ -192,8 +192,8 @@ export default {
            submitdata.data.youtube = '';
            submitdata.data.android_app_client = '';
            submitdata.data.ios_app_client = '';
-           submitdata.data.android_app_driver = '';
-           submitdata.data.ios_app_driver = '';
+           submitdata.data.android_app_teacher = '';
+           submitdata.data.ios_app_teacher = '';
            loading.value = false;
            errors.value = [];
         }
@@ -211,8 +211,8 @@ export default {
                         submitdata.data.youtube = l.youtube;
                         submitdata.data.android_app_client = l.android_app_client;
                         submitdata.data.ios_app_client = l.ios_app_client;
-                        submitdata.data.android_app_driver = l.android_app_driver;
-                        submitdata.data.ios_app_driver = l.ios_app_driver;
+                        submitdata.data.android_app_teacher = l.android_app_teacher;
+                        submitdata.data.ios_app_teacher = l.ios_app_teacher;
                     })
                     .catch((err) => {
                         console.log(err);
@@ -238,8 +238,8 @@ export default {
                 youtube:'',
                 android_app_client:'',
                 ios_app_client:'',
-                android_app_driver:'',
-                ios_app_driver:'',
+                android_app_teacher:'',
+                ios_app_teacher:'',
             }
         });
 
@@ -252,8 +252,8 @@ export default {
                 youtube: {required},
                 android_app_client: {required},
                 ios_app_client: {required},
-                android_app_driver: {required},
-                ios_app_driver: {required},
+                android_app_teacher: {required},
+                ios_app_teacher: {required},
 
             }
         });
@@ -277,8 +277,8 @@ export default {
             formData.append('youtube', this.data.youtube);
             formData.append('android_app_client', this.data.android_app_client);
             formData.append('ios_app_client', this.data.ios_app_client);
-            formData.append('android_app_driver', this.data.android_app_driver);
-            formData.append('ios_app_driver', this.data.ios_app_driver);
+            formData.append('android_app_teacher', this.data.android_app_teacher);
+            formData.append('ios_app_teacher', this.data.ios_app_teacher);
             formData.append('_method','PUT');
         if(!this.v$.$error) {
             this.loading = true;
