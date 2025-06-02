@@ -27,6 +27,7 @@ import circleTypes from "./adminRoute/circleTypes.js";
 import circles from "./adminRoute/circles.js";
 import quran from "./adminRoute/quran.js";
 import track from "./adminRoute/track.js";
+import teacher from "./adminRoute/teacher.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -77,6 +78,7 @@ const routes = [
             ...circles,
             ...quran,
             ...track,
+            ...teacher,
         ]
     },
     {

@@ -489,10 +489,10 @@
         "instagram":"انستجرام",
         "linkedin":"لينكدان",
         "youtube":"يوتيوب",
-        "android_app_client":"رابط متجر جوجل بلاي للراكب",
-        "ios_app_client":"رابط متجر ابل استور للراكب",
-        "android_app_driver":"رابط متجر جوجل بلاي للسائق",
-        "ios_app_driver":"رابط متجر ابل استور للسائق",
+        "android_app_client":"رابط متجر جوجل بلاي للطلاب",
+        "ios_app_client":"رابط متجر ابل استور للطلاب",
+        "android_app_teacher":"رابط متجر جوجل بلاي للمعلمين",
+        "ios_app_teacher":"رابط متجر ابل استور للمعلمين",
         "generateCode":"انشاء الكود",
         "file_name":"اسم الملف",
         "minute":"دقيقة",
@@ -1051,7 +1051,10 @@
         "toSurah":"الى السورة",
         "fromAyah":"من الآية",
         "toAyah":"الى الآية",
-        "tracks":"المسارات"
+        "tracks":"المسارات",
+        "selectTrack":"اختر المسار",
+        "teachers":"المعلمين",
+        "id_number":"رقم الهوية"
 
     },
     "role_and_permissions":{
@@ -1107,6 +1110,15 @@
         "memorization type create" : "اضافة نوع الحفظ",
         "memorization type edit" : "تعديل نوع الحفظ",
         "memorization type delete" : "حذف نوع الحفظ",
+
+        "Teachers" : "المعلمين",
+        "teacher read" : "عرض المعلمين",
+        "teacher create" : "اضافة المعلمين",
+        "teacher edit" : "تعديل المعلمين",
+        "teacher delete" : "حذف المعلمين",
+        "add admin to teacher" : "اضافة مدير الى المعلم",
+        "add circle to teacher" : "اضافة حلقة الى المعلم",
+        "teacher send notification" : "ارسال اشعار الى المعلم",
 
         "Levels" : "المستويات",
         "level read" : "عرض المستويات",

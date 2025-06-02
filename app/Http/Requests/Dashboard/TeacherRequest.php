@@ -4,7 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StudentRequest extends FormRequest
+class TeacherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,17 +25,13 @@ class StudentRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'level_id' => 'required|exists:levels,id',
-            'track_id' => 'nullable|exists:tracks,id',
             'phone' => 'required|string|max:15',
-            'guardian_phone' => 'nullable|string|max:15',
-            'preservation_method_id' => 'required|exists:preservation_methods,id',
+            'id_number' => 'nullable|string|max:20|unique:teachers,id_number,' . $this->teacher,
             'gender' => 'required',
+            'admin_id' => 'nullable|exists:admins,id',
             'nationality_id' => 'required|exists:nationalities,id',
             'country_id' => 'required|exists:countries,id',
             'city_id' => 'required|exists:cities,id',
-            'memorization_amount_id' => 'required|exists:memorization_amounts,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
             'password' => 'nullable|string|min:8',

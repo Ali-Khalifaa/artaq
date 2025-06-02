@@ -90,6 +90,14 @@ class PermissionSeeder extends Seeder
             ['name' => 'student delete',  'category' => 'Students'],
             ['name' => 'student send notification',  'category' => 'Students'],
 
+            ['name' => 'teacher read'  ,  'category' => 'Teachers'],
+            ['name' => 'teacher create',  'category' => 'Teachers'],
+            ['name' => 'teacher edit'  ,  'category' => 'Teachers'],
+            ['name' => 'teacher delete',  'category' => 'Teachers'],
+            ['name' => 'teacher send notification',  'category' => 'Teachers'],
+            ['name' => 'add admin to teacher',  'category' => 'Teachers'],
+            ['name' => 'add circle to teacher',  'category' => 'Teachers'],
+
             ['name' => 'circle type read'  ,  'category' => 'Circles'],
             ['name' => 'circle type create',  'category' => 'Circles'],
             ['name' => 'circle type edit'  ,  'category' => 'Circles'],

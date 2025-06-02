@@ -25,6 +25,7 @@ use App\Http\Controllers\Dashboard\SendNotificationController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\TeacherBadgeController;
+use App\Http\Controllers\Dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TrackController;
 use App\Http\Controllers\Web\WebPagesController;
 use App\Http\Middleware\ChangeLang;
@@ -86,6 +87,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('teacher-badges', TeacherBadgeController::class);
 
         Route::apiResource('student', StudentController::class);
+
+        Route::apiResource('teacher', TeacherController::class);
 
         Route::get('circle-types-dropdown',[CircleTypeController::class,'dropdown']);
         Route::apiResource('circle-types', CircleTypeController::class);
