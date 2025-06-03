@@ -89,6 +89,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('student', StudentController::class);
 
         Route::apiResource('teacher', TeacherController::class);
+        Route::put('change-admin-teacher/{id}',[TeacherController::class,'changeAdmin']);
+        Route::put('modify-circles-teacher/{id}',[TeacherController::class,'modifyCircles']);
 
         Route::get('circle-types-dropdown',[CircleTypeController::class,'dropdown']);
         Route::apiResource('circle-types', CircleTypeController::class);
@@ -97,6 +99,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('tracks', TrackController::class);
 
         Route::apiResource('circles', CircleController::class);
+        Route::get('circles-dropdown',[CircleController::class,'dropdown']);
+        Route::get('circles-without-teacher/{id}',[CircleController::class,'circlesWithoutTeacher']);
 
         Route::apiResource('quran', QuranController::class);
         Route::get('surah-dropdown',[QuranController::class,'getSurahDropdown']);
@@ -106,6 +110,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         Route::resource('roles', RoleController::class);
 
+        Route::get('admins-dropdown',[AdminController::class,'dropdown']);
         Route::resource('admins', AdminController::class);
         Route::get('all_roles', [AdminController::class,'all_roles']);
 

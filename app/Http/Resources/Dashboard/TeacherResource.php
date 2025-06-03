@@ -26,6 +26,9 @@ class TeacherResource extends JsonResource
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),
+            "circles_id" => $this->whenLoaded('circles', function () {
+                return $this->circles->pluck('id');
+            }),
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d  (H:i)'),
         ];
     }

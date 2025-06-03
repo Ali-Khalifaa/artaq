@@ -89,6 +89,22 @@
                                                     class="btn btn-icon btn-sm btn-warning-transparent rounded-pill"><i
                                                         class="bx bx-bell header-link-icon"></i></a>
 
+                                                <button v-if="permission.includes('add admin to teacher')"
+                                                    @click.prevent="showAdminMode(item)"
+                                                    data-bs-toggle="modal" data-bs-target="#add-admin-modal"
+                                                        class="btn btn-icon btn-sm btn-secondary-transparent rounded-pill"
+                                                        :title="$t('global.add admin to teacher')">
+                                                    <i class="ri-user-settings-line"></i>
+                                                </button>
+
+                                                <button v-if="permission.includes('add circle to teacher')"
+                                                    @click.prevent="showAddCircleMode(item)"
+                                                    data-bs-toggle="modal" data-bs-target="#add-circle-modal"
+                                                        class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"
+                                                        :title="$t('global.add circle to teacher')">
+                                                    <i class="ri-add-circle-line"></i>
+                                                </button>
+
                                                 <button v-if="permission.includes('teacher edit')"
                                                     @click.prevent="showEditMode(item)" data-bs-toggle="modal"
                                                     data-bs-target="#admin-modal"
@@ -96,6 +112,7 @@
                                                     :title="$t('global.update')">
                                                     <i class="ri-edit-line"></i>
                                                 </button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -120,6 +137,8 @@
             </div>
         </div>
         <!-- End:: data table -->
+        <addCircle v-model="showAddCircle" :dataRow="dataRow" @created="getData(pagePaginate)" />
+        <addAdmin v-model="showAddAdmin" :dataRow="dataRow" @created="getData(pagePaginate)" />
         <ModalCreateAndUpdate v-model="modalShow" :type="type" :dataRow="dataRow" @created="getData(pagePaginate)" />
         <SendNotification :selectedUser="selectedUser" :type="'App\\Models\\Teacher'" />
     </div>
@@ -129,15 +148,19 @@
 import { onBeforeMount, inject, ref } from "vue";
 import crud from "../../../composable/crud_structure";
 import ModalCreateAndUpdate from "./ModalCreateAndUpdate.vue"
+import addAdmin from "./addAdmin.vue"
+import addCircle from "./addCircle.vue"
 import SendNotification from "../../../components/general/SendNotification.vue"
 export default {
     name: "index",
     components: {
-        ModalCreateAndUpdate, SendNotification
+        ModalCreateAndUpdate, SendNotification ,addAdmin,addCircle
     },
     setup() {
         const emitter = inject('emitter');
         const selectedUser = ref({});
+        let showAddAdmin = ref(false);
+        let showAddCircle = ref(false);
 
         const { getData, loading, data, dataPaginate, permission, uri, showModelCreate, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate} = crud();
 
@@ -176,8 +199,20 @@ export default {
             getData();
         });
 
+        let showAdminMode = (row) => {
+            dataRow.value=row;
+            type.value='edit';
+            showAddAdmin.value=true;
+        }
 
-        return { getData, loading, search, permission, deleteData, showEditMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate};
+        let showAddCircleMode = (row) => {
+            dataRow.value=row;
+            type.value='edit';
+            showAddCircle.value=true;
+        }
+
+
+        return { getData, loading, search, permission, deleteData, showEditMode,showAdminMode,showAddAdmin,showAddCircle,showAddCircleMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate};
 
     }
 }

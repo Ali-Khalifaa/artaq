@@ -95,4 +95,9 @@ class Teacher extends Authenticatable implements JWTSubject
         return $this->hasMany(TeacherQualification::class, 'teacher_id');
     }
 
+    public function circles()
+    {
+        return $this->belongsToMany(Circle::class, 'teacher_circles', 'teacher_id', 'circle_id');
+    }
+
 }

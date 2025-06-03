@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\CircleRequest;
 use App\Http\Resources\Dashboard\CircleResource;
 use App\Models\Circle;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -81,5 +82,19 @@ class CircleController extends Controller implements HasMiddleware
         $level = Circle::all();
 
         return responseJson(CircleResource::collection($level),'',200);
+    }
+
+    public function circlesWithoutTeacher($id)
+    {
+        $teacher = Teacher::find($id);
+        $circles = Circle::doesntHave('teachers')->where('gender',$teacher->gender)->get();
+
+        $teacherCircles = $teacher ? $teacher->circles()->get() : collect();
+
+        // Merge teacher's circles into the circles collection
+        $circles = $circles->concat($teacherCircles)->unique('id')->values();
+
+
+        return responseJson($circles,'',200);
     }
 }

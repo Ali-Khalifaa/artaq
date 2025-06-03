@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\ChangeAdminRequest;
+use App\Http\Requests\Dashboard\ModifyCirclesRequest;
 use App\Http\Requests\Dashboard\TeacherRequest;
 use App\Http\Resources\Dashboard\TeacherResource;
 use App\Models\Teacher;
@@ -26,7 +28,7 @@ class TeacherController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $teacher = Teacher::with('country','nationality','admin')->searchAndFilter()->latest()->paginate(10);
+        $teacher = Teacher::with('country','nationality','admin','circles')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(TeacherResource::collection($teacher->items()),'',200,getPaginates($teacher));
     }
@@ -73,5 +75,27 @@ class TeacherController extends Controller implements HasMiddleware
         unlink_image_by_path($nationality->getAttributes()['image']);
         $nationality->delete();
         return responseJson([],'Deleted Successfully',200);
+    }
+
+    public function changeAdmin(ChangeAdminRequest $request, $id)
+    {
+        $data = $request->validated();
+        $teacher = Teacher::find($id);
+        $teacher->update($data);
+        return responseJson($teacher,'Updated Successfully',200);
+    }
+
+    public function modifyCircles(ModifyCirclesRequest $request, $id)
+    {
+        $teacher = Teacher::find($id);
+        if (!$teacher) {
+            return responseJson([],'Data not found',404);
+        }
+
+         $data = $request->validated();
+
+        $teacher->circles()->sync($data['circles']);
+
+        return responseJson([], 'Circles updated successfully', 200);
     }
 }

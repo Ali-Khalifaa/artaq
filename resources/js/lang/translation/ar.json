@@ -1054,7 +1054,11 @@
         "tracks":"المسارات",
         "selectTrack":"اختر المسار",
         "teachers":"المعلمين",
-        "id_number":"رقم الهوية"
+        "id_number":"رقم الهوية",
+        "add admin to teacher" : "تعديل المسؤل عن المعلم",
+        "selectAdmin":"اختر المسؤول",
+        "add circle to teacher" : "تعديل حلقات المعلم",
+        "selectCircles":"اختر الحلقات"
 
     },
     "role_and_permissions":{
@@ -1116,8 +1120,8 @@
         "teacher create" : "اضافة المعلمين",
         "teacher edit" : "تعديل المعلمين",
         "teacher delete" : "حذف المعلمين",
-        "add admin to teacher" : "اضافة مدير الى المعلم",
-        "add circle to teacher" : "اضافة حلقة الى المعلم",
+        "add admin to teacher" : "تعديل المسؤل عن المعلم",
+        "add circle to teacher" : "تعديل حلقات المعلم",
         "teacher send notification" : "ارسال اشعار الى المعلم",
 
         "Levels" : "المستويات",

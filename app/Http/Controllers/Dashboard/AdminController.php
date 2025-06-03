@@ -55,7 +55,7 @@ class AdminController extends Controller implements HasMiddleware
             $data['image'] = store_single_image($request->image);
         $data['password'] = bcrypt($request->password);
         $admin = Admin::create($data);
-        $admin->assignRole($request->input('role_name'));
+        $admin->assignRole((int) $request->input('role_name'));
         return responseJson([],'Created Successfully',200);
     }
 
@@ -102,5 +102,12 @@ class AdminController extends Controller implements HasMiddleware
         unlink_image_by_path($admin->getAttributes()['image']);
         $admin->delete();
         return responseJson([],'Deleted Successfully',200);
+    }
+
+    public function dropdown()
+    {
+        $admins = Admin::whereRelation('roles','name','!=','SuperAdmin')->get();
+
+        return responseJson($admins,'',200);
     }
 }
