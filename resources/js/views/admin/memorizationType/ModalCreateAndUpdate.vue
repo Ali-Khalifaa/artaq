@@ -11,6 +11,27 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ $t('global.selectTrack') }}</label>
+
+                            <Select v-model="data.track_id" :filterFields="['id','name']" :options="tracks" filter
+                                    :invalid="v$.track_id.$error || errors[`track_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.track_id.$error || errors[`track_id`], 'is-valid': !v$.track_id.$invalid && !errors[`track_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.track_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['track_id']">
+                                <error-message v-for="(errorMessage, index) in errors['track_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
                         <div class="col-md-6 ">
                             <label for="name" class="form-label">{{$t('label.title')}}</label>
                             <input type="text" class="form-control" id="name" :placeholder="$t('label.title')"
@@ -79,12 +100,30 @@ export default {
         let is_disabled = ref(false);
         const {t} = useI18n({});
         const id = ref(null);
+        let tracks = ref([]);
 
         onMounted(()=>{
         });
 
+         let getTracks = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/tracks-dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    tracks.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+
        function defaultData(){
            submitdata.data.name = '';
+           submitdata.data.track_id = '';
            is_disabled.value = false;
            loading.value = false;
            errors.value = [];
@@ -93,10 +132,12 @@ export default {
        function resetModal() {
             defaultData();
             setTimeout(async () => {
+                getTracks();
                 if (props.type != 'edit') {
                 } else {
                     id.value = props.dataRow.id;
                     submitdata.data.name = props.dataRow.name;
+                    submitdata.data.track_id = props.dataRow.track_id;
                 }
             }, 50);
         }
@@ -110,18 +151,20 @@ export default {
         let submitdata =  reactive({
             data:{
                 name: '',
+                track_id: '',
             }
         });
 
         const rules = computed(() => {
             return {
                 name: {required},
+                track_id: {required},
             }
         });
 
         const v$ = useVuelidate(rules,submitdata.data);
 
-        return {t,id,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors};
+        return {t,id,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors,tracks};
     },
     methods: {
         AddSubmit() {
@@ -131,6 +174,7 @@ export default {
 
         let formData = new FormData();
         formData.append('name', this.data.name);
+        formData.append('track_id', this.data.track_id);
         if (this.type !== 'edit') {
             if (!this.v$.$error) {
                 this.is_disabled = false;

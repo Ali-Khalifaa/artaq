@@ -11,7 +11,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 ">
                             <label for="name" class="form-label">{{$t('label.title')}}</label>
                             <input type="text" class="form-control" id="name" :placeholder="$t('label.title')"
                                 v-model.trim="v$.name.$model"
@@ -27,60 +27,41 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6">
-                            <label class="form-label">{{ $t('label.description') }}</label>
-                            <textarea
-                                class="form-control summernote"
-                                rows="6"
-                                v-model.trim="v$.description.$model"
-                                :class="{'is-invalid': v$.description.$error ||errors[`description`],
-                                'is-valid':!v$.description.$invalid && !errors[`description`]}">
-                            </textarea>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ $t('global.fromDate') }}</label>
+                            <input type="text" class="form-control" id="date" v-model="v$.from_date.$model"
+                                 :class="{
+                                    'is-invalid': v$.from_date.$error || errors[`from_date`],
+                                    'is-valid': !v$.from_date.$invalid && !errors[`from_date`]
+                                }">
+
                             <div class="invalid-feedback">
-                                <span v-if="v$.description.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
+                                <span v-if="v$.from_date.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+
                             </div>
-                            <template v-if="errors[`description`]">
-                                <error-message v-for="(errorMessage, index) in errors[`description`]" :key="index">
+                            <template v-if="errors[`from_date`]">
+                                <error-message v-for="(errorMessage, index) in errors[`from_date`]" :key="index">
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
                         </div>
 
+                         <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.toDate') }}</label>
+                            <input type="text" class="form-control" id="date" v-model="v$.to_date.$model"
+                                 :class="{
+                                    'is-invalid': v$.to_date.$error || errors[`to_date`],
+                                    'is-valid': !v$.to_date.$invalid && !errors[`to_date`]
+                                }">
 
-
-                        <div class="col-md-12 mt-3 row flex-fill">
-                            <div class="btn btn-outline-light waves-effect"  style="width: 90%; height:90%">
-
-                                <span v-if="type != 'edit' && !numberOfImage" style="width: 90%; height: 90%; margin-top: 30%">
-                                    {{$t('global.ChooseImages')}}
-                                    <br><i class="bi bi-cloud-upload fs-40" ></i>
-                                    <i class="fas fa-cloud-upload-alt ml-3" aria-hidden="true"></i>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.to_date.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
 
-                                <div id="container-images" v-show="image &&numberOfImage"></div>
-
-                                <div  v-if="type == 'edit'" v-show="!numberOfImage">
-                                    <figure>
-                                        <figcaption>
-                                            <img class="img-fluid rounded" style="max-width: 150px; height: 150px" :src="`${imageUpload}`">
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <input name="mediaPackage" type="file" @change="preview" id="mediaPackage" accept="image/*">
-
-                                <template v-if="errors['file']">
-                                    <error-message v-for="(errorMessage, index) in errors['file']" :key="index">
-                                        {{ errorMessage }}
-                                    </error-message>
-                                </template>
-                                    <template class="text-danger text-center" v-if="requiredn">
-                                        <error-message>{{$t('global.ImagesIsMustHaveAtLeast1Photos')}}<br /></error-message>
-                                    </template>
                             </div>
-                            <p class="num-of-files">{{numberOfImage ? numberOfImage + $t('global.FilesSelected') : $t('global.NoFilesChosen') }}</p>
-
-                            <template v-if="errors[`image`]">
-                                <error-message v-for="(errorMessage, index) in errors[`image`]" :key="index">
+                            <template v-if="errors[`to_date`]">
+                                <error-message v-for="(errorMessage, index) in errors[`to_date`]" :key="index">
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
@@ -113,7 +94,7 @@ import useVuelidate from "@vuelidate/core";
 import adminApi from "../../../api/adminAxios";
 
 export default {
-    name: "teacher-badges",
+    name: "CircleTypesModal",
     props: {
         type: {default: 'create'},
         dataRow: {default: ''},
@@ -134,24 +115,22 @@ export default {
             })
         }, 150);
         const errors = ref([]);
-
         let loading = ref(false);
         let is_disabled = ref(false);
         const {t} = useI18n({});
         const id = ref(null);
 
         onMounted(()=>{
+            flatpickr("#date", {});
         });
 
        function defaultData(){
            submitdata.data.name = '';
-           submitdata.data.description = '';
-           imageUpload.value = '';
+              submitdata.data.from_date = '';
+              submitdata.data.to_date = '';
            is_disabled.value = false;
            loading.value = false;
-           image.value=null
            errors.value = [];
-           empty();
         }
 
        function resetModal() {
@@ -160,9 +139,9 @@ export default {
                 if (props.type != 'edit') {
                 } else {
                     id.value = props.dataRow.id;
-                     submitdata.data.name = props.dataRow.name;
-                     submitdata.data.description = props.dataRow.description;
-                    imageUpload.value = props.dataRow.image;
+                    submitdata.data.name = props.dataRow.name;
+                    submitdata.data.from_date = props.dataRow.from_date;
+                    submitdata.data.to_date = props.dataRow.to_date;
                 }
             }, 50);
         }
@@ -176,77 +155,22 @@ export default {
         let submitdata =  reactive({
             data:{
                 name: '',
-                description: '',
-            }
-        });
-
-        const numberOfImage = ref(0);
-        const image = ref({});
-        const imageUpload = ref({});
-
-        let empty = () => {
-            numberOfImage.value = 0;
-            let clearInput = document.querySelector('#mediaPackage').value = '';
-            requiredn.value = false;
-        }
-
-        let preview = (e) => {
-
-            let containerImages = document.querySelector('#container-images');
-            containerImages.innerHTML = '';
-            image.value = {};
-
-            numberOfImage.value = e.target.files.length;
-
-            image.value = e.target.files[0];
-
-            let reader = new FileReader();
-            let figure = document.createElement('figure');
-            let figcap = document.createElement('figcaption');
-
-            figcap.innerText = image.value.name;
-            figure.appendChild(figcap);
-
-            reader.onload = () => {
-                let img = document.createElement('img');
-                img.setAttribute('src',reader.result);
-                img.classList.add('img-fluid', 'rounded');
-                img.style.maxWidth = '150px';
-                img.style.height = '150px';
-                figure.insertBefore(img,figcap);
-            }
-
-            containerImages.appendChild(figure);
-            reader.readAsDataURL(image.value);
-
-
-        }
-
-        // validation image
-        const requiredn = ref(false);
-
-        watch(numberOfImage, (count, prevCount) => {
-            if(!count){
-                requiredn.value = true;
-            }else {
-                requiredn.value = false;
+                from_date: '',
+                to_date: '',
             }
         });
 
         const rules = computed(() => {
             return {
                 name: {required},
-                description: {required},
+                from_date: {required},
+                to_date: {required},
             }
         });
 
         const v$ = useVuelidate(rules,submitdata.data);
 
-        return {t,id,
-            loading,is_disabled,
-            resetModal,empty,preview,resetModalHidden,
-            imageUpload,image,...toRefs(submitdata),
-            v$,numberOfImage,requiredn,errors};
+        return {t,id,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors};
     },
     methods: {
         AddSubmit() {
@@ -256,15 +180,13 @@ export default {
 
         let formData = new FormData();
         formData.append('name', this.data.name);
-        formData.append('description', this.data.description);
-        if (this.image) {
-            formData.append('image', this.image);
-        }
+        formData.append('from_date', this.data.from_date);
+        formData.append('to_date', this.data.to_date);
         if (this.type !== 'edit') {
-            if (!this.v$.$error && this.numberOfImage) {
+            if (!this.v$.$error) {
                 this.is_disabled = false;
                 this.loading = true;
-                adminApi.post(`dashboard/teacher-badges`, formData)
+                adminApi.post(`dashboard/official-holidays`, formData)
                     .then((res) => {
                         Swal.fire({
                             icon: 'success',
@@ -286,18 +208,12 @@ export default {
                             this.is_disabled = false;
                         }
                     });
-            } else {
-                if(!this.numberOfImage){
-                        this.loading = false;
-                        this.is_disabled = false;
-                        this.requiredn = true;
-                }
             }
         }else if(!this.v$.$error) {
             this.is_disabled = false;
             this.loading = true;
             formData.append('_method','PUT');
-            adminApi.post(`dashboard/teacher-badges/${this.id}`,formData)
+            adminApi.post(`dashboard/official-holidays/${this.id}`,formData)
                 .then((res) => {
                     Swal.fire({
                         icon: 'success',

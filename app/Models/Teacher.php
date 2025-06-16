@@ -33,6 +33,13 @@ class Teacher extends Authenticatable implements JWTSubject
         'image',
         'status',
         'password',
+        'birth_date',
+        'email',
+        'juz_count',
+        'experience_years',
+        'Quran_licenses',
+        'salary',
+        'cv',
     ];
 
     protected $table = "teachers";
@@ -56,6 +63,11 @@ class Teacher extends Authenticatable implements JWTSubject
     public function getImageAttribute($value){
         return $value ? asset('upload/general/'.$value):asset('images/user.png');
     }
+
+    public function getCvAttribute($value){
+        return $value ? asset('upload/general/'.$value):null;
+    }
+
 
      protected function password(): Attribute
     {

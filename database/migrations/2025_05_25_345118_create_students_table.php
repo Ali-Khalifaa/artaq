@@ -36,6 +36,11 @@ return new class extends Migration
             $table->string('password')->nullable()->comment('كلمة المرور');
             $table->string('image')->nullable();
             $table->boolean('status')->default(true);
+
+            $table->string('guardian')->nullable()->comment('اسم ولى الامر');
+            $table->string('id_number')->unique()->comment('رقم الهوية');
+            $table->integer('juz_count')->default(0)->comment('عدد الأجزاء التي حفظها الطالب');
+
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

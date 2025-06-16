@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <!-- Page Header -->
         <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-            <h1 class="page-title fw-semibold fs-18 mb-0">{{ $t('global.circles') }}</h1>
+            <h1 class="page-title fw-semibold fs-18 mb-0">{{ $t('global.officialHolidays') }}</h1>
             <div class="ms-md-1 ms-0">
                 <nav>
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><router-link :to="{name: 'dashboard'}">{{$t('global.home')}}</router-link></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ $t('global.circles') }}</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $t('global.officialHolidays') }}</li>
                     </ol>
                 </nav>
             </div>
@@ -22,7 +22,7 @@
                         <search-and-filters @search="(val) => search.searchKey = val" />
 
                         <div class="prism-toggle">
-                            <button v-if="permission.includes('circle create')" @click="showModelCreate" class="btn btn-sm btn-primary-light" data-bs-toggle="modal" data-bs-target="#category-service">
+                            <button v-if="permission.includes('circle type create')" @click="showModelCreate" class="btn btn-sm btn-primary-light" data-bs-toggle="modal" data-bs-target="#category-service">
                                 <i class="ri-add-line me-1 fw-semibold align-middle"></i>{{ $t('global.add') }}
                             </button>
                         </div>
@@ -34,12 +34,8 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">{{ $t('label.title') }}</th>
-                                    <th scope="col">{{ $t('global.circleType') }}</th>
-                                    <th scope="col">{{ $t('global.StudentType') }}</th>
-                                    <th scope="col">{{ $t('global.start_time') }}</th>
-                                    <th scope="col">{{ $t('global.end_time') }}</th>
-                                    <th scope="col">{{ $t('global.status') }}</th>
-                                    <th scope="col">{{ $t('global.created_at') }}</th>
+                                    <th scope="col">{{ $t('global.fromDate') }}</th>
+                                    <th scope="col">{{ $t('global.toDate') }}</th>
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
                                 </thead>
@@ -47,20 +43,11 @@
                                 <tr v-for="(item,index) in data" :key="item.id">
                                     <td scope="row">{{index + 1}}</td>
                                     <td>{{item.name}}</td>
-                                    <td>{{item.circle_type?.name}}</td>
-                                    <td>{{$t('global.'+item.gender)}}</td>
-                                    <td>{{item.start_time}}</td>
-                                    <td>{{item.end_time}}</td>
-                                    <td>
-                                            <span class="badge rounded-pill bg-success-transparent"
-                                                v-if="item.status">{{ $t('global.activated') }}</span>
-                                            <span class="badge rounded-pill bg-danger-transparent" v-else>{{
-                                                $t('global.Inactive') }}</span>
-                                        </td>
-                                    <td>{{item.created_at}}</td>
+                                    <td>{{item.from_date}}</td>
+                                    <td>{{item.to_date}}</td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
-                                            <button v-if="permission.includes('circle edit')"
+                                            <button v-if="permission.includes('circle type edit')"
                                                 @click.prevent="showEditMode(item)"
                                                 data-bs-toggle="modal" data-bs-target="#category-service"
                                                     class="btn btn-icon btn-sm btn-primary-transparent rounded-pill"
@@ -68,7 +55,7 @@
                                                 <i class="ri-edit-line"></i>
                                             </button>
 
-                                             <a href="#" @click.prevent="deleteData(item.id,index)" v-if="permission.includes('circle delete')"
+                                             <a href="#" @click.prevent="deleteData(item.id,index)" v-if="permission.includes('circle type delete')"
                                                class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i
                                                 class="ri-delete-bin-line"></i></a>
                                         </div>
@@ -77,7 +64,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="9">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="5">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -119,16 +106,16 @@ export default {
             searchInTranslations: false,
             columns: ['id','name'],
             searchInRelations: [
-                {
-                    relation: 'circleType',
-                    columns: ['name'],
-                    searchInRelationTranslations:false
-                }
+                // {
+                //     relation: 'country',
+                //     columns: ['name'],
+                //     searchInRelationTranslations:false
+                // }
             ]
         }
 
         onBeforeMount(() => {
-            uri.value = 'circles';
+            uri.value = 'official-holidays';
             getData();
         });
 

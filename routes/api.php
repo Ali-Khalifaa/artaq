@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\MemorizationAmountController;
 use App\Http\Controllers\Dashboard\PreservationMethodController;
 use App\Http\Controllers\Dashboard\NationalityController;
 use App\Http\Controllers\Dashboard\NotificationController;
+use App\Http\Controllers\Dashboard\OfficialHolidayController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\QuranController;
 use App\Http\Controllers\Dashboard\RoleController;
@@ -76,6 +77,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('memorization-types', PreservationMethodController::class);
 
         Route::apiResource('settings', SettingController::class);
+
+        Route::apiResource('official-holidays', OfficialHolidayController::class);
 
         Route::get('levels/dropdown',[LevelController::class,'dropdown']);
         Route::apiResource('levels', LevelController::class);

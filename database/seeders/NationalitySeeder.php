@@ -39,6 +39,7 @@ class NationalitySeeder extends Seeder
             ['name' => 'صومالي', 'created_at' => $now],
             ['name' => 'جيبوتي', 'created_at' => $now],
             ['name' => 'موريتاني', 'created_at' => $now],
+            ['name' => 'اخرى', 'created_at' => $now],
         ];
 
         DB::table('nationalities')->insert($nationalities);

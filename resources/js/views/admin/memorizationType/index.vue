@@ -34,6 +34,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">{{ $t('label.title') }}</th>
+                                    <th scope="col">{{ $t('global.track') }}</th>
                                     <th scope="col">{{ $t('global.created_at') }}</th>
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
@@ -42,6 +43,7 @@
                                 <tr v-for="(item,index) in data" :key="item.id">
                                     <td scope="row">{{index + 1}}</td>
                                     <td>{{item.name}}</td>
+                                    <td>{{item.track?.name}}</td>
                                     <td>{{item.created_at}}</td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
@@ -62,7 +64,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="4">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="5">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -104,11 +106,11 @@ export default {
             searchInTranslations: false,
             columns: ['id','name'],
             searchInRelations: [
-                // {
-                //     relation: 'country',
-                //     columns: ['name'],
-                //     searchInRelationTranslations:false
-                // }
+                {
+                    relation: 'track',
+                    columns: ['name'],
+                    searchInRelationTranslations:false
+                }
             ]
         }
 

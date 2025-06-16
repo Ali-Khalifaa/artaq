@@ -16,7 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('gender', ['male', 'female'])->nullable()->comment('جنس الطالب');
-            $table->foreignIdFor(CircleType::class)->nullable()->constrained()->nullOnDelete()->comment('نوع الحلقة');
+            $table->foreignIdFor(CircleType::class)->nullable()->comment('نوع الحلقة');
+            $table->time('start_time')->comment('وقت البداية');
+            $table->time('end_time')->comment('وقت النهاية');
+            $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

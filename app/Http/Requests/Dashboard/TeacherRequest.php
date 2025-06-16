@@ -36,6 +36,13 @@ class TeacherRequest extends FormRequest
             'status' => 'required|boolean',
             'password' => 'nullable|string|min:8',
             'confirmation' => 'nullable|same:password',
+            'birth_date' => 'nullable|date',
+            'email' => 'nullable|email|max:255|unique:teachers,email,' . $this->teacher,
+            'juz_count' => 'nullable|numeric|min:1',
+            'experience_years' => 'nullable|numeric|min:0',
+            'Quran_licenses' => 'nullable|numeric|min:0',
+            'salary' => 'nullable|numeric|min:0',
+            'cv' => 'nullable|file|mimes:pdf,jpeg,png,jpg,gif,svg',
 
         ];
     }

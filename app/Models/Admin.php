@@ -26,6 +26,16 @@ class Admin extends Authenticatable implements JWTSubject
         'phone',
         'status',
         'password',
+        'gender',
+        'id_number',
+        'nationality_id',
+        'country_id',
+        'city_id',
+        'birth_date',
+        'juz_count',
+        'experience_years',
+        'Quran_licenses',
+        'salary',
     ];
 
     protected $table = "admins";
@@ -56,5 +66,26 @@ class Admin extends Authenticatable implements JWTSubject
     {
         return 'App.Models.Admin.'.$this->id;
     }
+
+    public function nationality()
+    {
+        return $this->belongsTo(Nationality::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class, 'admin_id');
+    }
+
 
 }

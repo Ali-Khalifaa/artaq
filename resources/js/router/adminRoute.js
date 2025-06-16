@@ -28,6 +28,7 @@ import circles from "./adminRoute/circles.js";
 import quran from "./adminRoute/quran.js";
 import track from "./adminRoute/track.js";
 import teacher from "./adminRoute/teacher.js";
+import officialHoliday from "./adminRoute/officialHoliday.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -79,6 +80,7 @@ const routes = [
             ...quran,
             ...track,
             ...teacher,
+            ...officialHoliday,
         ]
     },
     {

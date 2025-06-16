@@ -103,9 +103,9 @@
                         </router-link>
                     </li>
 
-                    
 
-                   
+
+
                     <li class="slide" v-show="permission.includes('memorization amount read')">
                         <router-link :to="{name:'memorizationAmount'}" class="side-menu__item">
                             <i class="bx bx-book-bookmark side-menu__icon" aria-hidden="true"></i>
@@ -119,7 +119,7 @@
                         </router-link>
                     </li>
 
-                   
+
 
                     <li class="slide" v-show="permission.includes('level read')">
                         <router-link :to="{name:'level'}" class="side-menu__item">
@@ -166,7 +166,7 @@
                         </ul>
                     </li>
 
-                    
+
                     <!-- Start::areas -->
                     <li class="slide has-sub" v-show="permission.includes('country read') || permission.includes('city read')"
                         :class="[$route.name == 'country' || $route.name == 'city' ? 'active open': '']"
@@ -191,7 +191,7 @@
                         </ul>
                     </li>
                     <!-- End::areas -->
-                    
+
 
                     <li class="slide" v-show="permission.includes('nationality read')">
                         <router-link :to="{name:'nationality'}" class="side-menu__item">
@@ -218,6 +218,13 @@
                         <router-link :to="{name:'setting'}" class="side-menu__item">
                             <i class="bx bx-cog side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.theSettings')}}</span>
+                        </router-link>
+                    </li>
+
+                     <li class="slide" v-show="permission.includes('official holiday read')">
+                        <router-link :to="{name:'officialHoliday'}" class="side-menu__item">
+                            <i class="bx bx-calendar-event side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.officialHolidays')}}</span>
                         </router-link>
                     </li>
 

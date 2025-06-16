@@ -2,41 +2,40 @@
 
 namespace App\Http\Resources\Dashboard;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
-class TeacherResource extends JsonResource
+class ShowAdminResource extends JsonResource
 {
 
     public function toArray($request)
     {
+        $role = $this->roles()->first();
         return [
-            "id"  => $this->id,
-            "name"       => $this->name,
+            "id" => $this->id,
+            "name" => $this->name,
+            "email" => $this->email,
+            'status' => $this->status,
+            'phone' => $this->phone,
+            'image' => $this->image,
+            'role_name' => $role?->name ?? null,
             "id_number" => $this->id_number,
-            "phone" => $this->phone,
             "gender" => $this->gender,
-            "nationality_id" => $this->nationality_id,
-            "country_id" => $this->country_id,
-            "city_id" => $this->city_id,
-            "admin_id" => $this->admin_id,
-            "image" => $this->image,
-            "status" => $this->status,
-            "admin" => $this->whenLoaded('admin'),
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),
-            "circles_id" => $this->whenLoaded('circles', function () {
-                return $this->circles->pluck('id');
-            }),
             "juz_count" => $this->juz_count,
             "experience_years" => $this->experience_years,
             "Quran_licenses" => $this->Quran_licenses,
             "salary" => $this->salary,
-            "cv" => $this->cv,
             "birth_date" => $this->birth_date ? Carbon::parse($this->birth_date)->format('Y-m-d') : null,
             'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : null,
-            "email" => $this->email,
+            "teachers" => ShowTeacherResource::collection($this->whenLoaded('teachers')->load('city','country','nationality')),
+            "circles" => $this->whenLoaded('teachers', function () {
+                return $this->teachers->load('circles.teachers')->pluck('circles')->flatten()->unique('id')->values()->map(function ($circle) {
+                    return new CircleResource($circle);
+                });
+            }),
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d  (H:i)'),
         ];
     }

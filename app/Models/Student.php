@@ -27,6 +27,7 @@ class Student extends Authenticatable implements JWTSubject
         'level_id',
         'track_id',
         'phone',
+        'guardian',
         'guardian_phone',
         'preservation_method_id',
         'gender',
@@ -37,6 +38,8 @@ class Student extends Authenticatable implements JWTSubject
         'image',
         'status',
         'password',
+        'id_number',
+        'juz_count',
     ];
 
     protected $table = "students";

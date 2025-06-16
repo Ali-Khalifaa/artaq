@@ -26,7 +26,7 @@ class PreservationMethodController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $memorization = PreservationMethod::searchAndFilter()->latest()->paginate(10);
+        $memorization = PreservationMethod::with('track')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(PreservationMethodResource::collection($memorization->items()),'',200,getPaginates($memorization));
     }

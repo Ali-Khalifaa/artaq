@@ -42,11 +42,12 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">{{ $t('global.name') }}</th>
+                                        <th scope="col">{{ $t('global.Three-part name') }}</th>
                                         <th scope="col">{{ $t('global.nationality') }}</th>
                                         <th scope="col">{{ $t('global.country') }}</th>
                                         <th scope="col">{{ $t('global.admin') }}</th>
                                         <th scope="col">{{ $t('global.status') }}</th>
+                                        <th scope="col">{{ $t('global.created_at') }}</th>
                                         <th scope="col">{{ $t('global.action') }}</th>
                                     </tr>
                                 </thead>
@@ -80,6 +81,7 @@
                                             <span class="badge rounded-pill bg-danger-transparent" v-else>{{
                                                 $t('global.Inactive') }}</span>
                                         </td>
+                                        <td>{{item.created_at}}</td>
                                         <td>
                                             <div class="hstack gap-2 fs-15">
                                                 <a @click="selectedUser = item" data-bs-toggle="modal"
@@ -113,6 +115,13 @@
                                                     <i class="ri-edit-line"></i>
                                                 </button>
 
+                                                 <button @click.prevent="showDataModel(item)"
+                                                        data-bs-toggle="modal" data-bs-target="#show"
+                                                        class="btn btn-icon btn-sm btn-success-transparent rounded-pill"
+                                                        :title="$t('global.show')">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -141,6 +150,7 @@
         <addAdmin v-model="showAddAdmin" :dataRow="dataRow" @created="getData(pagePaginate)" />
         <ModalCreateAndUpdate v-model="modalShow" :type="type" :dataRow="dataRow" @created="getData(pagePaginate)" />
         <SendNotification :selectedUser="selectedUser" :type="'App\\Models\\Teacher'" />
+        <Show v-model="showData" :dataRow="dataRow" type="order" @created="getData(pagePaginate)" />
     </div>
 </template>
 
@@ -151,10 +161,11 @@ import ModalCreateAndUpdate from "./ModalCreateAndUpdate.vue"
 import addAdmin from "./addAdmin.vue"
 import addCircle from "./addCircle.vue"
 import SendNotification from "../../../components/general/SendNotification.vue"
+import Show from "./Show.vue";
 export default {
     name: "index",
     components: {
-        ModalCreateAndUpdate, SendNotification ,addAdmin,addCircle
+        ModalCreateAndUpdate, SendNotification ,addAdmin,addCircle,Show
     },
     setup() {
         const emitter = inject('emitter');
@@ -162,12 +173,12 @@ export default {
         let showAddAdmin = ref(false);
         let showAddCircle = ref(false);
 
-        const { getData, loading, data, dataPaginate, permission, uri, showModelCreate, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate} = crud();
+        const { getData, loading, data, dataPaginate, permission, uri, showModelCreate,showDataModel,showData, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate} = crud();
 
         search.value = {
             searchKey: '',
             searchInTranslations: false,
-            columns: ['id', 'name', 'phone','gender'],
+            columns: ['id', 'name', 'phone','gender','email'],
             searchInRelations: [
 
                 {
@@ -212,7 +223,7 @@ export default {
         }
 
 
-        return { getData, loading, search, permission, deleteData, showEditMode,showAdminMode,showAddAdmin,showAddCircle,showAddCircleMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate};
+        return { getData, loading, search, permission, deleteData, showEditMode,showAdminMode,showAddAdmin,showAddCircle,showAddCircleMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow,showDataModel,showData, reasonShow, selectedUser ,pagePaginate};
 
     }
 }

@@ -54,88 +54,174 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.fromSurah') }}</label>
-
-                            <Select v-model="data.from_surah_id" :filterFields="['id','normalized_name']" @change="getFromAyah" :options="surahs" filter
-                                    :invalid="v$.from_surah_id.$error || errors[`from_surah_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.from_surah_id.$error || errors[`from_surah_id`], 'is-valid': !v$.from_surah_id.$invalid && !errors[`from_surah_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.from_surah_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
+                        <div class="col-md-12 border border-info pb-3 mt-3 rounded">
+                            <div class="card p-2 bg-light border border-info text-center align-items-center mx-3 mt-3">
+                                <h5 class="card-title p-0 m-0">{{ $t("global.Preservation") }}</h5>
                             </div>
-                            <template v-if="errors['from_surah_id']">
-                                <error-message v-for="(errorMessage, index) in errors['from_surah_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
+                            <div class="row px-3 ">
+                                 <div class="col-md-6">
+                                    <label class="form-label">{{ $t('global.fromSurah') }}</label>
+
+                                    <Select v-model="data.from_surah_id" :filterFields="['id','normalized_name']" @change="getFromAyah" :options="surahs" filter
+                                            :invalid="v$.from_surah_id.$error || errors[`from_surah_id`]"
+                                                optionLabel="name" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.from_surah_id.$error || errors[`from_surah_id`], 'is-valid': !v$.from_surah_id.$invalid && !errors[`from_surah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                        <span v-if="v$.from_surah_id.required.$invalid">{{
+                                                $t('global.ThisFieldIsRequired') }}<br />
+                                        </span>
+                                    </div>
+                                    <template v-if="errors['from_surah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['from_surah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ $t('global.toSurah') }}</label>
+
+                                    <Select v-model="data.to_surah_id" :filterFields="['id','normalized_name']" @change="getToAyah" :options="surahs" filter
+                                            :invalid="v$.to_surah_id.$error || errors[`to_surah_id`]"
+                                                optionLabel="name" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.to_surah_id.$error || errors[`to_surah_id`], 'is-valid': !v$.to_surah_id.$invalid && !errors[`to_surah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                        <span v-if="v$.to_surah_id.required.$invalid">{{
+                                                $t('global.ThisFieldIsRequired') }}<br />
+                                        </span>
+                                    </div>
+                                    <template v-if="errors['to_surah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['to_surah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label class="form-label">{{ $t('global.fromAyah') }}</label>
+
+                                    <Select v-model="data.from_ayah_id" :filterFields="['id','text','text_normalized','number_in_surah']" :options="fromAyah" filter
+                                            :invalid="v$.from_ayah_id.$error || errors[`from_ayah_id`]"
+                                                optionLabel="text" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.from_ayah_id.$error || errors[`from_ayah_id`], 'is-valid': !v$.from_ayah_id.$invalid && !errors[`from_ayah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                        <span v-if="v$.from_ayah_id.required.$invalid">{{
+                                                $t('global.ThisFieldIsRequired') }}<br />
+                                        </span>
+                                    </div>
+                                    <template v-if="errors['from_ayah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['from_ayah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label class="form-label">{{ $t('global.toAyah') }}</label>
+
+                                    <Select v-model="data.to_ayah_id" :filterFields="['id','text','text_normalized','number_in_surah']" :options="toAyah" filter
+                                            :invalid="v$.to_ayah_id.$error || errors[`to_ayah_id`]"
+                                                optionLabel="text" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.to_ayah_id.$error || errors[`to_ayah_id`], 'is-valid': !v$.to_ayah_id.$invalid && !errors[`to_ayah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                        <span v-if="v$.to_ayah_id.required.$invalid">{{
+                                                $t('global.ThisFieldIsRequired') }}<br />
+                                        </span>
+                                    </div>
+                                    <template v-if="errors['to_ayah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['to_ayah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.toSurah') }}</label>
-
-                            <Select v-model="data.to_surah_id" :filterFields="['id','normalized_name']" @change="getToAyah" :options="surahs" filter
-                                    :invalid="v$.to_surah_id.$error || errors[`to_surah_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.to_surah_id.$error || errors[`to_surah_id`], 'is-valid': !v$.to_surah_id.$invalid && !errors[`to_surah_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.to_surah_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
+                         <div class="col-md-12 border border-info pb-3 mt-3 rounded">
+                            <div class="card p-2 bg-light border border-info text-center align-items-center mx-3 mt-3">
+                                <h5 class="card-title p-0 m-0">{{ $t("global.review") }}</h5>
                             </div>
-                            <template v-if="errors['to_surah_id']">
-                                <error-message v-for="(errorMessage, index) in errors['to_surah_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
+                            <div class="row px-3 ">
+                                 <div class="col-md-6">
+                                    <label class="form-label">{{ $t('global.fromSurah') }}</label>
 
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.fromAyah') }}</label>
+                                    <Select v-model="data.review_from_surah_id" :filterFields="['id','normalized_name']" @change="getReviewFromAyah" :options="surahs" filter
+                                            :invalid="v$.review_from_surah_id.$error || errors[`review_from_surah_id`]"
+                                                optionLabel="name" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.review_from_surah_id.$error || errors[`review_from_surah_id`], 'is-valid': !v$.review_from_surah_id.$invalid && !errors[`review_from_surah_id`] }]">
 
-                            <Select v-model="data.from_ayah_id" :filterFields="['id','text','text_normalized','number_in_surah']" :options="fromAyah" filter
-                                    :invalid="v$.from_ayah_id.$error || errors[`from_ayah_id`]"
-                                        optionLabel="text" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.from_ayah_id.$error || errors[`from_ayah_id`], 'is-valid': !v$.from_ayah_id.$invalid && !errors[`from_ayah_id`] }]">
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                    <template v-if="errors['review_from_surah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['review_from_surah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
 
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.from_ayah_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ $t('global.toSurah') }}</label>
+
+                                    <Select v-model="data.review_to_surah_id" :filterFields="['id','normalized_name']" @change="getReviewToAyah" :options="surahs" filter
+                                            :invalid="v$.review_to_surah_id.$error || errors[`review_to_surah_id`]"
+                                                optionLabel="name" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.review_to_surah_id.$error || errors[`review_to_surah_id`], 'is-valid': !v$.review_to_surah_id.$invalid && !errors[`review_to_surah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                    <template v-if="errors['review_to_surah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['review_to_surah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label class="form-label">{{ $t('global.fromAyah') }}</label>
+
+                                    <Select v-model="data.review_from_ayah_id" :filterFields="['id','text','text_normalized','number_in_surah']" :options="reviewFromAyah" filter
+                                            :invalid="v$.review_from_ayah_id.$error || errors[`review_from_ayah_id`]"
+                                                optionLabel="text" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.review_from_ayah_id.$error || errors[`review_from_ayah_id`], 'is-valid': !v$.review_from_ayah_id.$invalid && !errors[`review_from_ayah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                    <template v-if="errors['review_from_ayah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['review_from_ayah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label class="form-label">{{ $t('global.toAyah') }}</label>
+
+                                    <Select v-model="data.review_to_ayah_id" :filterFields="['id','text','text_normalized','number_in_surah']" :options="reviewToAyah" filter
+                                            :invalid="v$.review_to_ayah_id.$error || errors[`review_to_ayah_id`]"
+                                                optionLabel="text" optionValue="id"
+                                            :class="['w-full w-100', { 'is-invalid': v$.review_to_ayah_id.$error || errors[`review_to_ayah_id`], 'is-valid': !v$.review_to_ayah_id.$invalid && !errors[`review_to_ayah_id`] }]">
+
+                                    </Select>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                    <template v-if="errors['review_to_ayah_id']">
+                                        <error-message v-for="(errorMessage, index) in errors['review_to_ayah_id']" :key="index">
+                                            {{ errorMessage }}
+                                        </error-message>
+                                    </template>
+                                </div>
                             </div>
-                            <template v-if="errors['from_ayah_id']">
-                                <error-message v-for="(errorMessage, index) in errors['from_ayah_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.toAyah') }}</label>
-
-                            <Select v-model="data.to_ayah_id" :filterFields="['id','text','text_normalized','number_in_surah']" :options="toAyah" filter
-                                    :invalid="v$.to_ayah_id.$error || errors[`to_ayah_id`]"
-                                        optionLabel="text" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.to_ayah_id.$error || errors[`to_ayah_id`], 'is-valid': !v$.to_ayah_id.$invalid && !errors[`to_ayah_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.to_ayah_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['to_ayah_id']">
-                                <error-message v-for="(errorMessage, index) in errors['to_ayah_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
                         </div>
 
                     </div>
@@ -195,6 +281,8 @@ export default {
         let surahs = ref([]);
         let fromAyah = ref([]);
         let toAyah = ref([]);
+        let reviewFromAyah = ref([]);
+        let reviewToAyah = ref([]);
 
         onMounted(()=>{
         });
@@ -299,6 +387,56 @@ export default {
                 })
         }
 
+        let getReviewFromAyah = () => {
+            loading.value = true;
+            reviewFromAyah.value = [];
+            submitdata.data.review_from_ayah_id = '';
+
+            adminApi.get(`dashboard/ayahs-by-surah/${submitdata.data.review_from_surah_id}`)
+                .then((res) => {
+                    let l = res.data.data;
+                    reviewFromAyah.value = l;
+                    reviewFromAyah.value.forEach((ayah) => {
+                        if (ayah.text_normalized.length > 100) {
+                            ayah.text = ' ('+makeNumberArabic(ayah.number_in_surah)+') '+ayah.text.substring(0, 100) + '...';
+                        }else{
+                            ayah.text = ' ('+makeNumberArabic(ayah.number_in_surah)+') '+ayah.text;
+                        }
+                    });
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+
+        let getReviewToAyah = () => {
+            loading.value = true;
+            reviewToAyah.value = [];
+            submitdata.data.review_to_ayah_id = '';
+
+            adminApi.get(`dashboard/ayahs-by-surah/${submitdata.data.review_to_surah_id}`)
+                .then((res) => {
+                    let l = res.data.data;
+                    reviewToAyah.value = l;
+                    reviewToAyah.value.forEach((ayah) => {
+                        if (ayah.text_normalized.length > 100) {
+                            ayah.text = ' ('+makeNumberArabic(ayah.number_in_surah)+') '+ayah.text.substring(0, 100) + '...';
+                        }else{
+                            ayah.text = ' ('+makeNumberArabic(ayah.number_in_surah)+') '+ayah.text;
+                        }
+                    });
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+
         let makeNumberArabic = (num) => {
             if (typeof num !== 'number') {
                 return num; // Return as is if not a number
@@ -313,6 +451,10 @@ export default {
             submitdata.data.to_surah_id = '';
             submitdata.data.from_ayah_id = '';
             submitdata.data.to_ayah_id = '';
+            submitdata.data.review_from_surah_id = '';
+            submitdata.data.review_to_surah_id = '';
+            submitdata.data.review_from_ayah_id = '';
+            submitdata.data.review_to_ayah_id = '';
            is_disabled.value = false;
            loading.value = false;
            errors.value = [];
@@ -329,12 +471,18 @@ export default {
                     submitdata.data.preservation_method_id = props.dataRow.preservation_method_id;
                     submitdata.data.from_surah_id = props.dataRow.from_surah_id;
                     submitdata.data.to_surah_id = props.dataRow.to_surah_id;
+                    submitdata.data.review_from_surah_id = props.dataRow.review_from_surah_id;
+                    submitdata.data.review_to_surah_id = props.dataRow.review_to_surah_id;
                     getLevels();
                     submitdata.data.level_id = props.dataRow.level_id;
                     getFromAyah();
                     submitdata.data.from_ayah_id = props.dataRow.from_ayah_id;
                     getToAyah();
                     submitdata.data.to_ayah_id = props.dataRow.to_ayah_id;
+                    getReviewFromAyah();
+                    submitdata.data.review_from_ayah_id = props.dataRow.review_from_ayah_id;
+                    getReviewToAyah();
+                    submitdata.data.review_to_ayah_id = props.dataRow.review_to_ayah_id;
                 }
             }, 50);
         }
@@ -353,6 +501,10 @@ export default {
                 to_surah_id: '',
                 from_ayah_id: '',
                 to_ayah_id: '',
+                review_from_surah_id: '',
+                review_to_surah_id: '',
+                review_from_ayah_id: '',
+                review_to_ayah_id: '',
             }
         });
 
@@ -364,13 +516,17 @@ export default {
                 to_surah_id: {required},
                 from_ayah_id: {required},
                 to_ayah_id: {required},
+                review_from_surah_id: {},
+                review_to_surah_id: {},
+                review_from_ayah_id: {},
+                review_to_ayah_id: {},
             }
         });
 
         const v$ = useVuelidate(rules,submitdata.data);
 
         return {t,id,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors,types,levels,getLevels,surahs,
-            fromAyah,toAyah,getFromAyah,getToAyah};
+            fromAyah,toAyah,getFromAyah,getToAyah,reviewToAyah,reviewFromAyah,getReviewFromAyah,getReviewToAyah};
     },
     methods: {
         AddSubmit() {
@@ -384,6 +540,10 @@ export default {
         formData.append('to_surah_id', this.data.to_surah_id);
         formData.append('from_ayah_id', this.data.from_ayah_id);
         formData.append('to_ayah_id', this.data.to_ayah_id);
+        formData.append('review_from_surah_id', this.data.review_from_surah_id ?? '');
+        formData.append('review_to_surah_id', this.data.review_to_surah_id ?? '');
+        formData.append('review_from_ayah_id', this.data.review_from_ayah_id ?? '');
+        formData.append('review_to_ayah_id', this.data.review_to_ayah_id ?? '');
         if (this.type !== 'edit') {
             if (!this.v$.$error) {
                 this.is_disabled = false;

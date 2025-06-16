@@ -4,7 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PreservationMethodRequest extends FormRequest
+class OfficialHolidayRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class PreservationMethodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string",
-            'track_id' => "required|exists:tracks,id",
+            'name' => "required|string|max:255",
+            'from_date' => "required",
+            'to_date' => "required|after_or_equal:from_date",
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AdminRequest;
 use App\Http\Requests\Dashboard\EmployeeRequest;
 use App\Http\Resources\Dashboard\AdminResource;
+use App\Http\Resources\Dashboard\ShowAdminResource;
 use App\Models\Admin;
 use App\Models\Income;
 use App\Models\Job;
@@ -37,10 +38,22 @@ class AdminController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $admins = Admin::whereRelation('roles','name','!=','SuperAdmin')->searchAndFilter()->latest()->paginate(15);
+        $admins = Admin::whereRelation('roles','name','!=','SuperAdmin')->with('country','nationality')->searchAndFilter()->latest()->paginate(15);
 
         return responseJson(AdminResource::collection($admins->items()),'',200,getPaginates($admins));
     }
+
+    public function show($id)
+    {
+        $admin = Admin::with('country','nationality','city','teachers')->find($id);
+
+        if (!$admin) {
+            return responseJson([], 'Data not found', 404);
+        }
+
+        return responseJson(new ShowAdminResource($admin), 'Data exited successfully', 200);
+    }
+
 
     /**
      * Store a newly created resource in storage.

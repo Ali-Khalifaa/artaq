@@ -19,7 +19,7 @@ class LevelTask extends Model
     {
         return $this->belongsTo(Level::class, 'level_id');
     }
-    
+
     public function fromSurah()
     {
         return $this->belongsTo(Surah::class, 'from_surah_id');
@@ -38,6 +38,26 @@ class LevelTask extends Model
     public function toAyah()
     {
         return $this->belongsTo(Ayah::class, 'to_ayah_id');
+    }
+
+    public function reviewFromSurah()
+    {
+        return $this->belongsTo(Surah::class, 'review_from_surah_id');
+    }
+    
+    public function reviewToSurah()
+    {
+        return $this->belongsTo(Surah::class, 'review_to_surah_id');
+    }
+
+    public function reviewFromAyah()
+    {
+        return $this->belongsTo(Ayah::class, 'review_from_ayah_id');
+    }
+
+    public function reviewToAyah()
+    {
+        return $this->belongsTo(Ayah::class, 'review_to_ayah_id');
     }
 
 }

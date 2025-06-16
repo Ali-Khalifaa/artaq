@@ -32,6 +32,16 @@ class AdminRequest extends FormRequest
             'role_name' => 'required',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5048',
             "status"            =>  "required|boolean",
+            'id_number' => 'nullable|string|max:20|unique:admins,id_number'.($this->method() == 'PUT' ? ',' . $this->admin->id : '') ,
+            'gender' => 'required',
+            'nationality_id' => 'required|exists:nationalities,id',
+            'country_id' => 'required|exists:countries,id',
+            'city_id' => 'required|exists:cities,id',
+            'birth_date' => 'nullable|date',
+            'juz_count' => 'nullable|numeric|min:1',
+            'experience_years' => 'nullable|numeric|min:0',
+            'Quran_licenses' => 'nullable|numeric|min:0',
+            'salary' => 'nullable|numeric|min:0',
         ];
 
         if($this->method() == 'PUT'){

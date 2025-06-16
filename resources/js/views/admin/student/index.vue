@@ -42,11 +42,12 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">{{ $t('global.name') }}</th>
+                                        <th scope="col">{{ $t('global.Three-part name') }}</th>
                                         <th scope="col">{{ $t('global.nationality') }}</th>
                                         <th scope="col">{{ $t('global.country') }}</th>
                                         <th scope="col">{{ $t('global.level') }}</th>
                                         <th scope="col">{{ $t('global.status') }}</th>
+                                        <th scope="col">{{ $t('global.created_at') }}</th>
                                         <th scope="col">{{ $t('global.action') }}</th>
                                     </tr>
                                 </thead>
@@ -80,6 +81,7 @@
                                             <span class="badge rounded-pill bg-danger-transparent" v-else>{{
                                                 $t('global.Inactive') }}</span>
                                         </td>
+                                        <td>{{item.created_at}}</td>
                                         <td>
                                             <div class="hstack gap-2 fs-15">
                                                 <a @click="selectedUser = item" data-bs-toggle="modal"

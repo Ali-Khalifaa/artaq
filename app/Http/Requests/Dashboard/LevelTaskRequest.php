@@ -29,6 +29,11 @@ class LevelTaskRequest extends FormRequest
             'to_surah_id' => "required|exists:surahs,id",
             'from_ayah_id' => "required|exists:ayahs,id",
             'to_ayah_id' => "required|exists:ayahs,id",
+            
+            'review_from_surah_id' => "nullable|exists:surahs,id",
+            'review_to_surah_id' => "nullable|exists:surahs,id",
+            'review_from_ayah_id' => "nullable|exists:ayahs,id",
+            'review_to_ayah_id' => "nullable|exists:ayahs,id",
         ];
     }
 }

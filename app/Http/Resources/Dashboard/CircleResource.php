@@ -15,7 +15,13 @@ class CircleResource extends JsonResource
             "name"       => $this->name,
             "circle_type_id" => $this->circle_type_id,
             "circle_type" => new CircleTypeResource($this->whenLoaded('circleType')),
+            "teacher_name" => $this->whenLoaded('teachers', function () {
+                return $this->teachers()->first() ? $this->teachers()->first()->name : null;
+            }),
             "gender" => $this->gender,
+            "end_time" => $this->end_time,
+            "start_time" => $this->start_time,
+            "status" => $this->status,
             "duration" => $this->circleDurations->map(function ($duration) {
                 return [
                     'day' => $duration->day,

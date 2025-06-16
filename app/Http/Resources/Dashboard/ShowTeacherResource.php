@@ -5,7 +5,7 @@ namespace App\Http\Resources\Dashboard;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TeacherResource extends JsonResource
+class ShowTeacherResource extends JsonResource
 {
 
     public function toArray($request)
@@ -26,9 +26,9 @@ class TeacherResource extends JsonResource
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),
-            "circles_id" => $this->whenLoaded('circles', function () {
-                return $this->circles->pluck('id');
-            }),
+            "circles" => CircleResource::collection(
+                $this->whenLoaded('circles')->load('circleType')
+            ),
             "juz_count" => $this->juz_count,
             "experience_years" => $this->experience_years,
             "Quran_licenses" => $this->Quran_licenses,

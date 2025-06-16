@@ -6,8 +6,8 @@
                 <div class="p-5">
                     <div class="mb-3">
                         <a href="#">
-                            <img src="/assets/images/brand-logos/desktop-logo.png" alt="" class="authentication-brand desktop-logo">
-                            <img src="/assets/images/brand-logos/desktop-dark.png" alt="" class="authentication-brand desktop-dark">
+                            <img src="/assets/images/brand-logos/desktop-logo.png" alt="" class="authentication-brand desktop-logo" style="width: 100px; height: 100px;">
+                            <img src="/assets/images/brand-logos/desktop-dark.png" alt="" class="authentication-brand desktop-dark" style="width: 100px; height: 100px;">
                         </a>
                     </div>
                     <form @submit.prevent="adminLogin(loginData.data)">

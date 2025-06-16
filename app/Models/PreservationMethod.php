@@ -20,4 +20,9 @@ class PreservationMethod extends Model
         return $this->hasMany(Student::class, 'preservation_method_id');
     }
 
+    public function track()
+    {
+        return $this->belongsTo(Track::class, 'track_id');
+    }
+
 }
