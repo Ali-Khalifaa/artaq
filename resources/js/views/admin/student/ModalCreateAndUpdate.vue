@@ -714,6 +714,8 @@ export default {
 
                     getLevels();
                     submitdata.data.level_id = props.dataRow.level_id;
+
+                    levelDetail();
                 }
             }, 50);
         }
