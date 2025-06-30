@@ -121,6 +121,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'join us read',  'category' => 'Join Us'],
             ['name' => 'join us edit',  'category' => 'Join Us'],
 
+            ['name' => 'serial read',  'category' => 'Serials'],
+            ['name' => 'serial edit',  'category' => 'Serials'],
+
             ['name' => 'setting read',  'category' => 'Settings'],
             ['name' => 'setting edit',  'category' => 'Settings'],
 

@@ -38,7 +38,7 @@ class AdminRequest extends FormRequest
             'country_id' => 'required|exists:countries,id',
             'city_id' => 'required|exists:cities,id',
             'birth_date' => 'nullable|date',
-            'juz_count' => 'nullable|numeric|min:1',
+            'juz_count' => 'nullable|numeric|min:1|max:30',
             'experience_years' => 'nullable|numeric|min:0',
             'Quran_licenses' => 'nullable|numeric|min:0',
             'salary' => 'nullable|numeric|min:0',

@@ -329,6 +329,7 @@
         "birthday": "تاريخ الميلاد",
         "drivers": "السائقين",
         "pages": "الصفحات",
+        "page_num":"رقم الصفحة",
         "vouchers" : "قسائم الشراء",
         "coupons" : "الكوبونات",
         "carBrands": "ماركات السيارات",
@@ -1046,7 +1047,7 @@
         "Medinan":"مدنية",
         "verse_count":"عدد الآيات",
         "verse":"الآية",
-        "levelTask":"المنهج",
+        "levelTask":"الدروس",
         "fromSurah":"من السورة",
         "toSurah":"الى السورة",
         "fromAyah":"من الآية",
@@ -1059,7 +1060,7 @@
         "selectAdmin":"اختر المسؤول",
         "add circle to teacher" : "تعديل حلقات المعلم",
         "selectCircles":"اختر الحلقات",
-        "Three-part name":"الاسم الثلاثي",
+        "Three-part name":"الاسم الرباعي",
         "juz_count":"عدد الأجزاء المحفوظة",
         "experience_years":"سنوات الخبرة",
         "Quran_licenses":"عدد الإجازات القرآنية",
@@ -1080,7 +1081,12 @@
         "Admin data":"بيانات المشرف",
         "studentCount":"عدد الطلاب",
         "teachersCircles": "حلقات المعلمين",
-        "teacher":"المعلم"
+        "teacher":"المعلم",
+        "circleName":"اسم الحلقة",
+        "Ayah":"آية",
+        "Juz":"الجزء",
+        "Ayah_number":"رقم الآية",
+        "Activate the account":"تفعيل الحساب"
 
     },
     "role_and_permissions":{
@@ -1164,6 +1170,10 @@
         "track edit" : "تعديل المسارات",
         "track delete" : "حذف المسارات",
 
+        "Serials" : "الارقام التسلسلية",
+        "serial read" : "عرض الارقام التسلسلية",
+        "serial edit" : "تعديل الارقام التسلسلية",
+
         "Badges" : "الشارات",
         "digital badge read" : "عرض الشارات الرقمية للطلاب",
         "digital badge create" : "اضافة الشارات الرقمية للطلاب",
@@ -1174,11 +1184,11 @@
         "teacher badge edit" : "تعديل الشارات الرقمية للمعلمين",
         "teacher badge delete" : "حذف الشارات الرقمية للمعلمين",
 
-        "Level Tasks" : "المنهج",
-        "level task read" : "عرض المنهج",
-        "level task create" : "اضافة المنهج",
-        "level task edit" : "تعديل المنهج",
-        "level task delete" : "حذف المنهج",
+        "Level Tasks" : "الدروس",
+        "level task read" : "عرض الدروس",
+        "level task create" : "اضافة الدروس",
+        "level task edit" : "تعديل الدروس",
+        "level task delete" : "حذف الدروس",
 
         "Settings" : "الاعدادات",
         "setting read" : "عرض الاعدادات",

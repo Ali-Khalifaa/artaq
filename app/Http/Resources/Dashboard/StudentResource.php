@@ -13,6 +13,7 @@ class StudentResource extends JsonResource
         return [
             "id"  => $this->id,
             "name"       => $this->name,
+            "code"       => $this->code,
             "birth_date" => $this->birth_date ? Carbon::parse($this->birth_date)->format('Y-m-d') : null,
             'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : null,
             "level_id" => $this->level_id,

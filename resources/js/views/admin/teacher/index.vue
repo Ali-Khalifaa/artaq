@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Page Header -->
         <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-            <h1 class="page-title fw-semibold fs-18 mb-0">{{ $t('global.students') }}</h1>
+            <h1 class="page-title fw-semibold fs-18 mb-0">{{ $t('global.teachers') }}</h1>
             <div class="ms-md-1 ms-0">
                 <nav>
                     <ol class="breadcrumb mb-0">
@@ -46,14 +46,14 @@
                                         <th scope="col">{{ $t('global.nationality') }}</th>
                                         <th scope="col">{{ $t('global.country') }}</th>
                                         <th scope="col">{{ $t('global.admin') }}</th>
-                                        <th scope="col">{{ $t('global.status') }}</th>
+                                        <th scope="col">{{ $t('global.Activate the account') }}</th>
                                         <th scope="col">{{ $t('global.created_at') }}</th>
                                         <th scope="col">{{ $t('global.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="data && data.length">
                                     <tr v-for="(item, index) in data" :key="item.id">
-                                        <td scope="row">{{ index + 1 }}</td>
+                                        <td scope="row">{{ item.code }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div>
@@ -178,7 +178,7 @@ export default {
         search.value = {
             searchKey: '',
             searchInTranslations: false,
-            columns: ['id', 'name', 'phone','gender','email'],
+            columns: ['id', 'name', 'phone','gender','email','code'],
             searchInRelations: [
 
                 {

@@ -19,7 +19,7 @@ class LevelTaskResource extends JsonResource
             "to_surah_id" => $this->to_surah_id,
             "from_ayah_id" => $this->from_ayah_id,
             "to_ayah_id" => $this->to_ayah_id,
-            "level" => new LevelResource($this->whenLoaded('level')),
+            "level" => new LevelResource($this->whenLoaded('level')->load('preservationMethod')),
             "from_surah" => $this->whenLoaded('fromSurah'),
             "to_surah" => $this->whenLoaded('toSurah'),
             "from_ayah" => $this->whenLoaded('fromAyah'),
@@ -33,7 +33,7 @@ class LevelTaskResource extends JsonResource
             "review_to_surah" => $this->whenLoaded('reviewToSurah'),
             "review_from_ayah" => $this->whenLoaded('reviewFromAyah'),
             "review_to_ayah" => $this->whenLoaded('reviewToAyah'),
-            
+
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d  (H:i)'),
         ];
     }

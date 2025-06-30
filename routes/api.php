@@ -28,6 +28,7 @@ use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\TeacherBadgeController;
 use App\Http\Controllers\Dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TrackController;
+use App\Http\Controllers\Dashboard\SerialController;
 use App\Http\Controllers\Web\WebPagesController;
 use App\Http\Middleware\ChangeLang;
 use Illuminate\Http\Request;
@@ -100,6 +101,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         Route::get('tracks-dropdown',[TrackController::class,'dropdown']);
         Route::apiResource('tracks', TrackController::class);
+
+        // Serial
+        Route::get('serial/enums',[SerialController::class,'enums']);
+        Route::apiResource('serial', SerialController::class);
 
         Route::apiResource('circles', CircleController::class);
         Route::get('circles-dropdown',[CircleController::class,'dropdown']);

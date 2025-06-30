@@ -12,8 +12,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 ">
-                            <label for="name" class="form-label">{{$t('label.title')}}</label>
-                            <input type="text" class="form-control" id="name" :placeholder="$t('label.title')"
+                            <label for="name" class="form-label">{{$t('global.circleName')}}</label>
+                            <input type="text" class="form-control" id="name" :placeholder="$t('global.circleName')"
                                 v-model.trim="v$.name.$model"
                                 :class="{'is-invalid': v$.name.$error ||errors[`name`],
                                 'is-valid':!v$.name.$invalid && !errors[`name`]}">

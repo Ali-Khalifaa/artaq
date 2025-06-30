@@ -33,7 +33,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">{{ $t('label.title') }}</th>
+                                    <th scope="col">{{ $t('global.circleName') }}</th>
                                     <th scope="col">{{ $t('global.circleType') }}</th>
                                     <th scope="col">{{ $t('global.StudentType') }}</th>
                                     <th scope="col">{{ $t('global.start_time') }}</th>

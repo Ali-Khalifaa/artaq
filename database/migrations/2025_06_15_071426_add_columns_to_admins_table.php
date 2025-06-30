@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('experience_years')->default(0)->comment('سنوات الخبرة');
             $table->integer('Quran_licenses')->default(0)->comment('عدد الإجازات القرآنية');
             $table->decimal('salary', 10, 2)->default(0)->comment('الراتب');
+            $table->string('code')->nullable()->comment('كود المدير');
 
         });
     }
@@ -48,6 +49,7 @@ return new class extends Migration
             $table->dropColumn('experience_years');
             $table->dropColumn('Quran_licenses');
             $table->dropColumn('salary');
+            $table->dropColumn('code');
         });
     }
 };

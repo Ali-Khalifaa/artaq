@@ -13,6 +13,7 @@ class ShowAdminResource extends JsonResource
         $role = $this->roles()->first();
         return [
             "id" => $this->id,
+            "code" => $this->code,
             "name" => $this->name,
             "email" => $this->email,
             'status' => $this->status,

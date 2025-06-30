@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\SearchFilterTrait;
+use App\Traits\SerialTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Student extends Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,SoftDeletes,HasApiTokens,SearchFilterTrait;
+    use HasFactory,Notifiable,SoftDeletes,HasApiTokens,SearchFilterTrait,SerialTrait;
 
     protected $guard_name = 'student_api';
 
@@ -40,6 +41,7 @@ class Student extends Authenticatable implements JWTSubject
         'password',
         'id_number',
         'juz_count',
+        'code',
     ];
 
     protected $table = "students";
@@ -111,6 +113,14 @@ class Student extends Authenticatable implements JWTSubject
     public function memorizationAmount()
     {
         return $this->belongsTo(MemorizationAmount::class);
+    }
+
+    // Automatically set code attribute only on create
+    protected static function booted()
+    {
+        static::creating(function ($student) {
+            $student->code = $student->createSerialNumber(self::class, 'Student');
+        });
     }
 
 }

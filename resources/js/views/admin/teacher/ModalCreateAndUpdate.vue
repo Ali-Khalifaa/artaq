@@ -215,6 +215,7 @@
                             <div class="invalid-feedback">
                                 <span v-if="v$.salary.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
+                                 <span v-if="v$.experience_years.numeric.$invalid">{{$t('validation.ThisFieldIsNumeric')}} <br /></span>
 
                             </div>
                             <template v-if="errors[`salary`]">
@@ -226,7 +227,7 @@
 
                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.juz_count') }}</label>
-                            <input type="number" class="form-control" v-model="v$.juz_count.$model"
+                            <input type="number" class="form-control" @input="makeMaxNumber('juz_count',30)" v-model="v$.juz_count.$model"
                                  :class="{
                                     'is-invalid': v$.juz_count.$error || errors[`juz_count`],
                                     'is-valid': !v$.juz_count.$invalid && !errors[`juz_count`]
@@ -235,6 +236,7 @@
                             <div class="invalid-feedback">
                                 <span v-if="v$.juz_count.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
+                                 <span v-if="v$.experience_years.numeric.$invalid">{{$t('validation.ThisFieldIsNumeric')}} <br /></span>
 
                             </div>
                             <template v-if="errors[`juz_count`]">
@@ -246,7 +248,7 @@
 
                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.experience_years') }}</label>
-                            <input type="number" class="form-control" v-model="v$.experience_years.$model"
+                            <input type="number" class="form-control" @input="makeMaxNumber('experience_years',40)" v-model="v$.experience_years.$model"
                                  :class="{
                                     'is-invalid': v$.experience_years.$error || errors[`experience_years`],
                                     'is-valid': !v$.experience_years.$invalid && !errors[`experience_years`]
@@ -255,6 +257,7 @@
                             <div class="invalid-feedback">
                                 <span v-if="v$.experience_years.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
+                                <span v-if="v$.experience_years.numeric.$invalid">{{$t('validation.ThisFieldIsNumeric')}} <br /></span>
 
                             </div>
                             <template v-if="errors[`experience_years`]">
@@ -266,7 +269,7 @@
 
                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.Quran_licenses') }}</label>
-                            <input type="number" class="form-control" v-model="v$.Quran_licenses.$model"
+                            <input type="number" class="form-control" @input="makeMaxNumber('Quran_licenses',15)" v-model="v$.Quran_licenses.$model"
                                  :class="{
                                     'is-invalid': v$.Quran_licenses.$error || errors[`Quran_licenses`],
                                     'is-valid': !v$.Quran_licenses.$invalid && !errors[`Quran_licenses`]
@@ -275,6 +278,7 @@
                             <div class="invalid-feedback">
                                 <span v-if="v$.Quran_licenses.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
+                                <span v-if="v$.Quran_licenses.numeric.$invalid">{{$t('validation.ThisFieldIsNumeric')}} <br /></span>
 
                             </div>
                             <template v-if="errors[`Quran_licenses`]">
@@ -337,7 +341,7 @@
                             <div class="custom-toggle-switch d-flex align-items-center mb-4">
                                 <input id="toggleswitchPrimary" v-model="data.status" type="checkbox">
                                 <label for="toggleswitchPrimary" class="label-primary"></label><span class="ms-3">{{
-                                    $t('global.status')
+                                    $t('global.Activate the account')
                                 }}</span>
                             </div>
                             <template v-if="errors['status']">
@@ -476,7 +480,7 @@
 <script>
 import { computed, onMounted, reactive, ref, toRefs, watch, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
-import { maxLength, minLength, required, sameAs,email, alphaNum, requiredIf } from "@vuelidate/validators";
+import { maxLength, minLength, required, sameAs,email, alphaNum, requiredIf,numeric } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import adminApi from "../../../api/adminAxios";
 
@@ -706,13 +710,13 @@ export default {
         // validation image
         const requiredn = ref(false);
 
-        watch(numberOfImage, (count, prevCount) => {
-            if (!count) {
-                requiredn.value = true;
-            } else {
-                requiredn.value = false;
-            }
-        });
+        // watch(numberOfImage, (count, prevCount) => {
+        //     if (!count) {
+        //         requiredn.value = true;
+        //     } else {
+        //         requiredn.value = false;
+        //     }
+        // });
 
         const showProfile = ref(false);
         const profileImagePreview = ref({});
@@ -742,16 +746,16 @@ export default {
                     required
                 },
                 juz_count: {
-                    required
+                    required,numeric
                 },
                 experience_years: {
-                    required
+                    required,numeric
                 },
                 Quran_licenses: {
-                    required
+                    required,numeric
                 },
                 salary: {
-                    required
+                    required,numeric
                 },
 
                 nationality_id: {
@@ -781,8 +785,17 @@ export default {
 
         const v$ = useVuelidate(rules, submitdata.data);
 
+         function makeMaxNumber(field, max) {
+            if (submitdata.data[field] > max) {
+                submitdata.data[field] = max;
+            }
+            if (submitdata.data[field] < 0) {
+                submitdata.data[field] = 0;
+            }
+        }
+
         return {
-            t, id,nationalities, countries, cities,getCitiesByCountryId,
+            t, id,nationalities, countries, cities,getCitiesByCountryId,makeMaxNumber,
             loading, is_disabled,
             resetModal, empty, preview, resetModalHidden,
             imageUpload, image, ...toRefs(submitdata),
@@ -849,7 +862,7 @@ export default {
                 formData.append('image', this.image);
             }
             if (this.type !== 'edit') {
-                if (!this.v$.$error && this.numberOfImage) {
+                if (!this.v$.$error) {
                     this.is_disabled = false;
                     this.loading = true;
                     adminApi.post(`dashboard/teacher`, formData)
@@ -879,7 +892,7 @@ export default {
                     if (!this.numberOfImage) {
                         this.loading = false;
                         this.is_disabled = false;
-                        this.requiredn = true;
+                        // this.requiredn = true;
                     }
                 }
             } else if (!this.v$.$error) {

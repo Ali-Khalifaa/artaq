@@ -12,6 +12,7 @@ class ShowTeacherResource extends JsonResource
     {
         return [
             "id"  => $this->id,
+            "code"  => $this->code,
             "name"       => $this->name,
             "id_number" => $this->id_number,
             "phone" => $this->phone,

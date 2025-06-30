@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\LevelRequest;
 use App\Http\Resources\Dashboard\LevelResource;
+use App\Http\Resources\Dashboard\LevelDropDownResource;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -72,7 +73,8 @@ class LevelController extends Controller implements HasMiddleware
      public function dropdown(Request $request)
     {
         if ($request->preservation_method_id) {
-            $level = Level::where('preservation_method_id', $request->preservation_method_id)->get();
+            $level = Level::where('preservation_method_id', $request->preservation_method_id)->with('levelTasks')->get();
+            return responseJson(LevelDropDownResource::collection($level),'',200);
         } else {
             $level = Level::all();
         }

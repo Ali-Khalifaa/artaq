@@ -18,8 +18,9 @@ class CircleTypeSeeder extends Seeder
 
         $now = now();
         $nationalities = [
-            ['name' => 'المكثف بنين', 'created_at' => $now],
-            ['name' => 'المكثف بنات', 'created_at' => $now],
+            ['name' => 'الحلقات', 'created_at' => $now],
+            ['name' => 'الحلقات الصيفية', 'created_at' => $now],
+            ['name' => 'صحيح التلاوة', 'created_at' => $now],
         ];
 
         DB::table('circle_types')->insert($nationalities);

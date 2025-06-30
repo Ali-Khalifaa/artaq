@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('guardian')->nullable()->comment('اسم ولى الامر');
             $table->string('id_number')->unique()->comment('رقم الهوية');
             $table->integer('juz_count')->default(0)->comment('عدد الأجزاء التي حفظها الطالب');
+            $table->string('code')->nullable()->comment('كود الطالب');
 
             $table->rememberToken();
             $table->softDeletes();

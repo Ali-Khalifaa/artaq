@@ -36,6 +36,7 @@ return new class extends Migration
             $table->integer('Quran_licenses')->default(0)->comment('عدد الإجازات القرآنية');
             $table->decimal('salary', 10, 2)->default(0)->comment('الراتب');
             $table->string('cv')->nullable()->comment('السيرة الذاتية');
+            $table->string('code')->nullable()->comment('كود المعلم');
 
             $table->rememberToken();
             $table->softDeletes();

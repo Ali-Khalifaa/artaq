@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\SearchFilterTrait;
+use App\Traits\SerialTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,SoftDeletes,HasRoles,SearchFilterTrait;
+    use HasFactory,Notifiable,SoftDeletes,HasRoles,SearchFilterTrait,SerialTrait;
 
     protected $guard_name = 'admin_api';
 
@@ -36,6 +37,7 @@ class Admin extends Authenticatable implements JWTSubject
         'experience_years',
         'Quran_licenses',
         'salary',
+        'code',
     ];
 
     protected $table = "admins";
@@ -85,6 +87,16 @@ class Admin extends Authenticatable implements JWTSubject
     public function teachers()
     {
         return $this->hasMany(Teacher::class, 'admin_id');
+    }
+
+    // Automatically set code attribute only on create
+    protected static function booted()
+    {
+        static::creating(function ($teacher) {
+            if (empty($teacher->code)) {
+                $teacher->code = $teacher->createSerialNumber(self::class, 'Admin');
+            }
+        });
     }
 
 

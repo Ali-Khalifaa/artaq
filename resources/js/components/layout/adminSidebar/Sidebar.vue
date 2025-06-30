@@ -103,23 +103,26 @@
                         </router-link>
                     </li>
 
-
-
-
                     <li class="slide" v-show="permission.includes('memorization amount read')">
                         <router-link :to="{name:'memorizationAmount'}" class="side-menu__item">
                             <i class="bx bx-book-bookmark side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.memorizationAmount')}}</span>
                         </router-link>
                     </li>
+
+                    <li class="slide" v-show="permission.includes('track read')">
+                        <router-link :to="{name:'track'}" class="side-menu__item">
+                            <i class="bx bx-git-branch side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.tracks')}}</span>
+                        </router-link>
+                    </li>
+
                     <li class="slide" v-show="permission.includes('memorization type read')">
                         <router-link :to="{name:'memorizationType'}" class="side-menu__item">
                             <i class="bx bx-book-bookmark side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.memorizationType')}}</span>
                         </router-link>
                     </li>
-
-
 
                     <li class="slide" v-show="permission.includes('level read')">
                         <router-link :to="{name:'level'}" class="side-menu__item">
@@ -132,13 +135,6 @@
                         <router-link :to="{name:'levelTask'}" class="side-menu__item">
                             <i class="bx bx-task side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.levelTask')}}</span>
-                        </router-link>
-                    </li>
-
-                    <li class="slide" v-show="permission.includes('track read')">
-                        <router-link :to="{name:'track'}" class="side-menu__item">
-                            <i class="bx bx-git-branch side-menu__icon" aria-hidden="true"></i>
-                            <span class="side-menu__label">{{$t('global.tracks')}}</span>
                         </router-link>
                     </li>
 
@@ -192,6 +188,13 @@
                     </li>
                     <!-- End::areas -->
 
+
+                    <li class="slide" v-show="permission.includes('serial read')">
+                        <router-link :to="{name:'serial'}" class="side-menu__item">
+                            <i class="bx bx-barcode side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.serials')}}</span>
+                        </router-link>
+                    </li>
 
                     <li class="slide" v-show="permission.includes('nationality read')">
                         <router-link :to="{name:'nationality'}" class="side-menu__item">

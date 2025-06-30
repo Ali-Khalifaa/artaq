@@ -47,14 +47,14 @@
                                         <th scope="col">{{ $t('global.role_name') }}</th>
                                         <th scope="col">{{ $t('global.nationality') }}</th>
                                         <th scope="col">{{ $t('global.country') }}</th>
-                                        <th scope="col">{{ $t('global.status') }}</th>
+                                        <th scope="col">{{ $t('global.Activate the account') }}</th>
                                         <th scope="col">{{ $t('global.created_at') }}</th>
                                         <th scope="col">{{ $t('global.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="data && data.length">
                                     <tr v-for="(item, index) in data" :key="item.id">
-                                        <td scope="row">{{ index + 1 }}</td>
+                                        <td scope="row">{{ item.code }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div>
@@ -173,7 +173,7 @@ export default {
         search.value = {
             searchKey: '',
             searchInTranslations: false,
-            columns: ['id', 'name', 'phone', 'email'],
+            columns: ['id', 'name', 'phone', 'email','code'],
             searchInRelations: [
                 {
                     relation: 'roles',

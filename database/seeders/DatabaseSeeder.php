@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CircleTypeSeeder::class);
         $this->call(PreservationMethodSeeder::class);
         $this->call(TrackSeeder::class);
+        $this->call(SerialSeeder::class);
     }
 }

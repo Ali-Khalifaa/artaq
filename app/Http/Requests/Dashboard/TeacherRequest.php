@@ -38,7 +38,7 @@ class TeacherRequest extends FormRequest
             'confirmation' => 'nullable|same:password',
             'birth_date' => 'nullable|date',
             'email' => 'nullable|email|max:255|unique:teachers,email,' . $this->teacher,
-            'juz_count' => 'nullable|numeric|min:1',
+            'juz_count' => 'nullable|numeric|min:1|max:30',
             'experience_years' => 'nullable|numeric|min:0',
             'Quran_licenses' => 'nullable|numeric|min:0',
             'salary' => 'nullable|numeric|min:0',

@@ -29,30 +29,66 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive mb-2">
-                            <table class="table text-nowrap table-striped">
+                            <table class="table text-nowrap table-striped table-bordered border-primary">
                                 <thead>
                                 <tr>
+                                    <th colspan="4"></th>
+                                    <th colspan="4" class="text-center bg-primary-transparent">{{ $t('global.Preservation') }}</th>
+                                    <th colspan="4" class="text-center bg-danger-transparent">{{ $t('global.review') }}</th>
+                                    <th colspan="1"></th>
+                                </tr>
+                                <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">{{ $t('global.memorizationType') }}</th>
                                     <th scope="col">{{ $t('global.level') }}</th>
-                                    <th scope="col">{{ $t('global.fromSurah') }}</th>
-                                    <th scope="col">{{ $t('global.toSurah') }}</th>
-                                    <th scope="col">{{ $t('global.fromAyah') }}</th>
-                                    <th scope="col">{{ $t('global.toAyah') }}</th>
+                                    <th scope="col">{{ $t('global.Juz') }}</th>
+
+                                    <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.fromSurah') }}</th>
+                                    <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.Ayah') }}</th>
+                                    <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.toSurah') }}</th>
+                                    <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.Ayah') }}</th>
+
+                                    <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.fromSurah') }}</th>
+                                    <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.Ayah') }}</th>
+                                    <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.toSurah') }}</th>
+                                    <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.Ayah') }}</th>
+
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody v-if="data && data.length">
                                 <tr v-for="(item,index) in data" :key="item.id">
                                     <td scope="row">{{index + 1}}</td>
+                                    <td>{{item.level?.preservation_method?.name}}</td>
                                     <td>{{item.level?.name}}</td>
-                                    <td>{{item.from_surah?.name}}</td>
-                                    <td>{{item.to_surah?.name}}</td>
-                                    <td>{{truncateString(item.from_ayah?.text,100)}}
-                                        <span class="ayaNumber" style="font-size: 0.91em;">‎﴿{{makeNumberArabic(item.from_ayah?.number_in_surah)}}﴾‏</span>
+                                    <td>{{item.from_ayah?.juz}}</td>
+
+                                    <td class="text-center bg-primary-transparent">{{item.from_surah?.name}}</td>
+                                    <td class="text-center bg-primary-transparent">
+                                        {{makeNumberArabic(item.from_ayah?.number_in_surah)}}
+                                        <!-- {{truncateString(item.from_ayah?.text,100)}}
+                                        <span class="ayaNumber" style="font-size: 0.91em;">‎﴿{{makeNumberArabic(item.from_ayah?.number_in_surah)}}﴾‏</span> -->
                                     </td>
-                                    <td>{{truncateString(item.to_ayah?.text,100)}}
-                                        <span class="ayaNumber" style="font-size: 0.91em;">‎﴿{{makeNumberArabic(item.to_ayah?.number_in_surah)}}﴾‏</span>
+                                    <td class="text-center bg-primary-transparent">{{item.to_surah?.name}}</td>
+                                    <td class="text-center bg-primary-transparent">
+                                        {{makeNumberArabic(item.to_ayah?.number_in_surah)}}
+                                        <!-- {{truncateString(item.to_ayah?.text,100)}}
+                                        <span class="ayaNumber" style="font-size: 0.91em;">‎﴿{{makeNumberArabic(item.to_ayah?.number_in_surah)}}﴾‏</span> -->
                                     </td>
+
+                                    <td class="text-center bg-danger-transparent">{{item.review_from_surah?.name}}</td>
+                                    <td class="text-center bg-danger-transparent">
+                                        {{makeNumberArabic(item.review_from_ayah?.number_in_surah)}}
+                                        <!-- {{truncateString(item.from_ayah?.text,100)}}
+                                        <span class="ayaNumber" style="font-size: 0.91em;">‎﴿{{makeNumberArabic(item.from_ayah?.number_in_surah)}}﴾‏</span> -->
+                                    </td>
+                                    <td class="text-center bg-danger-transparent">{{item.review_to_surah?.name}}</td>
+                                    <td class="text-center bg-danger-transparent">
+                                        {{makeNumberArabic(item.review_to_ayah?.number_in_surah)}}
+                                        <!-- {{truncateString(item.to_ayah?.text,100)}}
+                                        <span class="ayaNumber" style="font-size: 0.91em;">‎﴿{{makeNumberArabic(item.to_ayah?.number_in_surah)}}﴾‏</span> -->
+                                    </td>
+
                                     <td>
                                         <div class="hstack gap-2 fs-15">
                                             <button v-if="permission.includes('level task edit')"
@@ -72,7 +108,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="7">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="13">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -129,16 +165,16 @@ export default {
                     columns: ['name','normalized_name'],
                     searchInRelationTranslations:false
                 },
-                {
-                    relation: 'fromAyah',
-                    columns: ['text','text_normalized','number_in_surah'],
+               {
+                    relation: 'reviewFromSurah',
+                    columns: ['name','normalized_name'],
                     searchInRelationTranslations:false
                 },
                 {
-                    relation: 'toAyah',
-                    columns: ['text','text_normalized','number_in_surah'],
+                    relation: 'reviewToSurah',
+                    columns: ['name','normalized_name'],
                     searchInRelationTranslations:false
-                }
+                },
             ]
         }
 
