@@ -2,7 +2,6 @@
 
 use App\Models\Ayah;
 use App\Models\Level;
-use App\Models\PreservationMethod;
 use App\Models\Surah;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

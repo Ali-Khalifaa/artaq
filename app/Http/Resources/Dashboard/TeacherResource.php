@@ -12,6 +12,7 @@ class TeacherResource extends JsonResource
     {
         return [
             "id"  => $this->id,
+            "code"  => $this->code,
             "name"       => $this->name,
             "id_number" => $this->id_number,
             "phone" => $this->phone,
@@ -26,6 +27,17 @@ class TeacherResource extends JsonResource
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),
+            "circles_id" => $this->whenLoaded('circles', function () {
+                return $this->circles->pluck('id');
+            }),
+            "juz_count" => $this->juz_count,
+            "experience_years" => $this->experience_years,
+            "Quran_licenses" => $this->Quran_licenses,
+            "salary" => $this->salary,
+            "cv" => $this->cv,
+            "birth_date" => $this->birth_date ? Carbon::parse($this->birth_date)->format('Y-m-d') : null,
+            'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : null,
+            "email" => $this->email,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d  (H:i)'),
         ];
     }

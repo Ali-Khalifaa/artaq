@@ -30,6 +30,8 @@ return [
     "completed"=>"تم استلام المركبه",
     "rest_booking"=>"حجز شيف و قهوجي",
     "completed_rest"=>"تم الانتهاء",
+    "student"=>"الطلاب",
+    'teacher'=>'المعلمين',
 
 
 

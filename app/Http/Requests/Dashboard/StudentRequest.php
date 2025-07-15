@@ -26,11 +26,12 @@ class StudentRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
-            'level_id' => 'required|exists:levels,id',
+            'level_id' => 'nullable|exists:levels,id',
             'track_id' => 'nullable|exists:tracks,id',
             'phone' => 'required|string|max:15',
+            'guardian' => 'nullable|string',
             'guardian_phone' => 'nullable|string|max:15',
-            'preservation_method_id' => 'required|exists:preservation_methods,id',
+            'preservation_method_id' => 'nullable|exists:preservation_methods,id',
             'gender' => 'required',
             'nationality_id' => 'required|exists:nationalities,id',
             'country_id' => 'required|exists:countries,id',
@@ -40,6 +41,8 @@ class StudentRequest extends FormRequest
             'status' => 'required|boolean',
             'password' => 'nullable|string|min:8',
             'confirmation' => 'nullable|same:password',
+            'id_number' => "required|string|max:255|unique:students,id_number," . $this->route('student'),
+            'juz_count' => 'nullable|integer|min:0|max:30',
 
         ];
     }

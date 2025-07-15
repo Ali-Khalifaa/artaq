@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\SearchFilterTrait;
+use \App\Traits\SerialTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +15,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Teacher extends Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,SoftDeletes,HasApiTokens,SearchFilterTrait;
+    use HasFactory,Notifiable,SoftDeletes,HasApiTokens,SearchFilterTrait,SerialTrait;
+
 
     protected $guard_name = 'teacher_api';
 
@@ -33,6 +35,17 @@ class Teacher extends Authenticatable implements JWTSubject
         'image',
         'status',
         'password',
+        'otp_code',
+        'code_expired_at',
+        'work_status',
+        'birth_date',
+        'email',
+        'juz_count',
+        'experience_years',
+        'Quran_licenses',
+        'salary',
+        'cv',
+        'code',
     ];
 
     protected $table = "teachers";
@@ -56,6 +69,11 @@ class Teacher extends Authenticatable implements JWTSubject
     public function getImageAttribute($value){
         return $value ? asset('upload/general/'.$value):asset('images/user.png');
     }
+
+    public function getCvAttribute($value){
+        return $value ? asset('upload/general/'.$value):null;
+    }
+
 
      protected function password(): Attribute
     {
@@ -93,6 +111,21 @@ class Teacher extends Authenticatable implements JWTSubject
     public function qualifications()
     {
         return $this->hasMany(TeacherQualification::class, 'teacher_id');
+    }
+
+    public function circles()
+    {
+        return $this->belongsToMany(Circle::class, 'teacher_circles', 'teacher_id', 'circle_id');
+    }
+
+    // Automatically set code attribute only on create
+    protected static function booted()
+    {
+        static::creating(function ($teacher) {
+            if (empty($teacher->code)) {
+                $teacher->code = $teacher->createSerialNumber(self::class, 'Teacher');
+            }
+        });
     }
 
 }

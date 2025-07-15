@@ -42,17 +42,18 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">{{ $t('global.name') }}</th>
+                                        <th scope="col">{{ $t('global.Three-part name') }}</th>
                                         <th scope="col">{{ $t('global.nationality') }}</th>
                                         <th scope="col">{{ $t('global.country') }}</th>
                                         <th scope="col">{{ $t('global.level') }}</th>
-                                        <th scope="col">{{ $t('global.status') }}</th>
+                                        <th scope="col">{{ $t('global.Activate the account') }}</th>
+                                        <th scope="col">{{ $t('global.created_at') }}</th>
                                         <th scope="col">{{ $t('global.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="data && data.length">
                                     <tr v-for="(item, index) in data" :key="item.id">
-                                        <td scope="row">{{ index + 1 }}</td>
+                                        <td scope="row">{{ item.code }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div>
@@ -80,6 +81,7 @@
                                             <span class="badge rounded-pill bg-danger-transparent" v-else>{{
                                                 $t('global.Inactive') }}</span>
                                         </td>
+                                        <td>{{item.created_at}}</td>
                                         <td>
                                             <div class="hstack gap-2 fs-15">
                                                 <a @click="selectedUser = item" data-bs-toggle="modal"
@@ -144,7 +146,7 @@ export default {
         search.value = {
             searchKey: '',
             searchInTranslations: false,
-            columns: ['id', 'name', 'phone','birth_date','guardian_phone','gender'],
+            columns: ['id', 'name', 'phone','birth_date','guardian_phone','gender','code'],
             searchInRelations: [
                 {
                     relation: 'level',
@@ -152,7 +154,7 @@ export default {
                     searchInRelationTranslations: false
                 },
                 {
-                    relation: 'memorizationType',
+                    relation: 'preservationMethod',
                     columns: ['name'],
                     searchInRelationTranslations: false
                 },

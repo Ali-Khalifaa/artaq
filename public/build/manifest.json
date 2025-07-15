@@ -1,68 +1,13 @@
 {
-  "_index-!~{008}~.js": {
-    "file": "assets/index-CN6GP9ZP.css",
-    "src": "_index-!~{008}~.js"
-  },
-  "_index-CH0UxA04.js": {
-    "file": "assets/index-CH0UxA04.js",
-    "name": "index",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js"
-    ],
-    "dynamicImports": [
-      "node_modules/quill/quill.js",
-      "resources/js/views/restaurant/rest/dashboard/Dashboard.vue",
-      "resources/js/views/admin/general/pages/dashboard/index.vue",
-      "resources/js/views/admin/taxi/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/hotelAndFlights/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/store/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue",
-      "resources/js/views/admin/restaurant/dashboard/index.vue"
-    ],
-    "css": [
-      "assets/index-CN6GP9ZP.css"
-    ]
-  },
-  "_jquery-!~{007}~.js": {
+  "_jquery-!~{005}~.js": {
     "file": "assets/jquery-DzuxGC_t.css",
-    "src": "_jquery-!~{007}~.js"
+    "src": "_jquery-!~{005}~.js"
   },
-  "_jquery-Bk-ga-hZ.js": {
-    "file": "assets/jquery-Bk-ga-hZ.js",
+  "_jquery-DztOgb_h.js": {
+    "file": "assets/jquery-DztOgb_h.js",
     "name": "jquery",
     "css": [
       "assets/jquery-DzuxGC_t.css"
-    ]
-  },
-  "_vue-tel-input-!~{009}~.js": {
-    "file": "assets/vue-tel-input-po4vDl8i.css",
-    "src": "_vue-tel-input-!~{009}~.js"
-  },
-  "_vue-tel-input-nR4y66bI.js": {
-    "file": "assets/vue-tel-input-nR4y66bI.js",
-    "name": "vue-tel-input",
-    "imports": [
-      "_jquery-Bk-ga-hZ.js"
-    ],
-    "css": [
-      "assets/vue-tel-input-po4vDl8i.css"
-    ]
-  },
-  "node_modules/quill/quill.js": {
-    "file": "assets/quill-6DmNws4i.js",
-    "name": "quill",
-    "src": "node_modules/quill/quill.js",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js"
     ]
   },
   "resources/css/app.css": {
@@ -72,144 +17,40 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DxBSiVBb.js",
+    "file": "assets/app-DKctb5UJ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js"
-    ]
-  },
-  "resources/js/restaurant.js": {
-    "file": "assets/restaurant-DHO3h7cO.js",
-    "name": "restaurant",
-    "src": "resources/js/restaurant.js",
-    "isEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js",
-      "_vue-tel-input-nR4y66bI.js"
+      "_jquery-DztOgb_h.js"
+    ],
+    "dynamicImports": [
+      "resources/js/views/admin/dashboard/index.vue"
     ],
     "css": [
-      "assets/restaurant-DInA3su_.css"
-    ]
-  },
-  "resources/js/showroom.js": {
-    "file": "assets/showroom-DjEuHJEa.js",
-    "name": "showroom",
-    "src": "resources/js/showroom.js",
-    "isEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js",
-      "_vue-tel-input-nR4y66bI.js"
-    ],
-    "css": [
-      "assets/restaurant-DInA3su_.css"
+      "assets/app-COf6e0h5.css"
     ]
   },
   "resources/js/single-components.js": {
-    "file": "assets/single-components-DJSWL6HI.js",
+    "file": "assets/single-components-Dbk8x1Pj.js",
     "name": "single-components",
     "src": "resources/js/single-components.js",
     "isEntry": true,
     "imports": [
-      "_jquery-Bk-ga-hZ.js"
-    ],
-    "css": [
-      "assets/single-components-tn0RQdqM.css"
+      "_jquery-DztOgb_h.js"
     ]
   },
-  "resources/js/store.js": {
-    "file": "assets/store-ta7CmeAK.js",
-    "name": "store",
-    "src": "resources/js/store.js",
-    "isEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js",
-      "_vue-tel-input-nR4y66bI.js"
-    ],
-    "dynamicImports": [
-      "_index-CH0UxA04.js"
-    ],
-    "css": [
-      "assets/store-DBmog3wk.css"
-    ]
-  },
-  "resources/js/views/admin/general/pages/dashboard/index.vue": {
-    "file": "assets/index-DgSw7qC_.js",
+  "resources/js/views/admin/dashboard/index.vue": {
+    "file": "assets/index-bLucEhvD.js",
     "name": "index",
-    "src": "resources/js/views/admin/general/pages/dashboard/index.vue",
+    "src": "resources/js/views/admin/dashboard/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_jquery-Bk-ga-hZ.js"
-    ]
-  },
-  "resources/js/views/admin/hotelAndFlights/dashboard/index.vue": {
-    "file": "assets/index-C-a9elyp.js",
-    "name": "index",
-    "src": "resources/js/views/admin/hotelAndFlights/dashboard/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js"
+      "_jquery-DztOgb_h.js",
+      "resources/js/app.js"
     ],
     "css": [
-      "assets/index-Dg0So-aZ.css"
-    ]
-  },
-  "resources/js/views/admin/restaurant/dashboard/index.vue": {
-    "file": "assets/index-wislUFcx.js",
-    "name": "index",
-    "src": "resources/js/views/admin/restaurant/dashboard/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js"
-    ],
-    "css": [
-      "assets/index-BH_UEm1Y.css"
-    ]
-  },
-  "resources/js/views/admin/store/dashboard/index.vue": {
-    "file": "assets/index-UulXXzYo.js",
-    "name": "index",
-    "src": "resources/js/views/admin/store/dashboard/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js"
-    ],
-    "css": [
-      "assets/index-CK9TUfb5.css"
-    ]
-  },
-  "resources/js/views/admin/taxi/dashboard/index.vue": {
-    "file": "assets/index-Bc4Fuw3q.js",
-    "name": "index",
-    "src": "resources/js/views/admin/taxi/dashboard/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js"
-    ],
-    "css": [
-      "assets/index-BNeXPtxN.css"
-    ]
-  },
-  "resources/js/views/restaurant/rest/dashboard/Dashboard.vue": {
-    "file": "assets/Dashboard-CQCCDGVP.js",
-    "name": "Dashboard",
-    "src": "resources/js/views/restaurant/rest/dashboard/Dashboard.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_jquery-Bk-ga-hZ.js",
-      "_index-CH0UxA04.js"
-    ],
-    "css": [
-      "assets/Dashboard-Bi-n4sS3.css"
+      "assets/index-kzoNa_cm.css"
     ]
   }
 }

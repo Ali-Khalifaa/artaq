@@ -90,7 +90,7 @@
                         <div class="col-md-12 mt-3 row flex-fill">
                             <div class="btn btn-outline-light waves-effect"  style="width: 90%; height:90%">
 
-                                <span v-if="type != 'edit' && !numberOfImage"  style="margin-top:30%;">
+                                <span v-if="type != 'edit' && !numberOfImage" style="width: 90%; height: 90%; margin-top: 30%">
                                     {{$t('global.ChooseImages')}}
                                     <br><i class="bi bi-cloud-upload fs-40" ></i>
                                     <i class="fas fa-cloud-upload-alt ml-3" aria-hidden="true"></i>
@@ -101,7 +101,7 @@
                                 <div  v-if="type == 'edit'" v-show="!numberOfImage">
                                     <figure>
                                         <figcaption>
-                                            <img class="img-fluid rounded" :src="`${imageUpload}`">
+                                            <img class="img-fluid rounded" style="max-width: 150px; height: 150px" :src="`${imageUpload}`">
                                         </figcaption>
                                     </figure>
                                 </div>
@@ -271,6 +271,8 @@ export default {
                 let img = document.createElement('img');
                 img.setAttribute('src',reader.result);
                 img.classList.add('img-fluid', 'rounded');
+                img.style.maxWidth = '150px';
+                img.style.height = '150px';
                 figure.insertBefore(img,figcap);
             }
 

@@ -12,8 +12,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 ">
-                            <label for="name" class="form-label">{{$t('label.title')}}</label>
-                            <input type="text" class="form-control" id="name" :placeholder="$t('label.title')"
+                            <label for="name" class="form-label">{{$t('global.circleName')}}</label>
+                            <input type="text" class="form-control" id="name" :placeholder="$t('global.circleName')"
                                 v-model.trim="v$.name.$model"
                                 :class="{'is-invalid': v$.name.$error ||errors[`name`],
                                 'is-valid':!v$.name.$invalid && !errors[`name`]}">
@@ -37,9 +37,7 @@
 
                             </Select>
                             <div class="invalid-feedback">
-                                <span v-if="v$.circle_type_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
+
                             </div>
                             <template v-if="errors['circle_type_id']">
                                 <error-message v-for="(errorMessage, index) in errors['circle_type_id']" :key="index">
@@ -48,7 +46,27 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-2">
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{$t('global.start_time')}}</label>
+                            <input type="time" class="form-control custom-time-picker" @input="changeTimeInDuration" v-model.trim="v$.start_time.$model"
+                                :class="{'is-invalid': v$.start_time.$error ||errors[`start_time`],
+                                'is-valid':!v$.start_time.$invalid && !errors[`start_time`]}">
+                            <div class="invalid-feedback">
+                                <span v-if="v$.start_time.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{$t('global.end_time')}}</label>
+                            <input type="time" class="form-control custom-time-picker" @input="changeTimeInDuration" v-model.trim="v$.end_time.$model"
+                                :class="{'is-invalid': v$.end_time.$error ||errors[`end_time`],
+                                'is-valid':!v$.end_time.$invalid && !errors[`end_time`]}">
+                            <div class="invalid-feedback">
+                                <span v-if="v$.end_time.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
+                            </div>
+                        </div>
+
+                         <div class="col-md-6 mt-3">
                             <div class="row">
                                 <label class="form-label mb-1">{{$t('global.StudentType')}}</label>
                                 <div class="col-xl-6">
@@ -82,24 +100,18 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 " v-if="!data.add_duration">
-                            <label class="form-label">{{$t('global.start_time')}}</label>
-                            <input type="time" class="form-control custom-time-picker" v-model.trim="v$.start_time.$model"
-                                :class="{'is-invalid': v$.start_time.$error ||errors[`start_time`],
-                                'is-valid':!v$.start_time.$invalid && !errors[`start_time`]}">
-                            <div class="invalid-feedback">
-                                <span v-if="v$.start_time.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
+                        <div class="col-md-6 mt-4">
+                            <div class="custom-toggle-switch d-flex align-items-center mb-4">
+                                <input id="toggleswitchPrimary" v-model="data.status" type="checkbox">
+                                <label for="toggleswitchPrimary" class="label-primary"></label><span class="ms-3">{{
+                                    $t('global.status')
+                                }}</span>
                             </div>
-                        </div>
-
-                        <div class="col-md-6 " v-if="!data.add_duration">
-                            <label class="form-label">{{$t('global.end_time')}}</label>
-                            <input type="time" class="form-control custom-time-picker" v-model.trim="v$.end_time.$model"
-                                :class="{'is-invalid': v$.end_time.$error ||errors[`end_time`],
-                                'is-valid':!v$.end_time.$invalid && !errors[`end_time`]}">
-                            <div class="invalid-feedback">
-                                <span v-if="v$.end_time.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
-                            </div>
+                            <template v-if="errors['status']">
+                                <error-message v-for="(errorMessage, index) in errors['status']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
                         </div>
 
                          <div class="col-md-12 mb-3" v-if="data.add_duration">
@@ -239,6 +251,7 @@ export default {
            submitdata.data.duration = [{'day' : 'Saturday','start_time':'','end_time':''}];
            submitdata.data.start_time = '';
            submitdata.data.end_time = '';
+           submitdata.data.status = true;
            is_disabled.value = false;
            loading.value = false;
            errors.value = [];
@@ -263,8 +276,8 @@ export default {
         function addDetail() {
             submitdata.data.duration.push({
                 day: '',
-                start_time: '',
-                end_time: ''
+                start_time: submitdata.data.start_time,
+                end_time: submitdata.data.end_time
             })
         }
         function removeDetail(index) {
@@ -281,8 +294,11 @@ export default {
                     submitdata.data.name = props.dataRow.name;
                     submitdata.data.circle_type_id = props.dataRow.circle_type_id;
                     submitdata.data.gender = props.dataRow.gender;
+                    submitdata.data.start_time = props.dataRow.start_time;
+                    submitdata.data.end_time = props.dataRow.end_time;
                     submitdata.data.duration = props.dataRow.duration;
                     submitdata.data.add_duration = true;
+                    submitdata.data.status = props.dataRow.status == 1;
                 }
             }, 50);
         }
@@ -297,6 +313,7 @@ export default {
             data:{
                 name: '',
                 circle_type_id: '',
+                 status: true,
                 gender: 'male',
                 add_duration: false,
                 duration: [
@@ -310,7 +327,7 @@ export default {
         const rules = computed(() => {
             return {
                 name: {required},
-                circle_type_id: {required},
+                circle_type_id: {},
                 start_time: {
                     required: requiredIf(function (model) {
                             return !submitdata.data.add_duration;
@@ -327,7 +344,16 @@ export default {
 
         const v$ = useVuelidate(rules,submitdata.data);
 
-        return {t,id,types,days,addDetail,removeDetail,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors};
+        function changeTimeInDuration() {
+            if (!submitdata.data.add_duration) {
+                submitdata.data.duration.forEach((item) => {
+                    item.start_time = submitdata.data.start_time;
+                    item.end_time = submitdata.data.end_time;
+                });
+            }
+        }
+
+        return {t,id,changeTimeInDuration,types,days,addDetail,removeDetail,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors};
     },
     methods: {
         AddSubmit() {
@@ -337,8 +363,11 @@ export default {
 
         let formData = new FormData();
         formData.append('name', this.data.name);
-        formData.append('circle_type_id', this.data.circle_type_id);
+        formData.append('circle_type_id', this.data.circle_type_id ?? '');
         formData.append('gender', this.data.gender ?? '');
+        formData.append('start_time', this.data.start_time);
+        formData.append('end_time', this.data.end_time);
+        formData.append('status', this.data.status ? 1 : 0);
         if(!this.data.add_duration) {
             this.days.forEach((item, index) => {
                 formData.append(`duration[${index}][day]`, item.id);

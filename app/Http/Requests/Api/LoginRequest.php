@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone'       => 'required|exists:students',
+            'phone'       => 'required',
             'remember_me' => 'boolean'
         ];
     }

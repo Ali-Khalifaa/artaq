@@ -12,7 +12,7 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <label class="form-label">{{ $t('global.name') }}</label>
+                            <label class="form-label">{{ $t('global.Three-part name') }}</label>
                             <input type="text" class="form-control" v-model="v$.name.$model"
                                 :placeholder="$t('global.name')" :class="{
                                     'is-invalid': v$.name.$error || errors[`name`],
@@ -38,27 +38,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label">{{ $t('global.birth_date') }}</label>
-                            <input type="text" class="form-control" id="date" v-model="v$.birth_date.$model"
-                                 :class="{
-                                    'is-invalid': v$.birth_date.$error || errors[`birth_date`],
-                                    'is-valid': !v$.birth_date.$invalid && !errors[`birth_date`]
-                                }">
-
-                            <div class="invalid-feedback">
-                                <span v-if="v$.birth_date.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
-                                </span>
-
-                            </div>
-                            <template v-if="errors[`birth_date`]">
-                                <error-message v-for="(errorMessage, index) in errors[`birth_date`]" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
+                         <div class="col-md-6">
                             <label class="form-label">{{ $t('global.phone') }}</label>
                             <input type="text" class="form-control" v-model.trim="v$.phone.$model"
                                 :class="{ 'is-invalid': v$.phone.$error || errors[`phone`], 'is-valid': !v$.phone.$invalid  && !errors[`phone`] }"
@@ -84,6 +64,26 @@
                         </div>
 
                         <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.guardian') }}</label>
+                            <input type="text" class="form-control" v-model="v$.guardian.$model"
+                                 :class="{
+                                    'is-invalid': v$.guardian.$error || errors[`guardian`],
+                                    'is-valid': !v$.guardian.$invalid && !errors[`guardian`]
+                                }">
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.guardian.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+
+                            </div>
+                            <template v-if="errors[`guardian`]">
+                                <error-message v-for="(errorMessage, index) in errors[`guardian`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
                             <label class="form-label">{{ $t('global.guardian_phone') }}</label>
                             <input type="text" class="form-control" v-model.trim="v$.guardian_phone.$model"
                                 :class="{ 'is-invalid': v$.guardian_phone.$error || errors[`guardian_phone`], 'is-valid': !v$.guardian_phone.$invalid  && !errors[`guardian_phone`] }"
@@ -103,90 +103,6 @@
                             </div>
                             <template v-if="errors['guardian_phone']">
                                 <error-message v-for="(errorMessage, index) in errors['guardian_phone']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectMemorizationType') }}</label>
-
-                            <Select v-model="data.preservation_method_id" :filterFields="['id','name']" @change="getLevels" :options="types" filter
-                                    :invalid="v$.preservation_method_id.$error || errors[`preservation_method_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.preservation_method_id.$error || errors[`preservation_method_id`], 'is-valid': !v$.preservation_method_id.$invalid && !errors[`preservation_method_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.preservation_method_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['preservation_method_id']">
-                                <error-message v-for="(errorMessage, index) in errors['preservation_method_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectLevel') }}</label>
-
-                            <Select v-model="data.level_id" :filterFields="['id','name']" :options="levels" filter
-                                    :invalid="v$.level_id.$error || errors[`level_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.level_id.$error || errors[`level_id`], 'is-valid': !v$.level_id.$invalid && !errors[`level_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.level_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['level_id']">
-                                <error-message v-for="(errorMessage, index) in errors['level_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectMemorizationAmount') }}</label>
-
-                            <Select v-model="data.memorization_amount_id" :filterFields="['id','name']" :options="amounts" filter
-                                    :invalid="v$.memorization_amount_id.$error || errors[`memorization_amount_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.memorization_amount_id.$error || errors[`memorization_amount_id`], 'is-valid': !v$.memorization_amount_id.$invalid && !errors[`memorization_amount_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.memorization_amount_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['memorization_amount_id']">
-                                <error-message v-for="(errorMessage, index) in errors['memorization_amount_id']" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
-                        </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label">{{ $t('global.selectTrack') }}</label>
-
-                            <Select v-model="data.track_id" :filterFields="['id','name']" :options="tracks" filter
-                                    :invalid="v$.track_id.$error || errors[`track_id`]"
-                                        optionLabel="name" optionValue="id"
-                                    :class="['w-full w-100', { 'is-invalid': v$.track_id.$error || errors[`track_id`], 'is-valid': !v$.track_id.$invalid && !errors[`track_id`] }]">
-
-                            </Select>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.track_id.required.$invalid">{{
-                                        $t('global.ThisFieldIsRequired') }}<br />
-                                </span>
-                            </div>
-                            <template v-if="errors['track_id']">
-                                <error-message v-for="(errorMessage, index) in errors['track_id']" :key="index">
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
@@ -236,6 +152,46 @@
                         </div>
 
                         <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.birth_date') }}</label>
+                            <input type="text" class="form-control" id="date" v-model="v$.birth_date.$model"
+                                 :class="{
+                                    'is-invalid': v$.birth_date.$error || errors[`birth_date`],
+                                    'is-valid': !v$.birth_date.$invalid && !errors[`birth_date`]
+                                }">
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.birth_date.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+
+                            </div>
+                            <template v-if="errors[`birth_date`]">
+                                <error-message v-for="(errorMessage, index) in errors[`birth_date`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.id_number') }}</label>
+                            <input type="text" class="form-control" v-model="v$.id_number.$model"
+                                 :class="{
+                                    'is-invalid': v$.id_number.$error || errors[`id_number`],
+                                    'is-valid': !v$.id_number.$invalid && !errors[`id_number`]
+                                }">
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.id_number.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+
+                            </div>
+                            <template v-if="errors[`id_number`]">
+                                <error-message v-for="(errorMessage, index) in errors[`id_number`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                         <div class="col-md-6 mt-3">
                             <label class="form-label">{{ $t('global.selectCountry') }}</label>
 
                             <Select v-model="data.country_id" :filterFields="['id','name']" @change="getCitiesByCountryId" :options="countries" filter
@@ -272,6 +228,121 @@
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
+                        </div>
+
+                         <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectMemorizationAmount') }}</label>
+
+                            <Select v-model="data.memorization_amount_id" :filterFields="['id','name']" :options="amounts" filter
+                                    :invalid="v$.memorization_amount_id.$error || errors[`memorization_amount_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.memorization_amount_id.$error || errors[`memorization_amount_id`], 'is-valid': !v$.memorization_amount_id.$invalid && !errors[`memorization_amount_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.memorization_amount_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['memorization_amount_id']">
+                                <error-message v-for="(errorMessage, index) in errors['memorization_amount_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectTrack') }}</label>
+
+                            <Select v-model="data.track_id" :filterFields="['id','name']" @change="getMemorizationType" :options="tracks" filter
+                                    :invalid="v$.track_id.$error || errors[`track_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.track_id.$error || errors[`track_id`], 'is-valid': !v$.track_id.$invalid && !errors[`track_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.track_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span>
+                            </div>
+                            <template v-if="errors['track_id']">
+                                <error-message v-for="(errorMessage, index) in errors['track_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectMemorizationType') }}</label>
+
+                            <Select v-model="data.preservation_method_id" :filterFields="['id','name']" @change="getLevels" :options="types" filter
+                                    :invalid="v$.preservation_method_id.$error || errors[`preservation_method_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.preservation_method_id.$error || errors[`preservation_method_id`], 'is-valid': !v$.preservation_method_id.$invalid && !errors[`preservation_method_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <!-- <span v-if="v$.preservation_method_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span> -->
+                            </div>
+                            <template v-if="errors['preservation_method_id']">
+                                <error-message v-for="(errorMessage, index) in errors['preservation_method_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.selectLevel') }}</label>
+
+                            <Select v-model="data.level_id" :filterFields="['id','name']" @change="levelDetail" :options="levels" filter
+                                    :invalid="v$.level_id.$error || errors[`level_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.level_id.$error || errors[`level_id`], 'is-valid': !v$.level_id.$invalid && !errors[`level_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+                                <!-- <span v-if="v$.level_id.required.$invalid">{{
+                                        $t('global.ThisFieldIsRequired') }}<br />
+                                </span> -->
+                            </div>
+                            <template v-if="errors['level_id']">
+                                <error-message v-for="(errorMessage, index) in errors['level_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+
+                            <div class="table-responsive" v-if="data.level_id && level_details">
+                                <table class="table text-nowrap table-success table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">{{ $t('global.Juz') }}</th>
+                                            <th scope="col">{{ $t('global.surah_name') }}</th>
+                                            <th scope="col">{{ $t('global.Ayah_number') }}</th>
+                                            <th scope="col">{{ $t('global.page_num') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">{{ $t('global.from') }}</th>
+                                            <td>{{level_details.juz}}</td>
+                                            <td>{{level_details.first_sour}}</td>
+                                            <td>{{level_details.first_ayah}}</td>
+                                            <td>{{level_details.first_page}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">{{ $t('global.to') }}</th>
+                                             <td>{{level_details.juz}}</td>
+                                            <td>{{level_details.last_sour}}</td>
+                                            <td>{{level_details.last_ayah}}</td>
+                                            <td>{{level_details.last_page}}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <div class="col-md-6  mt-3">
@@ -323,11 +394,32 @@
                             </template>
                         </div>
 
+                         <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.juz_count') }}</label>
+                            <input type="number" class="form-control" @input="makeMaxNumber('juz_count',30)" v-model="v$.juz_count.$model"
+                                 :class="{
+                                    'is-invalid': v$.juz_count.$error || errors[`juz_count`],
+                                    'is-valid': !v$.juz_count.$invalid && !errors[`juz_count`]
+                                }">
+
+                            <div class="invalid-feedback">
+                                <span v-if="v$.juz_count.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
+                                </span>
+                                <span v-if="v$.juz_count.numeric.$invalid">{{$t('validation.ThisFieldIsNumeric')}} <br /></span>
+
+                            </div>
+                            <template v-if="errors[`juz_count`]">
+                                <error-message v-for="(errorMessage, index) in errors[`juz_count`]" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
                         <div class="col-md-6 mt-4">
                             <div class="custom-toggle-switch d-flex align-items-center mb-4">
                                 <input id="toggleswitchPrimary" v-model="data.status" type="checkbox">
                                 <label for="toggleswitchPrimary" class="label-primary"></label><span class="ms-3">{{
-                                    $t('global.status')
+                                    $t('global.Activate the account')
                                 }}</span>
                             </div>
                             <template v-if="errors['status']">
@@ -340,7 +432,7 @@
                         <div class="col-md-12 mt-3 row flex-fill">
                             <div class="btn btn-outline-light waves-effect" style="width: 90%; height:90%">
 
-                                <span v-if="type != 'edit' && !numberOfImage" style="margin-top:30%;">
+                                <span v-if="type != 'edit' && !numberOfImage" style="width: 90%; height: 90%; margin-top: 30%">
                                     {{ $t('global.ChooseImages') }}
                                     <br><i class="bi bi-cloud-upload fs-40"></i>
                                     <i class="fas fa-cloud-upload-alt ml-3" aria-hidden="true"></i>
@@ -351,7 +443,7 @@
                                 <div v-if="type == 'edit'" v-show="!numberOfImage">
                                     <figure>
                                         <figcaption>
-                                            <img class="img-fluid rounded" :src="`${imageUpload}`">
+                                            <img class="img-fluid rounded" style="max-width: 150px; height: 150px" :src="`${imageUpload}`">
                                         </figcaption>
                                     </figure>
                                 </div>
@@ -403,7 +495,7 @@
 <script>
 import { computed, onMounted, reactive, ref, toRefs, watch, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
-import { maxLength, minLength, required, sameAs, alphaNum, requiredIf } from "@vuelidate/validators";
+import { maxLength, minLength, required, sameAs, alphaNum, requiredIf ,numeric} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import adminApi from "../../../api/adminAxios";
 
@@ -441,6 +533,7 @@ export default {
         let countries = ref([]);
         let cities = ref([]);
         let tracks = ref([]);
+        let level_details = ref('');
 
          onMounted(async ()=>{
             flatpickr("#date", {});
@@ -450,6 +543,7 @@ export default {
             loading.value = true;
             levels.value = [];
             submitdata.data.level_id = '';
+            level_details.value = '';
 
             adminApi.get(`dashboard/levels/dropdown?preservation_method_id=${submitdata.data.preservation_method_id}`)
                 .then((res) => {
@@ -480,8 +574,12 @@ export default {
         }
         let getMemorizationType = () => {
             loading.value = true;
+            types.value = [];
+            levels.value = [];
+            submitdata.data.preservation_method_id = '';
+            submitdata.data.level_id = '';
 
-            adminApi.get(`dashboard/memorization-types-dropdown`)
+            adminApi.get(`dashboard/memorization-types-dropdown?track_id=${submitdata.data.track_id}`)
                 .then((res) => {
                     let l = res.data.data;
                     types.value = l;
@@ -562,16 +660,19 @@ export default {
             submitdata.data.birth_date = '';
             submitdata.data.level_id = '';
             submitdata.data.phone = '';
+            submitdata.data.guardian = '';
             submitdata.data.guardian_phone = '';
             submitdata.data.preservation_method_id = '';
             submitdata.data.memorization_amount_id = '';
             submitdata.data.track_id = '';
-            submitdata.data.nationality_id = '';
+            submitdata.data.nationality_id = 2;
             submitdata.data.country_id = '';
             submitdata.data.city_id = '';
             submitdata.data.gender = 'male';
             submitdata.data.password = '';
             submitdata.data.confirmation = '';
+            submitdata.data.id_number = '';
+            submitdata.data.juz_count = '';
             imageUpload.value = '';
             is_disabled.value = false;
             image.value = null
@@ -582,7 +683,6 @@ export default {
             defaultData();
             setTimeout(async () => {
                 getTracks();
-                getMemorizationType();
                 getMemorizationAmounts();
                 getNationalities();
                 getCountries();
@@ -592,13 +692,16 @@ export default {
                     submitdata.data.name = props.dataRow.name;
                     submitdata.data.birth_date = props.dataRow.birth_date;
                     submitdata.data.phone = props.dataRow.phone;
+                    submitdata.data.guardian = props.dataRow.guardian;
                     submitdata.data.guardian_phone = props.dataRow.guardian_phone;
-                    submitdata.data.preservation_method_id = props.dataRow.preservation_method_id;
+
                     submitdata.data.memorization_amount_id = props.dataRow.memorization_amount_id;
                     submitdata.data.nationality_id = props.dataRow.nationality_id;
                     submitdata.data.track_id = props.dataRow.track_id;
                     submitdata.data.country_id = props.dataRow.country_id;
                     submitdata.data.gender = props.dataRow.gender;
+                    submitdata.data.id_number = props.dataRow.id_number;
+                    submitdata.data.juz_count = props.dataRow.juz_count;
                     submitdata.data.status = props.dataRow.status == 1;
                     imageUpload.value = props.dataRow.image;
                     if (submitdata.data.country_id) {
@@ -606,8 +709,13 @@ export default {
                         submitdata.data.city_id = props.dataRow.city_id;
                     }
 
+                    getMemorizationType();
+                    submitdata.data.preservation_method_id = props.dataRow.preservation_method_id;
+
                     getLevels();
                     submitdata.data.level_id = props.dataRow.level_id;
+
+                    levelDetail();
                 }
             }, 50);
         }
@@ -624,13 +732,16 @@ export default {
                 birth_date: '',
                 level_id: '',
                 phone: '',
+                guardian: '',
                 guardian_phone: '',
                 preservation_method_id: '',
                 memorization_amount_id: '',
                 track_id: '',
-                nationality_id: '',
+                nationality_id: 2,
                 country_id: '',
                 city_id: '',
+                id_number: '',
+                juz_count: '',
                 gender: 'male',
 
                 password: '',
@@ -670,6 +781,8 @@ export default {
                 let img = document.createElement('img');
                 img.setAttribute('src', reader.result);
                 img.classList.add('img-fluid', 'rounded');
+                img.style.maxWidth = '150px';
+                img.style.height = '150px';
                 figure.insertBefore(img, figcap);
             }
 
@@ -681,13 +794,13 @@ export default {
         // validation image
         const requiredn = ref(false);
 
-        watch(numberOfImage, (count, prevCount) => {
-            if (!count) {
-                requiredn.value = true;
-            } else {
-                requiredn.value = false;
-            }
-        });
+        // watch(numberOfImage, (count, prevCount) => {
+        //     if (!count) {
+        //         requiredn.value = true;
+        //     } else {
+        //         requiredn.value = false;
+        //     }
+        // });
 
         const rules = computed(() => {
             return {
@@ -700,20 +813,29 @@ export default {
                     required
                 },
                 level_id: {
+                    // required
+                },
+                id_number: {
                     required
+                },
+                juz_count: {
+                    required,numeric,
                 },
                  phone: {
                     required,
-                    minLength: minLength(8),
+                    minLength: minLength(10),
                     maxLength: maxLength(20)
+                },
+                guardian: {
+                    required
                 },
                 guardian_phone: {
                     required,
-                    minLength: minLength(8),
+                    minLength: minLength(10),
                     maxLength: maxLength(20)
                 },
                 preservation_method_id: {
-                    required
+                    // required
                 },
                 memorization_amount_id: {
                     required
@@ -748,12 +870,27 @@ export default {
 
         const v$ = useVuelidate(rules, submitdata.data);
 
+        function makeMaxNumber(field, max) {
+            if (submitdata.data[field] > max) {
+                submitdata.data[field] = max;
+            }
+            if (submitdata.data[field] < 0) {
+                submitdata.data[field] = 0;
+            }
+        }
+
+        function levelDetail() {
+            if (submitdata.data.level_id) {
+                level_details.value = levels.value.find((l) => l.id == submitdata.data.level_id);
+            }
+        }
+
         return {
-            t, id,levels,nationalities, countries, cities,getCitiesByCountryId,
+            t, id,levels,nationalities, countries, cities,getCitiesByCountryId,level_details,levelDetail,
             loading, is_disabled, types,amounts,
             resetModal, empty, preview, resetModalHidden,
             imageUpload, image, ...toRefs(submitdata),
-            v$, numberOfImage, requiredn, errors,getLevels,tracks
+            v$, numberOfImage, requiredn, errors,getLevels,tracks,getMemorizationType,makeMaxNumber
         };
     },
     methods: {
@@ -769,6 +906,9 @@ export default {
             formData.append('birth_date', this.data.birth_date ?? '');
             formData.append('level_id', this.data.level_id ?? '');
             formData.append('phone', this.data.phone ?? '');
+            formData.append('id_number', this.data.id_number ?? '');
+            formData.append('juz_count', this.data.juz_count ?? '');
+            formData.append('guardian', this.data.guardian ?? '');
             formData.append('guardian_phone', this.data.guardian_phone ?? '');
             formData.append('preservation_method_id', this.data.preservation_method_id ?? '');
             formData.append('memorization_amount_id', this.data.memorization_amount_id ?? '');
@@ -787,7 +927,7 @@ export default {
                 formData.append('image', this.image);
             }
             if (this.type !== 'edit') {
-                if (!this.v$.$error && this.numberOfImage) {
+                if (!this.v$.$error) {
                     this.is_disabled = false;
                     this.loading = true;
                     adminApi.post(`dashboard/student`, formData)
@@ -817,7 +957,6 @@ export default {
                     if (!this.numberOfImage) {
                         this.loading = false;
                         this.is_disabled = false;
-                        this.requiredn = true;
                     }
                 }
             } else if (!this.v$.$error) {

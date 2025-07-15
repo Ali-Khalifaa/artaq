@@ -103,23 +103,26 @@
                         </router-link>
                     </li>
 
-                    
-
-                   
                     <li class="slide" v-show="permission.includes('memorization amount read')">
                         <router-link :to="{name:'memorizationAmount'}" class="side-menu__item">
                             <i class="bx bx-book-bookmark side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.memorizationAmount')}}</span>
                         </router-link>
                     </li>
+
+                    <li class="slide" v-show="permission.includes('track read')">
+                        <router-link :to="{name:'track'}" class="side-menu__item">
+                            <i class="bx bx-git-branch side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.tracks')}}</span>
+                        </router-link>
+                    </li>
+
                     <li class="slide" v-show="permission.includes('memorization type read')">
                         <router-link :to="{name:'memorizationType'}" class="side-menu__item">
                             <i class="bx bx-book-bookmark side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.memorizationType')}}</span>
                         </router-link>
                     </li>
-
-                   
 
                     <li class="slide" v-show="permission.includes('level read')">
                         <router-link :to="{name:'level'}" class="side-menu__item">
@@ -132,13 +135,6 @@
                         <router-link :to="{name:'levelTask'}" class="side-menu__item">
                             <i class="bx bx-task side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.levelTask')}}</span>
-                        </router-link>
-                    </li>
-
-                    <li class="slide" v-show="permission.includes('track read')">
-                        <router-link :to="{name:'track'}" class="side-menu__item">
-                            <i class="bx bx-git-branch side-menu__icon" aria-hidden="true"></i>
-                            <span class="side-menu__label">{{$t('global.tracks')}}</span>
                         </router-link>
                     </li>
 
@@ -166,7 +162,7 @@
                         </ul>
                     </li>
 
-                    
+
                     <!-- Start::areas -->
                     <li class="slide has-sub" v-show="permission.includes('country read') || permission.includes('city read')"
                         :class="[$route.name == 'country' || $route.name == 'city' ? 'active open': '']"
@@ -191,7 +187,14 @@
                         </ul>
                     </li>
                     <!-- End::areas -->
-                    
+
+
+                    <li class="slide" v-show="permission.includes('serial read')">
+                        <router-link :to="{name:'serial'}" class="side-menu__item">
+                            <i class="bx bx-barcode side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.serials')}}</span>
+                        </router-link>
+                    </li>
 
                     <li class="slide" v-show="permission.includes('nationality read')">
                         <router-link :to="{name:'nationality'}" class="side-menu__item">
@@ -218,6 +221,13 @@
                         <router-link :to="{name:'setting'}" class="side-menu__item">
                             <i class="bx bx-cog side-menu__icon" aria-hidden="true"></i>
                             <span class="side-menu__label">{{$t('global.theSettings')}}</span>
+                        </router-link>
+                    </li>
+
+                     <li class="slide" v-show="permission.includes('official holiday read')">
+                        <router-link :to="{name:'officialHoliday'}" class="side-menu__item">
+                            <i class="bx bx-calendar-event side-menu__icon" aria-hidden="true"></i>
+                            <span class="side-menu__label">{{$t('global.officialHolidays')}}</span>
                         </router-link>
                     </li>
 

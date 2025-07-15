@@ -26,7 +26,7 @@ class LevelTaskController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $level = LevelTask::with('level','fromSurah','toSurah','fromAyah','toAyah')->searchAndFilter()->latest()->paginate(10);
+        $level = LevelTask::with('level','fromSurah','toSurah','fromAyah','toAyah','reviewFromSurah','reviewToSurah','reviewFromAyah','reviewToAyah')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(LevelTaskResource::collection($level->items()),'',200,getPaginates($level));
     }

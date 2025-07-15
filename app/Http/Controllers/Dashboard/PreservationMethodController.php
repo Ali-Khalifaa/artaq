@@ -26,7 +26,7 @@ class PreservationMethodController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $memorization = PreservationMethod::searchAndFilter()->latest()->paginate(10);
+        $memorization = PreservationMethod::with('track')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(PreservationMethodResource::collection($memorization->items()),'',200,getPaginates($memorization));
     }
@@ -69,10 +69,13 @@ class PreservationMethodController extends Controller implements HasMiddleware
         return responseJson([],'Deleted Successfully',200);
     }
 
-    public function dropdown()
+    public function dropdown(Request $request)
     {
-        $level = PreservationMethod::all();
-
+        if ($request->track_id) {
+            $level = PreservationMethod::where('track_id', $request->track_id)->get();
+        } else {
+            $level = PreservationMethod::all();
+        }
         return responseJson(PreservationMethodResource::collection($level),'',200);
     }
 }

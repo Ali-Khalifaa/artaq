@@ -16,10 +16,9 @@ class PreservationMethodSeeder extends Seeder
         PreservationMethod::truncate();
 
         PreservationMethod::create([
-            'name' => 'من سورة الفاتحة الى سورة الناس',
-        ]);
+            'name' => 'من سورة الفاتحة الى سورة الناس',"track_id"=>2        ]);
         PreservationMethod::create([
-            'name' => 'من سورة الناس الى سورة الفاتحة',
+            'name' => 'من سورة الناس الى سورة الفاتحة',"track_id"=>2
         ]);
 
     }

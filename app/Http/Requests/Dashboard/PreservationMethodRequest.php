@@ -25,6 +25,7 @@ class PreservationMethodRequest extends FormRequest
     {
         return [
             'name' => "required|string",
+            'track_id' => "required|exists:tracks,id",
         ];
     }
 }

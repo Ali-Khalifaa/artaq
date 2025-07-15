@@ -8,9 +8,7 @@ const app = createApp({});
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import share_booking_google_map_component from './views/admin/taxi/booking/share_booking_google_map_component.vue';
 
-app.component('share-booking-google-map-component', share_booking_google_map_component);
 app.use(i18n);
 
 

@@ -154,6 +154,10 @@ export default {
             let theme_mode = localStorage.getItem("mode") == 'light' ? 'dark' : 'light';
             tagHtml.setAttribute('data-theme-mode', theme_mode);
             tagHtml.setAttribute('data-header-styles', theme_mode);
+            tagHtml.setAttribute('data-menu-styles', theme_mode);
+            //add data-header-styles="light" to tagHtml
+            
+
             localStorage.setItem('mode',theme_mode);
         }
 

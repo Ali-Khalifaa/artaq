@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\MemorizationAmountController;
 use App\Http\Controllers\Dashboard\PreservationMethodController;
 use App\Http\Controllers\Dashboard\NationalityController;
 use App\Http\Controllers\Dashboard\NotificationController;
+use App\Http\Controllers\Dashboard\OfficialHolidayController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\QuranController;
 use App\Http\Controllers\Dashboard\RoleController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\TeacherBadgeController;
 use App\Http\Controllers\Dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TrackController;
+use App\Http\Controllers\Dashboard\SerialController;
 use App\Http\Controllers\Web\WebPagesController;
 use App\Http\Middleware\ChangeLang;
 use Illuminate\Http\Request;
@@ -77,6 +79,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         Route::apiResource('settings', SettingController::class);
 
+        Route::apiResource('official-holidays', OfficialHolidayController::class);
+
         Route::get('levels/dropdown',[LevelController::class,'dropdown']);
         Route::apiResource('levels', LevelController::class);
 
@@ -89,6 +93,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('student', StudentController::class);
 
         Route::apiResource('teacher', TeacherController::class);
+        Route::put('change-admin-teacher/{id}',[TeacherController::class,'changeAdmin']);
+        Route::put('modify-circles-teacher/{id}',[TeacherController::class,'modifyCircles']);
 
         Route::get('circle-types-dropdown',[CircleTypeController::class,'dropdown']);
         Route::apiResource('circle-types', CircleTypeController::class);
@@ -96,7 +102,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::get('tracks-dropdown',[TrackController::class,'dropdown']);
         Route::apiResource('tracks', TrackController::class);
 
+        // Serial
+        Route::get('serial/enums',[SerialController::class,'enums']);
+        Route::apiResource('serial', SerialController::class);
+
         Route::apiResource('circles', CircleController::class);
+        Route::get('circles-dropdown',[CircleController::class,'dropdown']);
+        Route::get('circles-without-teacher/{id}',[CircleController::class,'circlesWithoutTeacher']);
 
         Route::apiResource('quran', QuranController::class);
         Route::get('surah-dropdown',[QuranController::class,'getSurahDropdown']);
@@ -106,6 +118,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         Route::resource('roles', RoleController::class);
 
+        Route::get('admins-dropdown',[AdminController::class,'dropdown']);
         Route::resource('admins', AdminController::class);
         Route::get('all_roles', [AdminController::class,'all_roles']);
 

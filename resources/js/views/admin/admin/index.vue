@@ -42,37 +42,48 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">{{ $t('global.image') }}</th>
-                                        <th scope="col">{{ $t('global.name') }}</th>
-                                        <th scope="col">{{ $t('global.phone') }}</th>
+                                        <th scope="col">{{ $t('global.Three-part name') }}</th>
                                         <th scope="col">{{ $t('global.email') }}</th>
                                         <th scope="col">{{ $t('global.role_name') }}</th>
-                                        <th scope="col">{{ $t('global.status') }}</th>
+                                        <th scope="col">{{ $t('global.nationality') }}</th>
+                                        <th scope="col">{{ $t('global.country') }}</th>
+                                        <th scope="col">{{ $t('global.Activate the account') }}</th>
+                                        <th scope="col">{{ $t('global.created_at') }}</th>
                                         <th scope="col">{{ $t('global.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="data && data.length">
                                     <tr v-for="(item, index) in data" :key="item.id">
-                                        <td scope="row">{{ index + 1 }}</td>
+                                        <td scope="row">{{ item.code }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="me-3">
-                                                    <span class="avatar avatar-xxl bg-light">
-                                                        <img :src="item.image" alt="" style="width: 100%; height: 100%">
+                                                <div>
+                                                    <span :class="['avatar avatar-xl me-3 avatar-rounded', parseInt(item.status) === 1 ? 'online' : 'offline']">
+                                                        <img :src="item.image" alt="">
                                                     </span>
+                                                </div>
+                                                <div>
+                                                    <div class="mb-2 fs-14 fw-semibold">
+                                                        <a href="javascript:void(0);">{{item.name}}</a>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <span class="text-muted d-block">{{item.phone}} ({{item.country?.phone_code}})</span>
+                                                        <span class="text-muted">{{$t('global.'+item.gender)}}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.phone }}</td>
                                         <td>{{ item.email }}</td>
                                         <td>{{ item.role_name }}</td>
+                                        <td>{{ item.nationality?.name }}</td>
+                                        <td>{{ item.country?.name }}</td>
                                         <td>
                                             <span class="badge rounded-pill bg-success-transparent"
                                                 v-if="item.status">{{ $t('global.activated') }}</span>
                                             <span class="badge rounded-pill bg-danger-transparent" v-else>{{
                                                 $t('global.Inactive') }}</span>
                                         </td>
+                                        <td>{{item.created_at}}</td>
                                         <td>
                                             <div class="hstack gap-2 fs-15">
                                                 <a @click="selectedUser = item" data-bs-toggle="modal"
@@ -88,6 +99,12 @@
                                                     class="btn btn-icon btn-sm btn-primary-transparent rounded-pill"
                                                     :title="$t('global.update')">
                                                     <i class="ri-edit-line"></i>
+                                                </button>
+                                                <button @click.prevent="showDataModel(item)"
+                                                        data-bs-toggle="modal" data-bs-target="#show"
+                                                        class="btn btn-icon btn-sm btn-success-transparent rounded-pill"
+                                                        :title="$t('global.show')">
+                                                    <i class="ri-eye-line"></i>
                                                 </button>
                                                 <!-- <button v-if="permission.includes('admin edit')"
                                                     @click.prevent="showModelReason(item, (item.status ? 'Deactivation' : 'Activation'))"
@@ -110,7 +127,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="8">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="9">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -132,6 +149,7 @@
         <SendNotification :selectedUser="selectedUser" :type="'App\\Models\\Admin'" />
         <reason v-model="reasonShow" :type="type" :dataRow="dataRow" :model="'App\\Models\\Admin'" :url="'admins'"
             @created="getData(pagePaginate)" />
+        <Show v-model="showData" :dataRow="dataRow" type="order" @created="getData(pagePaginate)" />
     </div>
 </template>
 
@@ -140,27 +158,43 @@ import { onBeforeMount, inject, ref } from "vue";
 import crud from "../../../composable/crud_structure";
 import ModalCreateAndUpdate from "./ModalCreateAndUpdate.vue"
 import SendNotification from "../../../components/general/SendNotification.vue"
+import Show from "./Show.vue";
 export default {
     name: "index",
     components: {
-        ModalCreateAndUpdate, SendNotification
+        ModalCreateAndUpdate, SendNotification,Show
     },
     setup() {
         const emitter = inject('emitter');
         const selectedUser = ref({});
 
-        const { getData, loading, data, dataPaginate, permission, uri, showModelCreate, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate} = crud();
+        const { getData, loading, data, dataPaginate, permission, uri, showModelCreate,showDataModel,showData, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate} = crud();
 
         search.value = {
             searchKey: '',
             searchInTranslations: false,
-            columns: ['id', 'name', 'phone', 'email'],
+            columns: ['id', 'name', 'phone', 'email','code'],
             searchInRelations: [
                 {
                     relation: 'roles',
                     columns: ['name'],
                     searchInRelationTranslations: false
-                }
+                },
+                {
+                    relation: 'nationality',
+                    columns: ['name'],
+                    searchInRelationTranslations: false
+                },
+                {
+                    relation: 'city',
+                    columns: ['name'],
+                    searchInRelationTranslations: false
+                },
+                {
+                    relation: 'country',
+                    columns: ['name'],
+                    searchInRelationTranslations: false
+                },
             ]
         }
 
@@ -170,7 +204,7 @@ export default {
         });
 
 
-        return { getData, loading, search, permission, deleteData, showEditMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate};
+        return { getData, loading, search, permission, deleteData, showEditMode,showDataModel,showData, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate};
 
     }
 }

@@ -108,6 +108,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'circle edit'  ,  'category' => 'Circles'],
             ['name' => 'circle delete',  'category' => 'Circles'],
 
+            ['name' => 'official holiday read'  ,  'category' => 'Official Holidays'],
+            ['name' => 'official holiday create',  'category' => 'Official Holidays'],
+            ['name' => 'official holiday edit'  ,  'category' => 'Official Holidays'],
+            ['name' => 'official holiday delete',  'category' => 'Official Holidays'],
+
             ['name' => 'quran read'  ,  'category' => 'Quran'],
 
             ['name' => 'database backup read',  'category' => 'Database Backup'],
@@ -115,6 +120,9 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'join us read',  'category' => 'Join Us'],
             ['name' => 'join us edit',  'category' => 'Join Us'],
+
+            ['name' => 'serial read',  'category' => 'Serials'],
+            ['name' => 'serial edit',  'category' => 'Serials'],
 
             ['name' => 'setting read',  'category' => 'Settings'],
             ['name' => 'setting edit',  'category' => 'Settings'],

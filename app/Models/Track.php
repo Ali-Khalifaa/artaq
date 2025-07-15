@@ -21,4 +21,9 @@ class Track extends Model
         return $this->hasMany(Student::class);
     }
 
+    public function preservationMethods()
+    {
+        return $this->hasMany(PreservationMethod::class);
+    }
+
 }

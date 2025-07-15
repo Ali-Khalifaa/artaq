@@ -38,6 +38,12 @@ return new class extends Migration
             $table->integer('otp_code')->nullable();
             $table->timestamp('code_expired_at')->nullable();
             $table->boolean('status')->default(true);
+
+            $table->string('guardian')->nullable()->comment('اسم ولى الامر');
+            $table->string('id_number')->nullable()->unique()->comment('رقم الهوية');
+            $table->integer('juz_count')->default(0)->comment('عدد الأجزاء التي حفظها الطالب');
+            $table->string('code')->nullable()->comment('كود الطالب');
+
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

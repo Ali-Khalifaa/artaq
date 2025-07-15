@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AdminRequest;
 use App\Http\Requests\Dashboard\EmployeeRequest;
 use App\Http\Resources\Dashboard\AdminResource;
+use App\Http\Resources\Dashboard\ShowAdminResource;
 use App\Models\Admin;
 use App\Models\Income;
 use App\Models\Job;
@@ -37,10 +38,22 @@ class AdminController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $admins = Admin::whereRelation('roles','name','!=','SuperAdmin')->searchAndFilter()->latest()->paginate(15);
+        $admins = Admin::whereRelation('roles','name','!=','SuperAdmin')->with('country','nationality')->searchAndFilter()->latest()->paginate(15);
 
         return responseJson(AdminResource::collection($admins->items()),'',200,getPaginates($admins));
     }
+
+    public function show($id)
+    {
+        $admin = Admin::with('country','nationality','city','teachers')->find($id);
+
+        if (!$admin) {
+            return responseJson([], 'Data not found', 404);
+        }
+
+        return responseJson(new ShowAdminResource($admin), 'Data exited successfully', 200);
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -55,7 +68,7 @@ class AdminController extends Controller implements HasMiddleware
             $data['image'] = store_single_image($request->image);
         $data['password'] = bcrypt($request->password);
         $admin = Admin::create($data);
-        $admin->assignRole($request->input('role_name'));
+        $admin->assignRole((int) $request->input('role_name'));
         return responseJson([],'Created Successfully',200);
     }
 
@@ -102,5 +115,12 @@ class AdminController extends Controller implements HasMiddleware
         unlink_image_by_path($admin->getAttributes()['image']);
         $admin->delete();
         return responseJson([],'Deleted Successfully',200);
+    }
+
+    public function dropdown()
+    {
+        $admins = Admin::whereRelation('roles','name','!=','SuperAdmin')->get();
+
+        return responseJson($admins,'',200);
     }
 }

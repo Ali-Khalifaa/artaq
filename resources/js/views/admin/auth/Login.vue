@@ -6,8 +6,8 @@
                 <div class="p-5">
                     <div class="mb-3">
                         <a href="#">
-                            <img src="/assets/images/brand-logos/desktop-logo.png" alt="" class="authentication-brand desktop-logo">
-                            <img src="/assets/images/brand-logos/desktop-dark.png" alt="" class="authentication-brand desktop-dark">
+                            <img src="/assets/images/brand-logos/desktop-logo.png" alt="" class="authentication-brand desktop-logo" style="width: 100px; height: 100px;">
+                            <img src="/assets/images/brand-logos/desktop-dark.png" alt="" class="authentication-brand desktop-dark" style="width: 100px; height: 100px;">
                         </a>
                     </div>
                     <form @submit.prevent="adminLogin(loginData.data)">
@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="col-xxl-5 col-xl-5 col-lg-5 d-xl-block d-none px-0">
-        <div class="authentication-cover" style="background-color: #111c43 !important; background-image: unset;">
+        <div class="authentication-cover" style="background-color: #e7ce82 !important; background-image: unset;">
             <div class="aunthentication-cover-content rounded">
                 <div class="swiper keyboard-control">
                     <div class="swiper-wrapper">

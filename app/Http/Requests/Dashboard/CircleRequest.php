@@ -25,12 +25,15 @@ class CircleRequest extends FormRequest
     {
         return [
             'name' => "required|string|max:255|unique:circles,name," . $this->route('circle'),
-            'circle_type_id' => 'required|exists:circle_types,id',
+            'circle_type_id' => 'nullable|exists:circle_types,id',
             'gender' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required|after_or_equal:start_time',
             'duration' => 'required|array',
             'duration.*.day' => 'required',
             'duration.*.start_time' => 'required',
             'duration.*.end_time' => 'required|after_or_equal:duration.*.start_time',
+            'status' => 'required|boolean',
         ];
     }
 }

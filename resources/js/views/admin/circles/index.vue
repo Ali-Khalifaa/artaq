@@ -33,9 +33,12 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">{{ $t('label.title') }}</th>
+                                    <th scope="col">{{ $t('global.circleName') }}</th>
                                     <th scope="col">{{ $t('global.circleType') }}</th>
                                     <th scope="col">{{ $t('global.StudentType') }}</th>
+                                    <th scope="col">{{ $t('global.start_time') }}</th>
+                                    <th scope="col">{{ $t('global.end_time') }}</th>
+                                    <th scope="col">{{ $t('global.status') }}</th>
                                     <th scope="col">{{ $t('global.created_at') }}</th>
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
@@ -46,6 +49,14 @@
                                     <td>{{item.name}}</td>
                                     <td>{{item.circle_type?.name}}</td>
                                     <td>{{$t('global.'+item.gender)}}</td>
+                                    <td>{{item.start_time}}</td>
+                                    <td>{{item.end_time}}</td>
+                                    <td>
+                                            <span class="badge rounded-pill bg-success-transparent"
+                                                v-if="item.status">{{ $t('global.activated') }}</span>
+                                            <span class="badge rounded-pill bg-danger-transparent" v-else>{{
+                                                $t('global.Inactive') }}</span>
+                                        </td>
                                     <td>{{item.created_at}}</td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
@@ -66,7 +77,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="6">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="9">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
