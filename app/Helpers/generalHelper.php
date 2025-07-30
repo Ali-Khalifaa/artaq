@@ -35,6 +35,7 @@ function getPaginates($collection)
         'to' => $collection->lastItem(),
     ];
 }
+
 function sendNotification($receivers, $modelData,$pageVueName,$notificationImage,$title, $message,$variables=[],$type = null,$expire_date = null)
 {
 

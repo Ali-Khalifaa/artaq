@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Student\AuthStudentController;
 use App\Http\Controllers\Api\GeneralController;
+use App\Http\Controllers\Api\Student\FreeSessionsController;
 use App\Http\Controllers\Api\Student\HomeController;
 use App\Http\Controllers\Api\Student\NotificationController;
 use App\Http\Controllers\Dashboard\SettingController;
@@ -9,9 +10,15 @@ use App\Http\Middleware\ChangeLang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:student_api');
+
+
+Route::get('tracks', [GeneralController::class, 'tracks']);
+Route::get('preservation-methods', [GeneralController::class, 'preservationMethods']);
+Route::get('levels', [GeneralController::class, 'levels']);
+Route::get('memorization-amount', [GeneralController::class, 'memorizationAmount']);
+Route::get('nationalities', [GeneralController::class, 'nationalities']);
+Route::get('countries', [GeneralController::class, 'countries']);
+Route::get('cities', [GeneralController::class, 'cities']);
 
 
 Route::group(['prefix' => 'student', 'middleware' => [ChangeLang::class]], function () {
@@ -27,16 +34,20 @@ Route::group(['prefix' => 'student', 'middleware' => [ChangeLang::class]], funct
 
     Route::group(['middleware' => 'auth:student_api'], function () {
 
+        Route::get('student-details', [AuthStudentController::class, 'studentDetails']);
         Route::post('logout', [AuthStudentController::class, 'logout']);
         Route::post('complete-register', [AuthStudentController::class, 'completeRegister']);
+        Route::post('update-gender', [AuthStudentController::class, 'updateGender']);
+        Route::post('update-track', [AuthStudentController::class, 'updateTrack']);
 
-        Route::get('tracks', [HomeController::class, 'tracks']);
-        Route::get('preservation-methods', [HomeController::class, 'preservationMethods']);
-        Route::get('levels', [HomeController::class, 'levels']);
-        Route::get('memorization-amount', [HomeController::class, 'memorizationAmount']);
-        Route::get('nationalities', [GeneralController::class, 'nationalities']);
-        Route::get('countries', [GeneralController::class, 'countries']);
-        Route::get('cities', [GeneralController::class, 'cities']);
+
+        Route::get('get-all-teachers', [FreeSessionsController::class, 'getAllTeachers']);
+        Route::get('active-teachers', [FreeSessionsController::class, 'getActiveTeachers']);
+        Route::get('previous-sessions', [FreeSessionsController::class, 'previousSessions']);
+        Route::get('last-session-details', [FreeSessionsController::class, 'lastSessionDetails']);
+        Route::get('sessions-details', [FreeSessionsController::class, 'freeSessionsDetails']);
+        Route::post('start-session/{teacherId}', [FreeSessionsController::class, 'startSession']);
+        Route::post('rate-teacher-session/{id}', [FreeSessionsController::class, 'rateTeacher']);
 
 
         Route::controller(NotificationController::class)->group(function () {

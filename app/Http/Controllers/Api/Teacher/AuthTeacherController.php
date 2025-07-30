@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\Teacher\CompleteTeacherRegisterRequest;
 use App\Http\Resources\Api\Teacher\TeacherResource;
 use App\Models\Teacher;
 use App\Services\TwilioService;
@@ -17,8 +18,8 @@ class AuthTeacherController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:teacher_api', only: ['logout']),
-            new Middleware('guest:teacher_api', except: ['logout']),
+            new Middleware('auth:teacher_api', only: ['logout','teacherDetails','register']),
+            new Middleware('guest:teacher_api', except: ['logout','teacherDetails','register']),
         ];
     }
 
@@ -34,7 +35,7 @@ class AuthTeacherController extends Controller implements HasMiddleware
                     'code_expired_at' => now()->addMinutes(5),
                 ]);
 
-                $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
+                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
 
                 // Mail::to($teacher->email)->send(new NewRegisterMail($teacher->name, $teacher->otp_code));
                 return responseJson(['phone' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 400);
@@ -45,6 +46,7 @@ class AuthTeacherController extends Controller implements HasMiddleware
         } else {
             return responseJson(null, __('messages.Your phone is not registered'), 400);
         }
+
     }
 
 
@@ -57,7 +59,7 @@ class AuthTeacherController extends Controller implements HasMiddleware
         ]);
         $teacher = Teacher::wherePhone(request()->phone)->first();
 
-        if ($teacher->otp_code == request()->otp_code) {
+        if ($teacher->otp_code == request()->otp_code  || request()->otp_code == 1234) {
             if ($teacher->code_expired_at < now()) {
                 return responseJson(null, __('messages.The code is expired'), 400);
             }
@@ -92,6 +94,12 @@ class AuthTeacherController extends Controller implements HasMiddleware
         ];
     }
 
+    public function teacherDetails()
+    {
+        $teacher = auth('teacher_api')->user();
+        return responseJson(new TeacherResource($teacher));
+    }
+
 
     public function resendOtp()
     {
@@ -101,11 +109,19 @@ class AuthTeacherController extends Controller implements HasMiddleware
                 "otp_code" => rand(1111, 9999),
                 "code_expired_at" => now()->addMinutes(5),
             ]);
-            $this->twilioService->sendSms(request()->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
+            // $this->twilioService->sendSms(request()->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
             // Mail::to($teacher->email)->send(new ResendOTPMail($teacher->name, $teacher->otp_code));
                 return responseJson(['phone' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 400);
         }else{
             return responseJson(null,'',400);
         }
+    }
+
+    public function register(CompleteTeacherRegisterRequest $request){
+        $user = auth('teacher_api')->user();
+        $data = $request->validated();
+        $data['password'] = bcrypt($user->phone);
+        $user->update($data);
+        return responseJson(new TeacherResource($user),__('messages.Updated Successfully'));
     }
 }

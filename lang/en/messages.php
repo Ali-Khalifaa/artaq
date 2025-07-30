@@ -561,7 +561,7 @@ return [
     'Your otp code is :otp' => 'Your otp code is :otp',
     'We have sent an otp code to your phone :phone.Please check your phone' => 'We have sent an otp code to your phone :phone.Please check your phone',
     'Your account is not activated please contact with support' => 'Your account is not activated please contact with support',
-    'Pending' => 'Pending',
+    'You already rated this session before' => 'You already rated this session before',
     'Pending' => 'Pending',
     'Pending' => 'Pending',
     'Pending' => 'Pending',

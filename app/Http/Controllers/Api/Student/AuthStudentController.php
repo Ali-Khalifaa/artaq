@@ -18,8 +18,8 @@ class AuthStudentController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:student_api', only: ['logout','completeRegister']),
-            new Middleware('guest:student_api', except: ['logout','completeRegister']),
+            new Middleware('auth:student_api', only: ['logout','completeRegister','updateGender','updateTrack','studentDetails']),
+            new Middleware('guest:student_api', except: ['logout','completeRegister','updateGender','updateTrack','studentDetails']),
         ];
     }
 
@@ -116,5 +116,23 @@ class AuthStudentController extends Controller implements HasMiddleware
         $data['password'] = bcrypt($user->phone);
         $user->update($data);
         return responseJson(new StudentResource($user),__('messages.Updated Successfully'));
+    }
+
+    public function updateGender(){
+        $user = auth('student_api')->user();
+        request()->validate(['gender' => "required|in:male,female"]);
+        $user->update(['gender' => request()->gender]);
+        return responseJson(new StudentResource($user),__('messages.Updated Successfully'));
+    }
+
+    public function updateTrack(){
+        $student = auth('student_api')->user();
+        request()->validate(['track_id' => "required|exists:tracks,id","level_id" =>"required_if:track_id,2"]);
+        $student->update(['track_id' => request()->track_id,'level_id' => request()->track_id == 2 && request()->level_id ?request()->level_id : $student->level_id]);
+        return responseJson(new StudentResource($student),__('messages.Updated Successfully'));
+    }
+    public function studentDetails(){
+        $student = auth('student_api')->user();
+        return responseJson(new StudentResource($student));
     }
 }

@@ -2,31 +2,35 @@
 
 use App\Http\Controllers\Api\Teacher\AuthTeacherController;
 use App\Http\Controllers\Api\GeneralController;
+use App\Http\Controllers\Api\Teacher\FreeSessionsController;
+use App\Http\Controllers\Api\Teacher\HomeController;
 use App\Http\Controllers\Api\Teacher\NotificationController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Middleware\ChangeLang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:student_api');
 
-
-Route::group(['prefix' => 'student', 'middleware' => [ChangeLang::class]], function () {
+Route::group(['prefix' => 'teacher', 'middleware' => [ChangeLang::class]], function () {
 
 
     Route::post('login', [AuthTeacherController::class, 'login']);
-    Route::post('activateAccount', [AuthTeacherController::class, 'activateAccount']);
-    Route::post('resendOtp', [AuthTeacherController::class, 'resendOtp']);
+    Route::post('verify-otp', [AuthTeacherController::class, 'activateAccount']);
+    Route::post('resend-otp', [AuthTeacherController::class, 'resendOtp']);
     Route::post('register', [AuthTeacherController::class, 'register']);
 
 
     Route::get('get-language', [SettingController::class, 'getLanguage']);
 
-    Route::group(['middleware' => 'auth:student_api'], function () {
+    Route::group(['middleware' => 'auth:teacher_api'], function () {
 
+        Route::get('teacher-details', [AuthTeacherController::class, 'teacherDetails']);
         Route::post('logout', [AuthTeacherController::class, 'logout']);
+        Route::post('update-work-status', [HomeController::class, 'updateWorkStatus']);
+        Route::get('get-session-requests', [FreeSessionsController::class, 'getFreeSessionRequests']);///////
+        Route::post('accept-session/{id}', [FreeSessionsController::class, 'acceptSessionRequest']);///////
+        Route::post('end-session/{id}', [FreeSessionsController::class, 'endSession']);///////
+        Route::post('rate-student-session/{id}', [FreeSessionsController::class, 'rateStudent']);///////
 
 
         Route::controller(NotificationController::class)->group(function () {

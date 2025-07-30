@@ -25,6 +25,8 @@ class TeacherResource extends JsonResource
             "admin_id" => $this->admin_id,
             "image" => $this->image,
             "status" => $this->status,
+            "rate" => $this->rate,
+            "number_of_rates" => $this->number_of_rates,
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),

@@ -532,6 +532,7 @@ return [
     'DINNER_BED_AND_BREAKFAST' => 'عشاء مع إقامة وإفطار',
     'LUNCH' => 'غداء',
     'DINNER' => 'عشاء',
+    'You already rated this session before' => 'لقد قمت بتقييم هذه الجلسة من قبل',
     'FAMILY_PLAN' => 'خطة عائلية',
     'AS_BROCHURED' => 'كما هو مذكور في الكتيب',
     'SELF_CATERING' => 'إقامة مع خدمات ذاتية',

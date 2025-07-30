@@ -26,13 +26,27 @@ class CompleteStudentRegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
-            'level_id' => 'required|exists:levels,id',
-            'track_id' => 'nullable|exists:tracks,id',
+            'level_id' => [
+                'required_if:track_id,2',
+                function ($attribute, $value, $fail) {
+                    if ($this->has('preservation_method_id')) {
+                        $preservationMethodId = $this->input('preservation_method_id');
+                        $exists = \DB::table('levels')
+                            ->where('id', $value)
+                            ->where('preservation_method_id', $preservationMethodId)
+                            ->exists();
+                        if (!$exists) {
+                            $fail('The selected level does not belong to the specified preservation method.');
+                        }
+                    }
+                },
+            ],
+            'track_id' => 'required|exists:tracks,id',
             'phone' => 'required|string|max:15',
             'guardian' => 'nullable|string',
             'guardian_phone' => 'nullable|string|max:15',
-            'preservation_method_id' => 'required|exists:preservation_methods,id',
-            'gender' => 'required',
+            'preservation_method_id' => 'required_if:track_id,2,3|exists:preservation_methods,id',
+            'gender' => 'required|in:male,female',
             'nationality_id' => 'required|exists:nationalities,id',
             'country_id' => 'required|exists:countries,id',
             'city_id' => 'required|exists:cities,id',

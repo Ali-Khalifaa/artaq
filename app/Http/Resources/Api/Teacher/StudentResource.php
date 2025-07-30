@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Api\Student;
+namespace App\Http\Resources\Api\Teacher;
 
 use App\Http\Resources\Dashboard\CityResource;
 use App\Http\Resources\Dashboard\CountryResource;
@@ -17,26 +17,14 @@ class StudentResource extends JsonResource
     {
         return [
             "id"  => $this->id,
-            "name"       =>  $this->name??$this->phone,
+            "name"       => $this->name,
             "birth_date" => $this->birth_date ? Carbon::parse($this->birth_date)->format('Y-m-d') : null,
             'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : null,
-            "track" => $this->track?->name,
-            "level" => $this->level ? [
-                'name' => $this->level?->name,
-                'description' => $this->level?->description,
-            ] : null,
-            "track_id" => $this->track_id,
-            "level_id" => $this->level_id,
             "phone" => $this->phone,
             "guardian_phone" => $this->guardian_phone,
-            "memorization_type_id" => $this->memorization_type_id,
             "gender" => $this->gender,
-            "nationality_id" => $this->nationality_id,
-            "country_id" => $this->country_id,
-            "city_id" => $this->city_id,
             "memorization_amount_id" => $this->memorization_amount_id,
             "image" => $this->image,
-            "status" => $this->status,
             "rate" => $this->rate,
             "number_of_rates" => $this->number_of_rates,
             "level" => new LevelResource($this->whenLoaded('level')),

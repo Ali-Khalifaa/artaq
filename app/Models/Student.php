@@ -120,6 +120,11 @@ class Student extends Authenticatable implements JWTSubject
         return $this->belongsTo(MemorizationAmount::class);
     }
 
+    public function circles()
+    {
+        return $this->belongsToMany(Circle::class, 'student_circles', 'student_id', 'circle_id');
+    }
+
     // Automatically set code attribute only on create
     protected static function booted()
     {
@@ -127,5 +132,10 @@ class Student extends Authenticatable implements JWTSubject
             $student->code = $student->createSerialNumber(self::class, 'Student');
         });
     }
+
+    public function ratings(){
+        return $this->morphMany(Rating::class,'rated');
+    }
+
 
 }

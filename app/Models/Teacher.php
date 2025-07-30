@@ -128,4 +128,8 @@ class Teacher extends Authenticatable implements JWTSubject
         });
     }
 
+    public function ratings(){
+        return $this->morphMany(Rating::class,'rated');
+    }
+
 }

@@ -26,9 +26,14 @@ class Circle extends Model
         return $this->belongsTo(CircleType::class);
     }
 
-     public function teachers()
+    public function teachers()
     {
         return $this->belongsToMany(Teacher::class, 'teacher_circles', 'circle_id', 'teacher_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsToMany(Student::class, 'student_circles', 'circle_id', 'student_id');
     }
 
 }
