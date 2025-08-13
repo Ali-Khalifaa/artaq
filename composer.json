@@ -21,6 +21,7 @@
         "psr/log": "2.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^6.9",
+        "twilio/sdk": "^8.6",
         "tymon/jwt-auth": "^2.1"
     },
     "require-dev": {

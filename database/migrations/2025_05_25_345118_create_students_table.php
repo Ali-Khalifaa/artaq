@@ -35,10 +35,12 @@ return new class extends Migration
             $table->foreignIdFor(MemorizationAmount::class)->nullable()->comment('مقدار الحفظ');
             $table->string('password')->nullable()->comment('كلمة المرور');
             $table->string('image')->nullable();
+            $table->integer('otp_code')->nullable();
+            $table->timestamp('code_expired_at')->nullable();
             $table->boolean('status')->default(true);
 
             $table->string('guardian')->nullable()->comment('اسم ولى الامر');
-            $table->string('id_number')->unique()->comment('رقم الهوية');
+            $table->string('id_number')->nullable()->unique()->comment('رقم الهوية');
             $table->integer('juz_count')->default(0)->comment('عدد الأجزاء التي حفظها الطالب');
             $table->string('code')->nullable()->comment('كود الطالب');
 

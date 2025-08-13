@@ -4,14 +4,14 @@ namespace App\Enums;
 
 enum RequestActionEnum: string
 {
-    case WAIRING   = 'Waiting';
+    case WAITING   = 'Waiting';
     case ACCEPT    = 'Accept';
     case REJECT    = 'Reject';
 
     public function label(): string
     {
         return match ($this) {
-            self::WAIRING   => __('messages.waiting'),
+            self::WAITING   => __('messages.waiting'),
             self::ACCEPT    => __('messages.accept'),
             self::REJECT    => __('messages.reject'),
 

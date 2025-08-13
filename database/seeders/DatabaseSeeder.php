@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Database\Seeders\Restaurant\RestKitchenSectionSeeder;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,5 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PreservationMethodSeeder::class);
         $this->call(TrackSeeder::class);
         $this->call(SerialSeeder::class);
+
+        Artisan::call("import:quran");
+        Artisan::call("import:levels");
     }
 }

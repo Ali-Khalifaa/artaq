@@ -35,6 +35,9 @@ class Teacher extends Authenticatable implements JWTSubject
         'image',
         'status',
         'password',
+        'otp_code',
+        'code_expired_at',
+        'work_status',
         'birth_date',
         'email',
         'juz_count',
@@ -82,7 +85,7 @@ class Teacher extends Authenticatable implements JWTSubject
 
     public function receivesBroadcastNotificationsOn()
     {
-        return 'App.Models.Teacher.'.$this->id;
+        return 'teacher.'.$this->id;
     }
 
     public function admin()
@@ -110,6 +113,16 @@ class Teacher extends Authenticatable implements JWTSubject
         return $this->hasMany(TeacherQualification::class, 'teacher_id');
     }
 
+    public function freeSessions()
+    {
+        return $this->hasMany(FreeSession::class, 'teacher_id');
+    }
+
+    public function intensiveRequests()
+    {
+        return $this->hasMany(IntensiveRequest::class, 'teacher_id');
+    }
+
     public function circles()
     {
         return $this->belongsToMany(Circle::class, 'teacher_circles', 'teacher_id', 'circle_id');
@@ -123,6 +136,10 @@ class Teacher extends Authenticatable implements JWTSubject
                 $teacher->code = $teacher->createSerialNumber(self::class, 'Teacher');
             }
         });
+    }
+
+    public function ratings(){
+        return $this->morphMany(Rating::class,'rated');
     }
 
 }

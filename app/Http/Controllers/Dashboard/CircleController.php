@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\ExamStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\CircleRequest;
 use App\Http\Resources\Dashboard\CircleResource;
+use App\Http\Resources\Dashboard\StudentResource;
 use App\Models\Circle;
+use App\Models\Level;
+use App\Models\Student;
+use App\Models\StudentCircle;
+use App\Models\StudentLevelTask;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -29,7 +35,7 @@ class CircleController extends Controller implements HasMiddleware
     {
         $nationality = Circle::with('circleType')->searchAndFilter()->latest()->paginate(10);
 
-        return responseJson(CircleResource::collection($nationality->items()),'',200,getPaginates($nationality));
+        return responseJson(CircleResource::collection($nationality->items()), '', 200, getPaginates($nationality));
     }
 
     public function store(CircleRequest $request)
@@ -41,14 +47,14 @@ class CircleController extends Controller implements HasMiddleware
             $circle->circleDurations()->create($duration);
         }
 
-        return responseJson([],'Created Successfully',200);
+        return responseJson([], 'Created Successfully', 200);
     }
 
 
     public function show($id)
     {
         $nationality = Circle::find($id);
-        return responseJson($nationality,'Data exited successfully',200);
+        return responseJson($nationality, 'Data exited successfully', 200);
     }
 
     public function update(CircleRequest $request, $id)
@@ -56,7 +62,7 @@ class CircleController extends Controller implements HasMiddleware
         $data = $request->validated();
         $circle = Circle::find($id);
         if (!$circle) {
-            return responseJson([],'Data not found',404);
+            return responseJson([], 'Data not found', 404);
         }
 
         $circle->update($data);
@@ -64,30 +70,30 @@ class CircleController extends Controller implements HasMiddleware
         foreach ($data['duration'] as $duration) {
             $circle->circleDurations()->create($duration);
         }
-        return responseJson($circle,'Updated Successfully',200);
+        return responseJson($circle, 'Updated Successfully', 200);
     }
 
     public function destroy($id)
     {
         $circle = Circle::find($id);
         if (!$circle) {
-            return responseJson([],'Data not found',404);
+            return responseJson([], 'Data not found', 404);
         }
         $circle->delete();
-        return responseJson([],'Deleted Successfully',200);
+        return responseJson([], 'Deleted Successfully', 200);
     }
 
     public function dropdown()
     {
         $level = Circle::all();
 
-        return responseJson(CircleResource::collection($level),'',200);
+        return responseJson(CircleResource::collection($level), '', 200);
     }
 
     public function circlesWithoutTeacher($id)
     {
         $teacher = Teacher::find($id);
-        $circles = Circle::doesntHave('teachers')->where('gender',$teacher->gender)->get();
+        $circles = Circle::doesntHave('teachers')->where('gender', $teacher->gender)->get();
 
         $teacherCircles = $teacher ? $teacher->circles()->get() : collect();
 
@@ -95,6 +101,60 @@ class CircleController extends Controller implements HasMiddleware
         $circles = $circles->concat($teacherCircles)->unique('id')->values();
 
 
-        return responseJson($circles,'',200);
+        return responseJson($circles, '', 200);
     }
+
+    public function studentWithoutCircles()
+    {
+        $students = Student::whereTrackId(2)
+        ->doesntHave('circles', function ($q) {
+            $q->whereStatus(0);
+        })
+        ->doesntHave('exams', function ($q) {
+            $q->whereStatus(ExamStatusEnum::PENDING);
+        })
+        ->get();
+
+        return responseJson(StudentResource::collection($students), '', 200);
+    }
+
+    public function assignStudentToCircle($studentId, $circleId)
+    {
+        $student = Student::whereTrackId(2)->doesntHave('circles', function ($q) {
+            $q->whereStatus(0);
+        })->find($studentId);
+        $circle = Circle::where('gender', $student?->gender)->find($circleId);
+        if (!$student || !$circle)
+            return responseJson('', __('messages.not_found'), 400);
+
+        $studentCircle = StudentCircle::create([
+            'student_id' => $student->id,
+            'circle_id' => $circle->id,
+        ]);
+
+        $levels = Level::where('id', '>=', $student->level_id)->wherePreservationMethodId($student->preservation_method_id)->get();
+
+        foreach ($levels as $level) {
+            foreach ($level->tasks as $task) {
+                StudentLevelTask::create([
+                    "student_circle_id" => $studentCircle->id,
+                    "circle_id" => $circle->id,
+                    "student_id" => $student->id,
+                    "level_id" => $task->level_id,
+                    "from_surah_id" => $task->from_surah_id,
+                    "to_surah_id" => $task->to_surah_id,
+                    "from_ayah_id" => $task->from_ayah_id,
+                    "to_ayah_id" => $task->to_ayah_id,
+                    "review_from_surah_id" => $task->review_from_surah_id,
+                    "review_to_surah_id" => $task->review_to_surah_id,
+                    "review_from_ayah_id" => $task->review_from_ayah_id,
+                    "review_to_ayah_id" => $task->review_to_ayah_id,
+                ]);
+            }
+        }
+
+        return responseJson("","",200);
+    }
+
+
 }
