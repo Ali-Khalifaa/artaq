@@ -11,11 +11,12 @@ class MessageNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
-    public $data;
+    public $data,$event;
 
-    public function __construct($data = [])
+    public function __construct($data = [],$event)
     {
         $this->data = $data;
+        $this->event = $event;
 
     }
 
@@ -33,9 +34,9 @@ class MessageNotification extends Notification implements ShouldBroadcast
 
     public function broadcastAs(): string
     {
-        return 'message.created';
+        return $this->event;
     }
-    
+
     public function toBroadcast($notifiable)
     {
         return (new BroadcastMessage(['data' =>  $this->data]))->onConnection('sync');

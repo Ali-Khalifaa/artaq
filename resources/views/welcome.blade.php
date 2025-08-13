@@ -48,8 +48,7 @@
 
         <!-- FlatPickr CSS -->
         <link rel="stylesheet" href="{{asset('assets/libs/flatpickr/flatpickr.min.css')}}">
-        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
-        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
+        <script src="/assets/js/agora.js"></script>
         @vite(['resources/js/app.js'])
     </head>
     <body>

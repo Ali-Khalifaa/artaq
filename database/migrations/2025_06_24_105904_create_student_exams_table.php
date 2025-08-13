@@ -21,9 +21,9 @@ return new class extends Migration
             $table->float('degree')->default(0);
             $table->string('link')->nullable();
             $table->string('status')->default("pending");//enums status
-            $table->timestamp('date_time');
+            $table->timestamp('date_time')->nullable();
             $table->foreignIdFor(Student::class, 'student_id')->nullable();
-            $table->foreignIdFor(Level::class, 'level_id')->nullable();
+            $table->morphs('model');
             $table->foreignIdFor(Track::class, 'track_id')->nullable();
             $table->foreignIdFor(Admin::class, 'admin_id')->nullable();
             $table->softDeletes();

@@ -26,7 +26,7 @@ class AuthTeacherController extends Controller implements HasMiddleware
 
     public function login(LoginRequest $request)
     {
-        $teacher = Teacher::firstOrCreate(['phone' => $request->phone],['phone' => $request->phone]);
+        $teacher = Teacher::firstOrCreate(['phone' => $request->phone],['phone' => $request->phone,'status' => 1]);
 
         if ($teacher) {
             if ($teacher->status) {
@@ -38,7 +38,7 @@ class AuthTeacherController extends Controller implements HasMiddleware
                 // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
 
                 // Mail::to($teacher->email)->send(new NewRegisterMail($teacher->name, $teacher->otp_code));
-                return responseJson(['phone' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 400);
+                return responseJson(['phone' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 200);
             }
             else {
                 return responseJson(null, __('messages.Your account is not activated please contact with support'), 400);

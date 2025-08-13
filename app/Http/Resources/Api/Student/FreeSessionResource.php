@@ -22,15 +22,15 @@ class FreeSessionResource extends JsonResource
                 'value' => $this->status->value,
                 'color' => $this->status->colorCode(),
             ],
-            "number_of_mins" => $this->number_of_mins,
+            "number_of_mins" => $this->number_of_mins."",
             "rating" => $rating ? [
-                'rate' => $rating->rate,
-                'comment' => $rating->comment
-            ]:null,
-            "from_surah" => $this->fromSurah?->name,
-            "to_surah" => $this->toSurah?->name,
-            "from_ayah" => $this->fromAyah?->text,
-            "to_ayah" => $this->toAyah?->text,
+                'rate' => $rating->rate."",
+                'comment' => $rating->comment.""
+            ]:"",
+            "from_surah" => $this->fromSurah?->name."",
+            "to_surah" => $this->toSurah?->name."",
+            "from_ayah" => $this->fromAyah?->text."",
+            "to_ayah" => $this->toAyah?->text."",
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d  (H:i)'),
         ];
     }

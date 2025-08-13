@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Api\Teacher;
 
+use App\Class\AgoraDynamicKey\RtcTokenBuilder;
 use App\Enums\FreeSessionStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\SurahAndAyahRequest;
 use App\Http\Resources\Api\Teacher\FreeSessionResource;
 use App\Models\FreeSession;
 use App\Models\Rating;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Notifications\MessageNotification;
 
 class FreeSessionsController extends Controller
 {
@@ -20,22 +23,39 @@ class FreeSessionsController extends Controller
         return responseJson(FreeSessionResource::collection($freeSessions));
     }
 
+    public function getCurrentSession()
+    {
+        $currentSession = FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereTeacherId(auth('teacher_api')->id())->first();
+        return responseJson($currentSession ? new FreeSessionResource($currentSession):'');
+    }
+
     public function acceptSessionRequest($id){
+
+        $teacher = auth("teacher_api")->user();
         $freeSession = FreeSession::whereStatus(FreeSessionStatusEnum::PENDING)->whereTeacherId(auth('teacher_api')->id())->find($id);
         if(!$freeSession)
-            return responseJson(null,__('messages.not_found'),404);
+            return responseJson("",__('messages.not_found'),400);
+        if (FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereTeacherId(auth('teacher_api')->id())->exists())
+            return responseJson("", __('messages.You already have an active session end it and rate the student'), 400);
 
-        $freeSession->update(['status' => FreeSessionStatusEnum::APPROVED]);
+        $freeSession->update(['status' => FreeSessionStatusEnum::ACTIVE]);
 
-        return responseJson(new FreeSessionResource($freeSession),__('messages.Updated Successfully'));
+        $agoraToken = generateAgoraToken($teacher,"session-".$freeSession->id);
 
+        $data["channal_name"] = "session-".$freeSession->id;
+        $data["caller_name"] = $teacher->name ?? $teacher->phone;
+
+        $freeSession->student->notify(new MessageNotification($data,'call'));
+
+        return responseJson(["session" => new FreeSessionResource($freeSession),'agora_token' => $agoraToken],__('messages.Updated Successfully'));
     }
 
 
-    public function endSession($id){
-        $freeSession = FreeSession::whereStatus(FreeSessionStatusEnum::APPROVED)->whereTeacherId(auth('teacher_api')->id())->find($id);
+    public function endSession(SurahAndAyahRequest $request,$id){
+        $freeSession = FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereTeacherId(auth('teacher_api')->id())->find($id);
         if(!$freeSession)
-            return responseJson(null,__('messages.not_found'),404);
+            return responseJson("",__('messages.not_found'),404);
+
 
         $freeSession->update([
             'status' => FreeSessionStatusEnum::COMPLETED,
@@ -53,9 +73,9 @@ class FreeSessionsController extends Controller
         request()->validate(['comment' => 'nullable','rate' => 'required|integer|in:1,2,3,4,5']);
         $freeSession = FreeSession::whereStatus(FreeSessionStatusEnum::COMPLETED)->whereTeacherId(auth('teacher_api')->id())->find($id);
         if(!$freeSession)
-            return responseJson(null,__('messages.not_found'),404);
+            return responseJson("",__('messages.not_found'),404);
         if(Rating::whereRatedId($freeSession->student_id)->whereRatedType(Student::class)->whereModelId($freeSession->id)->whereModelType(FreeSession::class)->exists())
-            return responseJson(null,__('messages.You already rated this session before'),404);
+            return responseJson("",__('messages.You already rated this session before'),404);
 
         Rating::create([
             "rate" => request()->rate,
@@ -74,7 +94,7 @@ class FreeSessionsController extends Controller
             $student->update(['rate' => round($student->ratings()->avg('rate'),1),'number_of_rates' => $student->number_of_rates + 1 ]);
 
 
-        return responseJson(null,'تم التقييم بنجاح');
+        return responseJson("",'تم التقييم بنجاح');
     }
 
 

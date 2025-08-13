@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Ayah;
+use App\Models\Circle;
 use App\Models\Level;
 use App\Models\Student;
+use App\Models\StudentCircle;
 use App\Models\Surah;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,6 +19,8 @@ return new class extends Migration
     {
         Schema::create('student_level_tasks', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(StudentCircle::class, 'student_circle_id');
+            $table->foreignIdFor(Circle::class, 'circle_id');
             $table->foreignIdFor(Student::class, 'student_id');
             $table->foreignIdFor(Level::class, 'level_id');
             $table->foreignIdFor(Surah::class, 'from_surah_id');

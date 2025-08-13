@@ -85,7 +85,7 @@ class Teacher extends Authenticatable implements JWTSubject
 
     public function receivesBroadcastNotificationsOn()
     {
-        return 'App.Models.Teacher.'.$this->id;
+        return 'teacher.'.$this->id;
     }
 
     public function admin()
@@ -111,6 +111,16 @@ class Teacher extends Authenticatable implements JWTSubject
     public function qualifications()
     {
         return $this->hasMany(TeacherQualification::class, 'teacher_id');
+    }
+
+    public function freeSessions()
+    {
+        return $this->hasMany(FreeSession::class, 'teacher_id');
+    }
+
+    public function intensiveRequests()
+    {
+        return $this->hasMany(IntensiveRequest::class, 'teacher_id');
     }
 
     public function circles()

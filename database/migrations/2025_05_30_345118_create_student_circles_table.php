@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Student::class)->nullable();
             $table->foreignIdFor(Circle::class)->nullable()->comment('الحلقة');
+            $table->boolean("status")->default(false);//true if completed
             $table->softDeletes();
             $table->timestamps();
         });

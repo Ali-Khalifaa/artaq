@@ -31,7 +31,7 @@ class Circle extends Model
         return $this->belongsToMany(Teacher::class, 'teacher_circles', 'circle_id', 'teacher_id');
     }
 
-    public function student()
+    public function students()
     {
         return $this->belongsToMany(Student::class, 'student_circles', 'circle_id', 'student_id');
     }

@@ -29,7 +29,7 @@ class CompleteStudentRegisterRequest extends FormRequest
             'level_id' => [
                 'required_if:track_id,2',
                 function ($attribute, $value, $fail) {
-                    if ($this->has('preservation_method_id')) {
+                    if ($this->has('preservation_method_id') && $this->track_id == 2) {
                         $preservationMethodId = $this->input('preservation_method_id');
                         $exists = \DB::table('levels')
                             ->where('id', $value)
@@ -41,11 +41,19 @@ class CompleteStudentRegisterRequest extends FormRequest
                     }
                 },
             ],
+             'preservation_method_id' => ['required_if:track_id,2,3','exists:preservation_methods,id', function ($attribute, $value, $fail) {
+                if ($this->track_id == 3 && !in_array($value, [4, 3])) {
+                    $fail('اتجاه الحفظ غير صالح للمسار المكثف');
+                }
+                if ($this->track_id == 2 && !in_array($value, [1, 2])) {
+                    $fail('اتجاه الحفظ غير صالح لمسار الحلقات');
+                }
+            }],
             'track_id' => 'required|exists:tracks,id',
             'phone' => 'required|string|max:15',
             'guardian' => 'nullable|string',
             'guardian_phone' => 'nullable|string|max:15',
-            'preservation_method_id' => 'required_if:track_id,2,3|exists:preservation_methods,id',
+
             'gender' => 'required|in:male,female',
             'nationality_id' => 'required|exists:nationalities,id',
             'country_id' => 'required|exists:countries,id',

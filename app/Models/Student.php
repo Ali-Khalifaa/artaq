@@ -79,7 +79,7 @@ class Student extends Authenticatable implements JWTSubject
 
     public function receivesBroadcastNotificationsOn()
     {
-        return 'App.Models.Student.'.$this->id;
+        return 'student.'.$this->id;
     }
 
     public function level()
@@ -137,5 +137,8 @@ class Student extends Authenticatable implements JWTSubject
         return $this->morphMany(Rating::class,'rated');
     }
 
+    public function exams(){
+        return $this->hasMany(StudentExam::class,"student_id");
+    }
 
 }

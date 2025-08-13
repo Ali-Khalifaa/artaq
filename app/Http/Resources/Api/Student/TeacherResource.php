@@ -15,18 +15,18 @@ class TeacherResource extends JsonResource
     {
         return [
             "id"  => $this->id,
-            "name"       => $this->name,
-            "phone" => $this->phone,
-            "image" => $this->image,
+            "name"       => $this->name."",
+            "phone" => $this->phone."",
+            "image" => $this->image."",
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),
-            "juz_count" => $this->juz_count,
-            "experience_years" => $this->experience_years,
-            "rate" => $this->rate,
-            "number_of_rates" => $this->number_of_rates,
+            "juz_count" => $this->juz_count."",
+            "experience_years" => $this->experience_years."",
+            "rate" => $this->rate."",
+            "number_of_rates" => $this->number_of_rates."",
             // "qualifications" => $this->qualifications,
-            'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : null,
+            'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : "",
         ];
     }
 }

@@ -15,11 +15,19 @@ class StudentLevelTask extends Model
 
     protected $table = "student_level_tasks";
 
+    public function studentCircle()
+    {
+        return $this->belongsTo(StudentCircle::class, 'student_circle_id');
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
     }
-
+    public function circle()
+    {
+        return $this->belongsTo(Circle::class, 'circle_id');
+    }
     public function level()
     {
         return $this->belongsTo(Level::class, 'level_id');

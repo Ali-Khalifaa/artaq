@@ -1,5 +1,6 @@
 <?php
 
+use App\Class\AgoraDynamicKey\RtcTokenBuilder;
 use App\Models\Country;
 use App\Notifications\GeneralNotification;
 use Illuminate\Support\Facades\Artisan;
@@ -64,6 +65,20 @@ function sendNotification($receivers, $modelData,$pageVueName,$notificationImage
 
 }
 
+function generateAgoraToken($model,$channelName)
+{
+    $appID = env('AGORA_APP_ID');
+    $appCertificate = env('AGORA_APP_CERTIFICATE');
+    $modelName = $model->name??$model->phone;
+    $role = RtcTokenBuilder::RoleAttendee;
+    $expireTimeInSeconds = 20*60;
+    $currentTimestamp = now()->getTimestamp();
+    $privilegeExpiredTs = $currentTimestamp + $expireTimeInSeconds;
+
+    $token = RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $modelName, $role, $privilegeExpiredTs);
+
+    return $token;
+}
 
 
 function saveFiles($files, $model, $folder, $action = 'store', $identifier = null)
