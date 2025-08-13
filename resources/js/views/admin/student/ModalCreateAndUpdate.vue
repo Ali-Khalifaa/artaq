@@ -549,6 +549,10 @@ export default {
                 .then((res) => {
                     let l = res.data.data;
                     levels.value = l;
+
+                    if(submitdata.data.level_id){
+                        levelDetail();
+                    }
                 })
                 .catch((err) => {
                     console.log(err.response.data);
@@ -715,7 +719,6 @@ export default {
                     getLevels();
                     submitdata.data.level_id = props.dataRow.level_id;
 
-                    levelDetail();
                 }
             }, 50);
         }

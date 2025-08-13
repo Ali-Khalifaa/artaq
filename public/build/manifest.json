@@ -17,7 +17,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DKctb5UJ.js",
+    "file": "assets/app-Dm7GMrUV.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -28,7 +28,7 @@
       "resources/js/views/admin/dashboard/index.vue"
     ],
     "css": [
-      "assets/app-COf6e0h5.css"
+      "assets/app-Dw4BZCag.css"
     ]
   },
   "resources/js/single-components.js": {
@@ -41,7 +41,7 @@
     ]
   },
   "resources/js/views/admin/dashboard/index.vue": {
-    "file": "assets/index-bLucEhvD.js",
+    "file": "assets/index-DNWLsMGf.js",
     "name": "index",
     "src": "resources/js/views/admin/dashboard/index.vue",
     "isDynamicEntry": true,
