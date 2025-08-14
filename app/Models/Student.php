@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Artisan;
 
 class Student extends Authenticatable implements JWTSubject
 {
@@ -36,6 +37,8 @@ class Student extends Authenticatable implements JWTSubject
         'country_id',
         'city_id',
         'memorization_amount_id',
+        'otp_code',
+        'code_expired_at',
         'image',
         'status',
         'password',
@@ -76,7 +79,7 @@ class Student extends Authenticatable implements JWTSubject
 
     public function receivesBroadcastNotificationsOn()
     {
-        return 'App.Models.Student.'.$this->id;
+        return 'student.'.$this->id;
     }
 
     public function level()
@@ -112,7 +115,14 @@ class Student extends Authenticatable implements JWTSubject
 
     public function memorizationAmount()
     {
+        Artisan::call("route:clear");
+        Artisan::call("optimize:clear");
         return $this->belongsTo(MemorizationAmount::class);
+    }
+
+    public function circles()
+    {
+        return $this->belongsToMany(Circle::class, 'student_circles', 'student_id', 'circle_id','id','id');
     }
 
     // Automatically set code attribute only on create
@@ -121,6 +131,14 @@ class Student extends Authenticatable implements JWTSubject
         static::creating(function ($student) {
             $student->code = $student->createSerialNumber(self::class, 'Student');
         });
+    }
+
+    public function ratings(){
+        return $this->morphMany(Rating::class,'rated');
+    }
+
+    public function exams(){
+        return $this->hasMany(StudentExam::class,"student_id");
     }
 
 }

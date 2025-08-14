@@ -27,6 +27,9 @@ return new class extends Migration
             $table->foreignIdFor(City::class)->nullable()->comment('المدينة');
             $table->string('password')->nullable()->comment('كلمة المرور');
             $table->string('image')->nullable();
+            $table->integer('otp_code')->nullable();
+            $table->timestamp('code_expired_at')->nullable();
+            $table->boolean('work_status')->default(false);
             $table->boolean('status')->default(true);
 
             $table->date('birth_date')->nullable();

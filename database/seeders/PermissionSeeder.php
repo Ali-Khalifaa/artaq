@@ -89,6 +89,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'student edit'  ,  'category' => 'Students'],
             ['name' => 'student delete',  'category' => 'Students'],
             ['name' => 'student send notification',  'category' => 'Students'],
+            ['name' => 'student without circle read'  ,  'category' => 'Students'],
+            ['name' => 'add circle to student',  'category' => 'Students'],
 
             ['name' => 'teacher read'  ,  'category' => 'Teachers'],
             ['name' => 'teacher create',  'category' => 'Teachers'],
@@ -126,6 +128,10 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'setting read',  'category' => 'Settings'],
             ['name' => 'setting edit',  'category' => 'Settings'],
+
+            ['name' => 'exam read'  ,  'category' => 'Exams'],
+            ['name' => 'add time to exam',  'category' => 'Exams'],
+            ['name' => 'add degree to exam'  ,  'category' => 'Exams'],
 
         ];
 

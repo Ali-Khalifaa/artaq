@@ -1,0 +1,34 @@
+<?php
+
+use App\Models\Circle;
+use App\Models\Student;
+use App\Models\Teacher;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('student_circles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Student::class)->nullable();
+            $table->foreignIdFor(Circle::class)->nullable()->comment('الحلقة');
+            $table->boolean("status")->default(false);//true if completed
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('student_circles');
+    }
+};

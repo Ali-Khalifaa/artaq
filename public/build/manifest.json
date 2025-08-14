@@ -3,8 +3,8 @@
     "file": "assets/jquery-DzuxGC_t.css",
     "src": "_jquery-!~{005}~.js"
   },
-  "_jquery-DztOgb_h.js": {
-    "file": "assets/jquery-DztOgb_h.js",
+  "_jquery-BldjKGIl.js": {
+    "file": "assets/jquery-BldjKGIl.js",
     "name": "jquery",
     "css": [
       "assets/jquery-DzuxGC_t.css"
@@ -17,12 +17,16 @@
     "isEntry": true
   },
   "resources/js/app.js": {
+<<<<<<< HEAD
     "file": "assets/app-Dm7GMrUV.js",
+=======
+    "file": "assets/app-wl-6wTx6.js",
+>>>>>>> b578d31e66b5423565c3940b6df02409c5e16f56
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_jquery-DztOgb_h.js"
+      "_jquery-BldjKGIl.js"
     ],
     "dynamicImports": [
       "resources/js/views/admin/dashboard/index.vue"
@@ -32,21 +36,25 @@
     ]
   },
   "resources/js/single-components.js": {
-    "file": "assets/single-components-Dbk8x1Pj.js",
+    "file": "assets/single-components-lhRNz68O.js",
     "name": "single-components",
     "src": "resources/js/single-components.js",
     "isEntry": true,
     "imports": [
-      "_jquery-DztOgb_h.js"
+      "_jquery-BldjKGIl.js"
     ]
   },
   "resources/js/views/admin/dashboard/index.vue": {
+<<<<<<< HEAD
     "file": "assets/index-DNWLsMGf.js",
+=======
+    "file": "assets/index-C7typgND.js",
+>>>>>>> b578d31e66b5423565c3940b6df02409c5e16f56
     "name": "index",
     "src": "resources/js/views/admin/dashboard/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_jquery-DztOgb_h.js",
+      "_jquery-BldjKGIl.js",
       "resources/js/app.js"
     ],
     "css": [

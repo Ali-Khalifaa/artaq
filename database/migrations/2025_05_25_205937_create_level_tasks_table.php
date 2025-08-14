@@ -21,9 +21,16 @@ return new class extends Migration
             $table->foreignIdFor(Surah::class, 'to_surah_id');
             $table->foreignIdFor(Ayah::class, 'from_ayah_id');
             $table->foreignIdFor(Ayah::class, 'to_ayah_id');
+
+            $table->foreignIdFor(Surah::class, 'review_from_surah_id')->nullable();
+            $table->foreignIdFor(Surah::class, 'review_to_surah_id')->nullable();
+            $table->foreignIdFor(Ayah::class, 'review_from_ayah_id')->nullable();
+            $table->foreignIdFor(Ayah::class, 'review_to_ayah_id')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
+
     }
 
     /**
