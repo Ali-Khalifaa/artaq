@@ -9,8 +9,10 @@ use App\Http\Resources\Api\Teacher\CircleSessionResource;
 use App\Models\CircleDuration;
 use App\Models\CircleSession;
 use App\Models\CircleSessionStudent;
+use App\Models\Level;
 use App\Models\Rating;
 use App\Models\Student;
+use App\Models\StudentExam;
 use App\Models\StudentLevelTask;
 use App\Models\Teacher;
 use App\Models\TeacherCircle;
@@ -90,18 +92,19 @@ class TeacherCircleController extends Controller
         // $completedCount = $tasks->where("status", 1)->count();
         return [
             'id' => $student->id,
-            'name' => ($student->name??$student->phone)."" ,
-            'phone' => $student->phone."",
-            'image' => $student->image."",
-            'level' => $student->level?->name."",
-            'preservation_method' => $student->preservationMethod?->name."",
+            'name' => ($student->name ?? $student->phone) . "",
+            'phone' => $student->phone . "",
+            'image' => $student->image . "",
+            'level' => $student->level?->name . "",
+            'preservation_method' => $student->preservationMethod?->name . "",
             "tasme3" => $firstTask?->fromSurah?->name . " ( " . $firstTask?->fromAyah?->text . " )  الى " . $firstTask?->toSurah?->name . " ( " . $firstTask?->toAyah?->text . " ) ",
             "review" => $firstTask?->reviewFromSurah?->name . " ( " . $firstTask?->reviewFromAyah?->text . " )  الى " . $firstTask?->reviewToSurah?->name . " ( " . $firstTask?->reviewToAyah?->text . " ) ",
             // "precentage" => round($completedCount * 100 / $totalCount),
         ];
     }
 
-    public function startCircleSession($circleId){
+    public function startCircleSession($circleId)
+    {
         $teacher = auth('teacher_api')->user();
         $teacherCircle = TeacherCircle::whereCircleId($circleId)->whereTeacherId($teacher->id)->first();
         if (!$teacherCircle)
@@ -134,11 +137,19 @@ class TeacherCircleController extends Controller
             'date' => now(),
             'status' => FreeSessionStatusEnum::ACTIVE,
         ]);
-        $data["channal_name"] = "circle-session-" . $circleSession->id;
+        $data["channal_name"] = "circle-session";
+        $data["channal_id"] = $circleSession->id;
         $data["caller_name"] = $teacher->name ?? $teacher->phone;
+        $data["caller_image"] = $teacher->image . "";
         $agoraToken = generateAgoraToken($teacher, $data["channal_name"]);
 
-        $teacherCircle->circle->students->each(function ($student) use($circleSession,$data){
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الاتصال بك في مسار الحلقات";
+        $message = "قام المعلم {$teacherName}  ببدء الحلقة والاتصال بك للانضمام  الى جلستك داخل مسار الحلقات ";
+        sendNotification($teacherCircle->circle->students, [], 'call-student', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
+
+
+        $teacherCircle->circle->students->each(function ($student) use ($circleSession, $data) {
             $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevel($student->level_id)->whereStatus(0)->whereRelation("studentCircle", "status", 0)->get();
             if ($tasks->count() > 0 && $student->exams()->whereStatus(ExamStatusEnum::PENDING)->exists()) {
                 $firstTask = $tasks->first();
@@ -159,9 +170,7 @@ class TeacherCircleController extends Controller
             }
         });
 
-        return responseJson(['session' => new CircleSessionResource($circleSession),'agora_token' => $agoraToken], "تم بدء الجلسة بنجاح");
-
-
+        return responseJson(['session' => new CircleSessionResource($circleSession), 'agora_token' => $agoraToken], "تم بدء الجلسة بنجاح");
     }
 
     public function currentCircleSession()
@@ -182,6 +191,11 @@ class TeacherCircleController extends Controller
             'status' => FreeSessionStatusEnum::COMPLETED,
         ]);
 
+        //notification the the circle session is ended
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم انهاء الجلسة";
+        $message = "قام المعلم {$teacherName} بانهاء الجلسة الخاصة بك من فضلك قم بتقييم المعلم";
+        sendNotification($session->students, [], 'end-session', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
         return responseJson(new CircleSessionResource($session), __('messages.Updated Successfully'));
     }
 
@@ -196,6 +210,12 @@ class TeacherCircleController extends Controller
             'status' => FreeSessionStatusEnum::CANCELED,
         ]);
 
+        //notification cancel circle session
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الغاء الجلسة";
+        $message = "قام المعلم {$teacherName} بالغاء الجلسة الخاصة بك ";
+        sendNotification($session->students, [], 'cancel-session', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
+
         return responseJson(new CircleSessionResource($session), __('messages.Updated Successfully'));
     }
 
@@ -203,7 +223,7 @@ class TeacherCircleController extends Controller
     {
         $teacher = auth('teacher_api')->user();
         request()->validate(['action' => 'required|in:not_attended,passed,failed']);
-        $session = CircleSessionStudent::whereNull("attends")->whereRelation("circleSession","teacher_id",$teacher->id)->find($id);
+        $session = CircleSessionStudent::whereNull("attends")->whereRelation("circleSession", "teacher_id", $teacher->id)->find($id);
         if (!$session)
             return responseJson("", "لقد تم انهاء هذه الجلسة للطالب بالفعل", 404);
 
@@ -213,19 +233,65 @@ class TeacherCircleController extends Controller
             'is_passed' => request()->action == 'passed' ? true : (request()->action == 'failed' ? false : null),
         ]);
 
-        if(request()->action == 'passed'){
-            $session->studentLevelTask->update([
+        // add notifications for the different outcomes
+        $student = $session->student;
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $icon = asset('assets/images/brand-logos/toggle-white.png');
+
+        if ($student) {
+            if (request()->action == 'not_attended') {
+                $title = "لم تحضر الجلسة";
+                $message = "لم تحضر الجلسة الخاصة بك مع المعلم {$teacherName} داخل مسار الحلقات.";
+                sendNotification([$student], [], 'not-attended', $icon, $title, $message);
+            }
+
+            if (request()->action == 'passed') {
+                $title = "تم اجتياز المهمة";
+                $message = "تهانينا! لقد تم اجتياز مهمتك في الحلقة بواسطة {$teacherName}.";
+                sendNotification([$student], [], 'passed-session', $icon, $title, $message);
+            }
+
+            if (request()->action == 'failed') {
+                $title = "لم تنجح الجلسة";
+                $message = "لم يتم اجتياز هذه الجلسة، يرجى المحاولة مرة أخرى مع المعلم {$teacherName}.";
+                sendNotification([$student], [], 'failed-session', $icon, $title, $message);
+            }
+        }
+
+        $studentTask = $session->studentLevelTask;
+        if (request()->action == 'passed') {
+            $studentTask->update([
                 'status' => 1,
             ]);
+
+            $count = StudentLevelTask::whereStudentId($session->student_id)->whereLevel($studentTask->level_id)->whereStatus(0)->count();
+            if ($count == 0) {
+                $tasks = StudentLevelTask::whereStudentId($session->student_id)->whereLevel($studentTask->level_id)->whereStatus(1)->get();
+                $firstTask = $tasks->first();
+                $lastTask = $tasks->last();
+                $levelName = $studentTask->level?->name ?? "المستوى";
+                $exam = StudentExam::create([
+                    "name" => "امتحان على $levelName داخل مسار الحلقات والذي يبدأ من " . $firstTask->fromSurah?->name . " ( " . $firstTask->fromAyah?->text . " )  الى " . $lastTask->toSurah?->name . " ( " . $lastTask->toAyah?->text . " ) ",
+                    "student_id" => $session->student_id,
+                    "track_id" => 2,
+                    "model_id" => $studentTask->level_id,
+                    "model_type" => Level::class,
+                ]);
+
+                $title = "تم إنشاء امتحان";
+                $message = "امتحان على $levelName داخل مسار الحلقات والذي يبدأ من " . $firstTask->fromSurah?->name . " ( " . $firstTask->fromAyah?->text . " )  الى " . $lastTask->toSurah?->name . " ( " . $lastTask->toAyah?->text . " ) ";
+                sendNotification($student, [], 'exam-created', $icon, $title, $message);
+            }
         }
 
         return responseJson(new CircleSessionResource($session), __('messages.Updated Successfully'));
     }
 
+
     public function rateStudent($id)
     {
         request()->validate(['comment' => 'nullable', 'rate' => 'required|integer|in:1,2,3,4,5']);
-        $session = CircleSessionStudent::wwhereNotNull("attends")->whereRelation("circleSession","teacher_id",auth('teacher_api')->id())->find($id);
+        $session = CircleSessionStudent::wwhereNotNull("attends")->whereRelation("circleSession", "teacher_id", auth('teacher_api')->id())->find($id);
         if (!$session)
             return responseJson("", "هذه الجلسة لم تنتهي حتى الان", 400);
 
@@ -255,7 +321,7 @@ class TeacherCircleController extends Controller
     {
         $this->searchForSessionsRequest();
         $teacher = auth('teacher_api')->user();
-        $sessions = CircleSession::searchAndFilter()->whereTeacherId($teacher->id)->whereIn("status",[FreeSessionStatusEnum::COMPLETED,FreeSessionStatusEnum::CANCELED])->latest()->paginate(15);
+        $sessions = CircleSession::searchAndFilter()->whereTeacherId($teacher->id)->whereIn("status", [FreeSessionStatusEnum::COMPLETED, FreeSessionStatusEnum::CANCELED])->latest()->paginate(15);
         return responseJson(CircleSessionResource::collection($sessions->items()), '', 200, getPaginates($sessions));
     }
 
@@ -267,7 +333,7 @@ class TeacherCircleController extends Controller
                 'search' => json_encode([
                     'searchKey' => $searchValue,
                     'searchInTranslations' => false,
-                    'columns' => ['id','date', 'start_time', 'end_time','day'],
+                    'columns' => ['id', 'date', 'start_time', 'end_time', 'day'],
                     'searchInRelations' => [
 
                         [
@@ -295,24 +361,26 @@ class TeacherCircleController extends Controller
     public function callStudent($id)
     {
         $teacher = auth("teacher_api")->user();
-        $session = CircleSessionStudent::wwhereNotNull("attends")->whereRelation("circleSession",function($q){
-            $q->where('status', FreeSessionStatusEnum::ACTIVE)->where("teacher_id",auth('teacher_api')->id());
-
+        $session = CircleSessionStudent::whereRelation("circleSession", function ($q) {
+            $q->where('status', FreeSessionStatusEnum::ACTIVE)->where("teacher_id", auth('teacher_api')->id());
         })->find($id);
 
         if (!$session)
             return responseJson("", "هذه الجلسة لم يأتي موعدها حتى الان او ربما انتهت", 400);
         $agoraToken = generateAgoraToken($teacher, "circle-session-" . $session->circle_session_id);
 
-        $data["channal_name"] = "circle-session-" . $session->circle_session_id;
+        $data["channal_id"] = $session->circle_session_id;
+        $data["channal_name"] = "circle-session";
         $data["caller_name"] = $teacher->name ?? $teacher->phone;
+        $data["caller_image"] = $teacher->image . "";
 
         $session->student->notify(new MessageNotification($data, 'call'));
 
-        return responseJson(['agora_token' => $agoraToken], "جاري الاتصال بالطالب", 200);
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الاتصال بك في مسار الحلقات";
+        $message = "قام المعلم {$teacherName} بالاتصال بك للانضمام  الى جلستك داخل المسار الحلقات ";
+        sendNotification($session->student, [], 'call-student', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
+
+        return responseJson($agoraToken, "جاري الاتصال بالطالب", 200);
     }
-
-
-
-
 }

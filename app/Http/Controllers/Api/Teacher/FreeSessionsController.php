@@ -40,13 +40,19 @@ class FreeSessionsController extends Controller
 
         $freeSession->update(['status' => FreeSessionStatusEnum::ACTIVE]);
 
-        $agoraToken = generateAgoraToken($teacher,"session-".$freeSession->id);
+        $agoraToken = generateAgoraToken($teacher,"free-session-".$freeSession->id);
 
-        $data["channal_name"] = "session-".$freeSession->id;
+        $data["channal_name"] = "free-session";
+        $data["channal_id"] = $freeSession->id;
         $data["caller_name"] = $teacher->name ?? $teacher->phone;
+        $data["caller_image"] = $teacher->image."";
 
         $freeSession->student->notify(new MessageNotification($data,'call'));
 
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الموفقة على طلب الجلسة";
+        $message = "قام المعلم {$teacherName} بالموافقة على طلبك الانضمام الى جلسة المسار الحر {$freeSession->student->name}";
+        sendNotification($freeSession->student, [],'accept-session',asset('assets/images/brand-logos/toggle-white.png'),$title,$message);
         return responseJson(["session" => new FreeSessionResource($freeSession),'agora_token' => $agoraToken],__('messages.Updated Successfully'));
     }
 
@@ -56,6 +62,8 @@ class FreeSessionsController extends Controller
         if(!$freeSession)
             return responseJson("",__('messages.not_found'),404);
 
+        $teacher = auth("teacher_api")->user();
+
 
         $freeSession->update([
             'status' => FreeSessionStatusEnum::COMPLETED,
@@ -64,6 +72,11 @@ class FreeSessionsController extends Controller
             "from_ayah_id" => request()->from_ayah_id,
             "to_ayah_id" => request()->to_ayah_id,
         ]);
+
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الانتهاء من الجلسة";
+        $message = "قام المعلم  $teacherName بانهاء الجلسة الخاصة بك من فضلك قم بتقييم المعلم";
+        sendNotification($freeSession->student, [],'end-session',asset('assets/images/brand-logos/toggle-white.png'),$title,$message);
 
         return responseJson(new FreeSessionResource($freeSession),__('messages.Updated Successfully'));
     }

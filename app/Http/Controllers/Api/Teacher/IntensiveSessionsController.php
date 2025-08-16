@@ -56,16 +56,27 @@ class IntensiveSessionsController extends Controller
 
         $this->generateIntensiveStudies($intensiveRequest);
 
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الموفقة على طلبك في المسار المكثف";
+        $message = "قام المعلم {$teacherName} بالموافقة على طلبك الانضمام الى المسار المكثف {$intensiveRequest->student->name}";
+        sendNotification($intensiveRequest->student, [], 'accept-request', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
+
         return responseJson(new IntensiveRequestResource($intensiveRequest), __('messages.Updated Successfully'));
     }
 
     public function rejectSessionRequest($id)
     {
+        $teacher = auth("teacher_api")->user();
+
         $intensiveRequest = IntensiveRequest::whereStatus(RequestActionEnum::WAITING)->whereTeacherId(auth('teacher_api')->id())->find($id);
         if (!$intensiveRequest)
             return responseJson("", __('messages.not_found'), 400);
 
         $intensiveRequest->update(['status' => RequestActionEnum::REJECT]);
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم رفض طلبك في المسار المكثف";
+        $message = "قام المعلم {$teacherName} برفض طلبك الانضمام الى المسار المكثف {$intensiveRequest->student->name}";
+        sendNotification($intensiveRequest->student, [], 'reject-request', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
 
         return responseJson("", __('messages.Updated Successfully'));
     }
@@ -135,12 +146,19 @@ class IntensiveSessionsController extends Controller
             return responseJson("", "هذه الجلسة لم يأتي موعدها حتى الان او ربما انتهت", 400);
         $agoraToken = generateAgoraToken($teacher, "intensive-session-" . $intensiveSession->id);
 
-        $data["channal_name"] = "intensive-session-" . $intensiveSession->id;
+        $data["channal_name"] = "intensive-session";
+        $data["channal_id"] = $intensiveSession->id;
         $data["caller_name"] = $teacher->name ?? $teacher->phone;
+        $data["caller_image"] = $teacher->image . "";
 
         $intensiveSession->student->notify(new MessageNotification($data, 'call'));
 
-        return responseJson(['agora_token' => $agoraToken], "جاري الاتصال بالطالب", 200);
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم الاتصال بك في المسار المكثف";
+        $message = "قام المعلم {$teacherName} بالاتصال بك للانضمام  الى جلستك داخل المسار المكثف ";
+        sendNotification($intensiveSession->intensiveStudy?->intensiveRequest?->student, [], 'call-student', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
+
+        return responseJson($agoraToken, "جاري الاتصال بالطالب", 200);
     }
 
     public function surahs($id)
@@ -155,6 +173,8 @@ class IntensiveSessionsController extends Controller
     }
     public function endSession(SurahAndAyahRequest $request, $id)
     {
+        $teacher = auth("teacher_api")->user();
+
         $intensiveSession = IntensiveSession::whereStatus(0)->where("date", "<=", now())->whereTeacherId(auth('teacher_api')->id())->find($id);
         if (!$intensiveSession)
             return responseJson("", "هذه الجلسة لم يأتي موعدها حتى الان او ربما انتهت", 400);
@@ -169,7 +189,13 @@ class IntensiveSessionsController extends Controller
             "to_ayah_id" => request()->to_ayah_id,
         ]);
 
+        $tasme3 = $intensiveSession?->fromSurah?->name . " ( " . $intensiveSession?->fromAyah?->text . " )  الى " . $intensiveSession?->toSurah?->name . " ( " . $intensiveSession?->toAyah?->text . " ) ";
+
         //notification
+        $teacherName = $teacher->name ?? $teacher->phone;
+        $title = "تم انهاء جلستك داخل المسار المكثف";
+        $message = "قام المعلم {$teacherName} بانهاء جلستك داخل المسار المكثف والتي كانت من " . $tasme3 . " من فضلك قم بتقييم المعلم";
+        sendNotification($intensiveSession->intensiveStudy?->intensiveRequest?->student, [], 'call-student', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
 
         if ($intensiveStudy->to_ayah_id == request()->to_ayah_id) {
             $intensiveStudy->update(['is_completed' => 1]);
@@ -182,6 +208,9 @@ class IntensiveSessionsController extends Controller
             ]);
 
             //notification
+            $title = "تم اضافة امتحان لك في المسار المكثف";
+            $message = "لقد قمت بأتمام خمس اجزاء في المسار المكثف والان تم اضافة امتحان لك من فضلك قم بالذهاب الى صفحة الامتحانات";
+            sendNotification($intensiveSession->intensiveStudy?->intensiveRequest?->student, [], 'exam-added', asset('assets/images/brand-logos/toggle-white.png'), $title, $message);
 
         } else {
             $dateTime = now()->addDay()->format("Y-m-d") . " " . $intensiveStudy->intensiveRequest?->time;
@@ -189,8 +218,6 @@ class IntensiveSessionsController extends Controller
                 'intensive_study_id' => $intensiveStudy->id,
                 'date' => $dateTime
             ]);
-
-            //notification
 
         }
 
@@ -201,7 +228,7 @@ class IntensiveSessionsController extends Controller
     public function rateStudent($id)
     {
         request()->validate(['comment' => 'nullable', 'rate' => 'required|integer|in:1,2,3,4,5']);
-        $session = IntensiveSession::whereStatus(1)->whereRelation("intensiveStudy.intensiveRequest","teacher_id",auth('teacher_api')->id())->find($id);
+        $session = IntensiveSession::whereStatus(1)->whereRelation("intensiveStudy.intensiveRequest", "teacher_id", auth('teacher_api')->id())->find($id);
         if (!$session)
             return responseJson("", "هذه الجلسة لم تنتهي حتى الان", 400);
 

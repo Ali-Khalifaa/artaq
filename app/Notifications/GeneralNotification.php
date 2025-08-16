@@ -49,7 +49,10 @@ class GeneralNotification extends Notification implements ShouldBroadcast
         return ['database','broadcast'];
     }
 
-
+ public function broadcastAs(): string
+    {
+        return "notification";
+    }
     /**
      * Get the array representation of the notification.
      *
@@ -60,7 +63,7 @@ class GeneralNotification extends Notification implements ShouldBroadcast
     {
         $title = $this->title;
         $message = $this->message;
-        if(is_array($this->title) && !($notifiable instanceof User) && !($notifiable instanceof Driver)){
+        if(is_array($this->title) ){
             $title = $this->title['ar'];
             $message = $this->message['ar'];
         }
@@ -84,30 +87,15 @@ class GeneralNotification extends Notification implements ShouldBroadcast
         $title = $this->title;
         $message = $this->message;
         if(is_array($this->title)){
-            if(($notifiable instanceof User || $notifiable instanceof Driver)){
-                $title = $this->title[$notifiable->language] ?? $this->title['en'];
-                $message = $this->message[$notifiable->language] ?? $this->message['en'];
-            }else{
-                $title = $this->title['ar'];
-                $message = $this->message['ar'];
-            }
-        }else{
-            if(($notifiable instanceof User || $notifiable instanceof Driver)){
-                $title = __("notifications.$title",$this->variables,$notifiable->language);
-                $message = __("notifications.$message",$this->variables,$notifiable->language);
-            }else{
-                $title = __("notifications.$title",$this->variables,"ar");
-                $message = __("notifications.$message",$this->variables,"ar");
-            }
+            $title = $this->title['ar'];
+            $message = $this->message['ar'];
         }
 
         return (new BroadcastMessage([
             'data' => [
                 'timeDate' => now()->format('Y-m-d H:i'),
-                'page_vue_name' => $this->pageVueName,
                 'message' => $message,
                 'title' => $title,
-                'id' => $this->data ? (is_array($this->data) ? $this->data['id']:$this->data?->id) : 0,
                 'data' => is_array($this->data) && count($this->data) == 0? ['id' => 0]:$this->data,
                 'image' => $this->image,
             ]

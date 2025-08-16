@@ -16,6 +16,18 @@ class HomeController extends Controller implements HasMiddleware
         ];
     }
 
+    public function acceptCall(){
+        request()->validate(['channel_name' => 'required|string|in:free-session,intensive-session,circle-session',"channel_id" => 'required|integer']);
+        if(request()->channel_name == "free-session"){
+            return app(FreeSessionsController::class)->acceptCall();
+        }elseif(request()->channel_name == "intensive-session"){
+            return app(IntensiveSessionsController::class)->acceptCall();
+        }elseif(request()->channel_name == "circle-session"){
+            return app(StudentCircleController::class)->acceptCall();
+        }
+
+    }
+
 
 
 }

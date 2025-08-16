@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Api\Student;
 
 use App\Enums\FreeSessionStatusEnum;
-use App\Enums\RequestActionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Student\CircleSchedualResource;
-use App\Http\Resources\Api\Student\IntensiveRequestResource;
 use App\Http\Resources\Api\Student\StudentLevelTasksResource;
 use App\Http\Resources\Api\Student\TeacherResource;
 use App\Models\CircleDuration;
 use App\Models\CircleSession;
-use App\Models\FreeSession;
+use App\Models\CircleSessionStudent;
 use App\Models\Rating;
 use App\Models\Student;
 use App\Models\StudentCircle;
@@ -98,7 +96,7 @@ class StudentCircleController extends Controller
             ->first();
     }
 
-    public function getCirclerSchedual(){
+    public function getCircleSchedual(){
         $student = auth('student_api')->user();
         $studentCircle = StudentCircle::whereStatus(0)->whereStudentId($student->id)->first();
         $circles = CircleDuration::whereCircleId($studentCircle->circle_id)->get();
@@ -222,8 +220,10 @@ class StudentCircleController extends Controller
     public function acceptCall()
     {
         $student = auth("student_api")->user();
-        $currentSession = FreeSession::whereStatus(RequestActionEnum::ACTIVE)->whereStudentId(auth('student_api')->id())->first();
-        $agoraToken = generateAgoraToken($student, "session-" . $currentSession->id);
-        return responseJson(["session" => new IntensiveRequestResource($currentSession), "agora_token" => $agoraToken]);
+        $currentSession = CircleSessionStudent::whereStudentId(auth('student_api')->id())->find(request()->channel_id);
+        if (!$currentSession)
+            return responseJson("","هذه الجلسة ليست موجودة", 404);
+        $agoraToken = generateAgoraToken($student, "circle-session-" . $currentSession->id);
+        return responseJson($agoraToken);
     }
 }

@@ -146,7 +146,7 @@ class AuthStudentController extends Controller implements HasMiddleware
                     }
                 },
             ],
-            'preservation_method_id' => ['required_if:track_id,2,3', 'exists:preservation_methods,id', function ($attribute, $value, $fail) {
+            'preservation_method_id' => ['required_if:track_id,2,3', function ($attribute, $value, $fail) {
                 if (request()->track_id == 3 && !in_array($value, [4, 3])) {
                     $fail('اتجاه الحفظ غير صالح للمسار المكثف');
                 }

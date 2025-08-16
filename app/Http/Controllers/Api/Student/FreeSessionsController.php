@@ -37,6 +37,9 @@ class FreeSessionsController extends Controller
             'student_id' => $student->id,
             'status' => FreeSessionStatusEnum::PENDING
         ]);
+        $studentName = $student->name ?? $student->phone;
+
+        sendNotification($teacher, [],'send-session-request',asset('assets/images/brand-logos/toggle-white.png'),"لديك طلب جلسة جديد في المسار الحر", "لديك طلب جلسة جديد في المسار الحر من الطالب {$studentName}");
 
         return responseJson(new FreeSessionResource($freeSession), '', 200);
     }
@@ -57,9 +60,11 @@ class FreeSessionsController extends Controller
     public function acceptCall()
     {
         $student = auth("student_api")->user();
-        $currentSession = FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereStudentId(auth('student_api')->id())->first();
-        $agoraToken = generateAgoraToken($student,"session-".$currentSession->id);
-        return responseJson(["session" => new FreeSessionResource($currentSession),"agora_token" => $agoraToken]);
+        $currentSession = FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereStudentId(auth('student_api')->id())->find(request()->channel_id);
+        if (!$currentSession)
+            return responseJson("","هذه الجلسة ليست موجودة", 404);
+        $agoraToken = generateAgoraToken($student,"free-session-".$currentSession->id);
+        return responseJson($agoraToken);
     }
 
     public function getActiveTeachers()
