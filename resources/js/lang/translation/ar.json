@@ -1086,7 +1086,13 @@
         "Ayah":"آية",
         "Juz":"الجزء",
         "Ayah_number":"رقم الآية",
-        "Activate the account":"تفعيل الحساب"
+        "Activate the account":"تفعيل الحساب",
+        "studentWithoutCircles": "طلاب بدون حلقات",
+        "studentExams": "امتحانات الطلاب",
+        "Supervisor": "المشرف",
+        "examTime": "وقت الامتحان",
+        "examLink": "رابط الامتحان",
+        "degree": "الدرجة"
 
     },
     "role_and_permissions":{
@@ -1108,6 +1114,11 @@
         "role create" : "اضافة ادوار المدراء",
         "role edit" : "تعديل ادوار المدراء",
         "role delete" : "حذف ادوار المدراء",
+
+        "Exams" : "الامتحانات",
+        "exam read" : "عرض الامتحانات",
+        "add time to exam" : "اضافة وقت للامتحان",
+        "add degree to exam" : "اضافة درجة للامتحان",
 
         "Languages" : "اللغات",
         "language read" : "عرض اللغات",
@@ -1200,6 +1211,8 @@
         "student edit" : "تعديل الطلاب",
         "student delete" : "حذف الطلاب",
         "student send notification" : "ارسال اشعار الى الطالب",
+        "student without circle read" : "عرض الطلاب بدون حلقة",
+        "add circle to student" : "اضافة حلقة للطالب",
 
         "Circles" : "الحلقات",
         "circle read" : "عرض الحلقات",

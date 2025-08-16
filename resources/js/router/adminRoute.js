@@ -30,6 +30,8 @@ import track from "./adminRoute/track.js";
 import teacher from "./adminRoute/teacher.js";
 import serial from "./adminRoute/serial.js";
 import officialHoliday from "./adminRoute/officialHoliday.js";
+import studentWithoutCircles from "./adminRoute/studentWithoutCircles.js";
+import studentExams from "./adminRoute/studentExams.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -83,6 +85,8 @@ const routes = [
             ...teacher,
             ...officialHoliday,
             ...serial,
+            ...studentWithoutCircles,
+            ...studentExams,
         ]
     },
     {

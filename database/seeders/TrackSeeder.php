@@ -21,6 +21,7 @@ class TrackSeeder extends Seeder
             ['name' => 'الحر', 'created_at' => $now],
             ['name' => 'الحلقات', 'created_at' => $now],
             ['name' => 'المكثف', 'created_at' => $now],
+            ['name' => 'تصحيح التلاوة', 'created_at' => $now],
         ];
 
         DB::table('tracks')->insert($nationalities);

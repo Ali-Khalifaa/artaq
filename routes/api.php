@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\CountryController;
 use App\Http\Controllers\Dashboard\DashboardStatisticsController;
 use App\Http\Controllers\Dashboard\DigitalBadgeController;
+use App\Http\Controllers\Dashboard\ExamController;
 use App\Http\Controllers\Dashboard\JoinUsController;
 use App\Http\Controllers\Dashboard\LanguageController;
 use App\Http\Controllers\Dashboard\LevelController;
@@ -63,7 +64,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         // country
         Route::get('countries/dropdown',[CountryController::class,'dropdown']);
+        Route::get('student-without-circles',[CircleController::class,'studentWithoutCircles']);
+        Route::get('circles-with-teacher',[CircleController::class,'circlesWithTeacher']);
+        Route::post('assign-student-to-circle/{studentId}/{circleId}',[CircleController::class,'assignStudentToCircle']);
         Route::apiResource('countries', CountryController::class);
+
+        Route::get('exams',[ExamController::class,'index']);
+        Route::put('add-time-to-exam/{id}',[ExamController::class,'addTimeToExam']);
+        Route::put('add-degree-to-exam/{id}',[ExamController::class,'addDegreeToExam']);
 
         Route::get('cities-by-country/{id}',[CityController::class,'getCitiesByCountryId']);
         Route::apiResource('cities', CityController::class);

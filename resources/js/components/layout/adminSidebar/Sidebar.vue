@@ -56,6 +56,20 @@
                         </router-link>
                     </li>
 
+                    <li class="slide" v-show="permission.includes('student without circle read')">
+                        <router-link :to="{name:'studentWithoutCircles'}" class="side-menu__item">
+                            <i class="bx bx-user side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.studentWithoutCircles')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('exam read')">
+                        <router-link :to="{name:'studentExams'}" class="side-menu__item">
+                            <i class="bx bx-file side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.studentExams')}}</span>
+                        </router-link>
+                    </li>
+
                      <!-- Start::permissions -->
                     <li class="slide has-sub" v-show="(permission.includes('admin read') || permission.includes('role read'))"
                         :class="[$route.name == 'admin' || $route.name == 'role'  ? 'active open': '']"

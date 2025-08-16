@@ -22,9 +22,9 @@
                         <search-and-filters @search="(val) => search.searchKey = val" />
 
                         <div class="prism-toggle">
-                            <button v-if="permission.includes('memorization type create')" @click="showModelCreate" class="btn btn-sm btn-primary-light" data-bs-toggle="modal" data-bs-target="#category-service">
+                            <!-- <button v-if="permission.includes('memorization type create')" @click="showModelCreate" class="btn btn-sm btn-primary-light" data-bs-toggle="modal" data-bs-target="#category-service">
                                 <i class="ri-add-line me-1 fw-semibold align-middle"></i>{{ $t('global.add') }}
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                     <div class="card-body">
@@ -36,7 +36,7 @@
                                     <th scope="col">{{ $t('label.title') }}</th>
                                     <th scope="col">{{ $t('global.track') }}</th>
                                     <th scope="col">{{ $t('global.created_at') }}</th>
-                                    <th scope="col">{{ $t('global.action') }}</th>
+                                    <!-- <th scope="col">{{ $t('global.action') }}</th> -->
                                 </tr>
                                 </thead>
                                 <tbody v-if="data && data.length">
@@ -45,7 +45,7 @@
                                     <td>{{item.name}}</td>
                                     <td>{{item.track?.name}}</td>
                                     <td>{{item.created_at}}</td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="hstack gap-2 fs-15">
                                             <button v-if="permission.includes('memorization type edit')"
                                                 @click.prevent="showEditMode(item)"
@@ -59,7 +59,7 @@
                                                class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i
                                                 class="ri-delete-bin-line"></i></a>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 </tbody>
                                 <tbody v-else>

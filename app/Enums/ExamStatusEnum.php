@@ -36,4 +36,13 @@ enum ExamStatusEnum: string
         };
     }
 
+    public function icon(): string
+    {
+        return match ($this) {
+            self::PENDING => 'bi bi-clock',
+            self::SUCCESSED => 'bi bi-check-circle',
+            self::FAILED => 'bi bi-x-circle',
+        };
+    }
+
 }

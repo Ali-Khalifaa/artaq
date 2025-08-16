@@ -28,6 +28,8 @@ class CircleController extends Controller implements HasMiddleware
             new Middleware('can:circle create', only: ['store']),
             new Middleware('can:circle edit', only: ['update', 'show']),
             new Middleware('can:circle delete', only: ['destroy']),
+            new Middleware('can:student without circle read', only: ['studentWithoutCircles']),
+            new Middleware('can:add circle to student', only: ['assignStudentToCircle']),
         ];
     }
 
@@ -90,6 +92,13 @@ class CircleController extends Controller implements HasMiddleware
         return responseJson(CircleResource::collection($level), '', 200);
     }
 
+    public function circlesWithTeacher(Request $request)
+    {
+        $circles = Circle::whereHas('teachers')->where('gender', $request->gender)->where('status', 1)->get();
+
+        return responseJson(CircleResource::collection($circles), '', 200);
+    }
+
     public function circlesWithoutTeacher($id)
     {
         $teacher = Teacher::find($id);
@@ -107,22 +116,27 @@ class CircleController extends Controller implements HasMiddleware
     public function studentWithoutCircles()
     {
         $students = Student::whereTrackId(2)
-        ->doesntHave('circles', function ($q) {
-            $q->whereStatus(0);
-        })
-        ->doesntHave('exams', function ($q) {
-            $q->whereStatus(ExamStatusEnum::PENDING);
-        })
-        ->get();
+            ->whereDoesntHave('circles', function ($q) {
+                $q->where('student_circles.status', 0)
+                ->orWhere('circles.status', 0);
+            })
+            ->whereDoesntHave('exams', function ($q) {
+                $q->where('student_exams.status', ExamStatusEnum::PENDING);
+            })
+            ->with(['country', 'nationality', 'level'])
+            ->searchAndFilter()
+            ->latest()
+            ->paginate(10);
 
-        return responseJson(StudentResource::collection($students), '', 200);
+        return responseJson(StudentResource::collection($students->items()), '', 200, getPaginates($students));
     }
 
     public function assignStudentToCircle($studentId, $circleId)
     {
-        $student = Student::whereTrackId(2)->doesntHave('circles', function ($q) {
-            $q->whereStatus(0);
-        })->find($studentId);
+        $student = Student::whereTrackId(2)->whereDoesntHave('circles', function ($q) {
+                $q->where('student_circles.status', 0)
+                ->orWhere('circles.status', 0);
+            })->find($studentId);
         $circle = Circle::where('gender', $student?->gender)->find($circleId);
         if (!$student || !$circle)
             return responseJson('', __('messages.not_found'), 400);
@@ -135,7 +149,7 @@ class CircleController extends Controller implements HasMiddleware
         $levels = Level::where('id', '>=', $student->level_id)->wherePreservationMethodId($student->preservation_method_id)->get();
 
         foreach ($levels as $level) {
-            foreach ($level->tasks as $task) {
+            foreach ($level->levelTasks as $task) {
                 StudentLevelTask::create([
                     "student_circle_id" => $studentCircle->id,
                     "circle_id" => $circle->id,

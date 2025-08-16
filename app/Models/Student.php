@@ -122,7 +122,7 @@ class Student extends Authenticatable implements JWTSubject
 
     public function circles()
     {
-        return $this->belongsToMany(Circle::class, 'student_circles', 'student_id', 'circle_id');
+        return $this->belongsToMany(Circle::class, 'student_circles', 'student_id', 'circle_id','id','id');
     }
 
     // Automatically set code attribute only on create
