@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Student\FreeSessionsController;
 use App\Http\Controllers\Api\Student\HomeController;
 use App\Http\Controllers\Api\Student\IntensiveSessionsController;
 use App\Http\Controllers\Api\Student\NotificationController;
+use App\Http\Controllers\Api\Student\StudentCircleController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Middleware\ChangeLang;
 use App\Http\Middleware\ResolveJwtGuard;
@@ -57,6 +58,12 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
 
         Route::group(['middleware' => 'auth:student_api'], function () {
 
+
+            Route::post('accept-call', [HomeController::class, 'acceptCall']);
+            Route::get('next-exam', [HomeController::class, 'getNextExam']);
+            Route::get('prev-exams', [HomeController::class, 'getPrevExams']);
+
+
             Route::get('student-details', [AuthStudentController::class, 'studentDetails']);
             Route::post('logout', [AuthStudentController::class, 'logout']);
             Route::post('complete-register', [AuthStudentController::class, 'completeRegister']);
@@ -71,7 +78,7 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
             Route::get('last-session-details', [FreeSessionsController::class, 'lastSessionDetails']);
             Route::get('sessions-details', [FreeSessionsController::class, 'freeSessionsDetails']);
             Route::post('start-session/{teacherId}', [FreeSessionsController::class, 'startSession']);
-            Route::post('accept-call', [FreeSessionsController::class, 'acceptCall']); /////////
+            // Route::post('accept-call', [FreeSessionsController::class, 'acceptCall']); /////////
             Route::post('rate-teacher-session/{id}', [FreeSessionsController::class, 'rateTeacher']);
 
 
@@ -91,15 +98,13 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
 
             Route::group(['prefix' => 'circles-sessions'], function () {
 
-                Route::get('get-active-teachers', [IntensiveSessionsController::class, 'getActiveTeachers']);
-                Route::post('send-intensive-request/{teacherId}', [IntensiveSessionsController::class, 'sendSessionRequest']);
-                Route::get('current-intensive-requests', [IntensiveSessionsController::class, 'getCurrentIntensiveRquest']);
-                Route::get('previous-intensive-sessions', [IntensiveSessionsController::class, 'previousSessions']);
-                Route::get('next-intensive-session', [IntensiveSessionsController::class, 'nextSession']);
-                Route::get('intensive-session-details', [IntensiveSessionsController::class, 'lastSessionDetails']);
-                Route::post('rate-teacher-intensivesession/{intensiveSessionId}', [IntensiveSessionsController::class, 'rateTeacher']);
-                Route::post('accept-intensive-session-call/{channelName}', [IntensiveSessionsController::class, 'acceptCall']);
-                Route::post('join-intensive-session-call/{intensiveSessionId}', [IntensiveSessionsController::class, 'joinCall']);
+                Route::get('current-devel-details', [StudentCircleController::class, 'currentLevelDetails']);
+                Route::get('get-next-session', [StudentCircleController::class, 'getNextSession']);
+                Route::get('current-circle-session', [StudentCircleController::class, 'currentCircleSession']);
+                Route::get('circle-schedual', [StudentCircleController::class, 'getCircleSchedual']);
+                Route::get('previous-sessions', [StudentCircleController::class, 'previousSessions']);
+                Route::post('rate-teacher/{studentLevelTask}', [StudentCircleController::class, 'rateTeacher']);
+
             });
 
             Route::controller(NotificationController::class)->group(function () {

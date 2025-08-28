@@ -2,6 +2,7 @@
 
 use App\Class\AgoraDynamicKey\RtcTokenBuilder;
 use App\Models\Country;
+use App\Models\Student;
 use App\Notifications\GeneralNotification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
@@ -69,7 +70,7 @@ function generateAgoraToken($model,$channelName)
 {
     $appID = env('AGORA_APP_ID');
     $appCertificate = env('AGORA_APP_CERTIFICATE');
-    $modelName = $model->name??$model->phone;
+    $modelName = $model instanceof Student ? (900000+$model->id) : $model->id;
     $role = RtcTokenBuilder::RoleAttendee;
     $expireTimeInSeconds = 20*60;
     $currentTimestamp = now()->getTimestamp();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Teacher\FreeSessionsController;
 use App\Http\Controllers\Api\Teacher\HomeController;
 use App\Http\Controllers\Api\Teacher\IntensiveSessionsController;
 use App\Http\Controllers\Api\Teacher\NotificationController;
+use App\Http\Controllers\Api\Teacher\TeacherCircleController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Middleware\ChangeLang;
 use Illuminate\Http\Request;
@@ -48,10 +49,22 @@ Route::group(['prefix' => 'teacher', 'middleware' => [ChangeLang::class]], funct
             Route::post('end-session/{IntensiveSession}', [IntensiveSessionsController::class, 'endSession']);
             Route::post('rate-student/{IntensiveSession}', [IntensiveSessionsController::class, 'rateStudent']);
             Route::get('surahs/{IntensiveSession}', [IntensiveSessionsController::class, 'surahs']);
-
         });
 
+        Route::group(['prefix' => 'circles-sessions'], function () {
 
+            Route::get('next-circle-sessions', [TeacherCircleController::class, 'getNextCircleSessions']);
+            Route::get('circle-students/{circleId}', [TeacherCircleController::class, 'getCircleStudents']);
+            Route::get('current-circle-session', [TeacherCircleController::class, 'currentCircleSession']);
+            Route::post('start-circle-session/{circleId}', [TeacherCircleController::class, 'startCircleSession']);
+            Route::post('cancel-circle-session/{circleSessionId}', [TeacherCircleController::class, 'cancelCircleSession']);
+            Route::post('end-circle-session/{circleSessionId}', [TeacherCircleController::class, 'endCircleSession']);
+            Route::post('end-circle-session-student/{circleSessionStudentId}', [TeacherCircleController::class, 'endCircleSessionStudent']);
+            Route::post('rate-student/{circleSessionStudentId}', [TeacherCircleController::class, 'rateStudent']);
+            Route::get('previous-circle-sessions', [TeacherCircleController::class, 'previousSessions']);
+            Route::post('call-student/{circleSessionStudentId}', [TeacherCircleController::class, 'callStudent']);
+
+        });
         Route::controller(NotificationController::class)->group(function () {
             Route::get('all-notifications', 'getAllNot');
             Route::get('unread-notifications', 'getNotReadNotifications');

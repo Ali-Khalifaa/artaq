@@ -18,11 +18,15 @@ class IntensiveStudy extends Model
 
     protected $table = "intensive_studies";
 
-    protected $casts = ['status' => RequestActionEnum::class];
 
     public function intensiveRequest()
     {
         return $this->belongsTo(IntensiveRequest::class, 'intensive_request_id');
+    }
+
+    public function intensiveSessions()
+    {
+        return $this->hasMany(IntensiveSession::class, 'intensive_study_id');
     }
 
     public function fromSurah()

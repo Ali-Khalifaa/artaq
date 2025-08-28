@@ -11,6 +11,10 @@ Broadcast::channel('student.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 }, ['guards' => ['student_api']]);
 
+Broadcast::channel('parent.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+}, ['guards' => ['parent_api']]);
+
 
 Broadcast::channel('teacher.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;

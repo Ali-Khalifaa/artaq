@@ -7,6 +7,7 @@ enum RequestActionEnum: string
     case WAITING   = 'Waiting';
     case ACCEPT    = 'Accept';
     case REJECT    = 'Reject';
+    case COMPLETED    = 'Completed';
 
     public function label(): string
     {
@@ -14,6 +15,7 @@ enum RequestActionEnum: string
             self::WAITING   => __('messages.waiting'),
             self::ACCEPT    => __('messages.accept'),
             self::REJECT    => __('messages.reject'),
+            self::COMPLETED    => __('messages.completed'),
 
         };
     }

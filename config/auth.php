@@ -2,6 +2,7 @@
 
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\StudentParent;
 
 return [
 
@@ -52,6 +53,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'teachers',
         ],
+        'parent_api' => [
+            'driver' => 'jwt',
+            'provider' => 'parents',
+        ],
 
     ],
 
@@ -84,6 +89,10 @@ return [
         'teachers' => [
             'driver' => 'eloquent',
             'model' => Teacher::class,
+        ],
+        'parents' => [
+            'driver' => 'eloquent',
+            'model' => StudentParent::class,
         ],
 
     ],

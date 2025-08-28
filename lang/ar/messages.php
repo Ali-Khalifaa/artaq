@@ -13,9 +13,9 @@ return [
     |
     */
     "image"=>"صورة",
-    "processing"=>"جاري التوصيل",
+    "processing"=>"جاري المعالجة",
     "canceled"=>"تم الالغاء",
-    "completed"=>"تم التوصيل",
+    "completed"=>"تم الاكتمال",
     'successfully' => 'بنجاح',
     'pending' => 'معلق',
     'The booking date must be after today' => 'يجب عليك تحديد تاريخ الرحلة بعد اليوم',

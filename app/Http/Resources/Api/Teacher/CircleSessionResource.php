@@ -2,10 +2,7 @@
 
 namespace App\Http\Resources\Api\Teacher;
 
-use App\Models\IntensiveSession;
-use App\Models\Rating;
-use App\Models\Student;
-use App\Models\Teacher;
+
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 

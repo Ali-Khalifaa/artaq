@@ -37,6 +37,9 @@ class FreeSessionsController extends Controller
             'student_id' => $student->id,
             'status' => FreeSessionStatusEnum::PENDING
         ]);
+        $studentName = $student->name ?? $student->phone;
+
+        sendNotification($teacher, [],'send-session-request',asset('assets/images/brand-logos/toggle-white.png'),"لديك طلب جلسة جديد في المسار الحر", "لديك طلب جلسة جديد في المسار الحر من الطالب {$studentName}");
 
         return responseJson(new FreeSessionResource($freeSession), '', 200);
     }
@@ -57,13 +60,21 @@ class FreeSessionsController extends Controller
     public function acceptCall()
     {
         $student = auth("student_api")->user();
-        $currentSession = FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereStudentId(auth('student_api')->id())->first();
-        $agoraToken = generateAgoraToken($student,"session-".$currentSession->id);
-        return responseJson(["session" => new FreeSessionResource($currentSession),"agora_token" => $agoraToken]);
+        $currentSession = FreeSession::whereStatus(FreeSessionStatusEnum::ACTIVE)->whereStudentId(auth('student_api')->id())->find(request()->channel_id);
+        if (!$currentSession)
+            return responseJson("","هذه الجلسة ليست موجودة", 404);
+        $agoraToken = generateAgoraToken($student,"free-session-".$currentSession->id);
+        return responseJson($agoraToken);
     }
 
     public function getActiveTeachers()
     {
+        $student = auth("student_api")->user();
+        if($student->track_id == 3){
+            $controller = new IntensiveSessionsController();
+            return $controller->getActiveTeachers();
+        }
+
         $this->searchForTeachersRequest();
         $teachers = Teacher::searchAndFilter()->whereDoesntHave("freeSessions",function($q){
             $q->where("status",FreeSessionStatusEnum::ACTIVE);
@@ -82,7 +93,7 @@ class FreeSessionsController extends Controller
     public function previousSessions()
     {
         $this->searchForSessionsRequest();
-        $sessions = FreeSession::whereIn('status',[FreeSessionStatusEnum::COMPLETED,FreeSessionStatusEnum::CANCELED,FreeSessionStatusEnum::ACTIVE])->whereStudentId(auth("student_api")->id())->latest()->paginate(10);
+        $sessions = FreeSession::searchAndFilter()->whereIn('status',[FreeSessionStatusEnum::COMPLETED,FreeSessionStatusEnum::CANCELED,FreeSessionStatusEnum::ACTIVE])->whereStudentId(auth("student_api")->id())->latest()->paginate(10);
         return responseJson(FreeSessionResource::collection($sessions->items()),'',200,getPaginates($sessions));
     }
 
@@ -180,8 +191,8 @@ class FreeSessionsController extends Controller
             "rated_type" => Teacher::class,
             "model_id" => $freeSession->id,
             "model_type" => FreeSession::class,
-            "ratedby_id" => auth('student_api')->id(),
-            "ratedby_type" => Student::class,
+            "rateby_id" => auth('student_api')->id(),
+            "rateby_type" => Student::class,
         ]);
 
         $teacher = Teacher::find($freeSession->teacher_id);

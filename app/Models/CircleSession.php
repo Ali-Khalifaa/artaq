@@ -31,10 +31,7 @@ class CircleSession extends Model
     }
 
     public function students(){
-        return $this->belongsToMany(Student::class, 'circle_session_students', 'circle_session_id', 'student_id')
-            ->withPivot('attends', 'student_level_task_id')
-            ->using(CircleSessionStudent::class)
-            ->withTimestamps();
+        return $this->belongsToMany(Student::class, 'circle_session_students', 'circle_session_id', 'student_id')->withTimestamps();
     }
 
     public function circleSessionStudents()

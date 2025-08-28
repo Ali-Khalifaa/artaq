@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Parent\AuthParentController;
 use App\Http\Controllers\Api\Student\AuthStudentController;
 use App\Http\Controllers\Api\Teacher\AuthTeacherController;
 use App\Http\Controllers\Controller;
@@ -35,7 +36,8 @@ class GeneralController extends Controller
             return app(AuthStudentController::class)->login($request);
         } elseif ($request->user_type == 'teacher') {
             return app(AuthTeacherController::class)->login($request);
-        } else {
+        }  elseif (request()->user_type == 'parent') {
+            return app(AuthParentController::class)->login($request);
         }
     }
 
@@ -48,7 +50,8 @@ class GeneralController extends Controller
             return app(AuthStudentController::class)->activateAccount(request());
         } elseif (request()->user_type == 'teacher') {
             return app(AuthTeacherController::class)->activateAccount(request());
-        } else {
+        } elseif (request()->user_type == 'parent') {
+            return app(AuthParentController::class)->activateAccount(request());
         }
     }
 

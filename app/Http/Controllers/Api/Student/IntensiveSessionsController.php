@@ -44,6 +44,11 @@ class IntensiveSessionsController extends Controller
             'status' => RequestActionEnum::WAITING,
         ]);
 
+        $studentName = $student->name ?? $student->phone;
+        $title = "لديك طلب انضمام جديد داخل المسار المكثف";
+        $message = " لديك طلب انضمام جديد في المسار المكثف من الطالب {$studentName} واتجاه الحفظ هو {$freeSession->preservationMethod->name}";
+        sendNotification($teacher, [],'send-intensive-request',asset('assets/images/brand-logos/toggle-white.png'),$title,$message);
+
         return responseJson(new IntensiveRequestResource($freeSession), '', 200);
     }
 
@@ -177,8 +182,8 @@ class IntensiveSessionsController extends Controller
             "rated_type" => Teacher::class,
             "model_id" => $session->id,
             "model_type" => IntensiveSession::class,
-            "ratedby_id" => auth('student_api')->id(),
-            "ratedby_type" => Student::class,
+            "rateby_id" => auth('student_api')->id(),
+            "rateby_type" => Student::class,
         ]);
 
         if ($teacher)
@@ -188,17 +193,17 @@ class IntensiveSessionsController extends Controller
     }
 
 
-    public function acceptCall($channelName)
-    {
-        $student = auth("student_api")->user();
-        $agoraToken = generateAgoraToken($student, $channelName);
-        return responseJson($agoraToken);
-    }
+    // public function acceptCall($channelName)
+    // {
+    //     $student = auth("student_api")->user();
+    //     $agoraToken = generateAgoraToken($student, $channelName);
+    //     return responseJson($agoraToken);
+    // }
 
-    public function joinCall($id)
+    public function acceptCall()
     {
         $student = auth("student_api")->user();
-        $session = IntensiveSession::whereStatus(0)->whereRelation("intensiveStudy.intensiveRequest", "student_id", auth('student_api')->id())->find($id);
+        $session = IntensiveSession::whereStatus(0)->whereRelation("intensiveStudy.intensiveRequest", "student_id", auth('student_api')->id())->find(request()->channel_id);
         if (!$session)
             return responseJson("", "هذه الجلسة غير موجود او ربما انتهت", 400);
         $agoraToken = generateAgoraToken($student, "intensive-session-" . $session->id);
