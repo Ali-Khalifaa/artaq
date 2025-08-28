@@ -6,6 +6,7 @@ use App\Enums\ExamStatusEnum;
 use App\Enums\FreeSessionStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Teacher\CircleSessionResource;
+use App\Http\Resources\Api\Teacher\CircleSessionStudentResource;
 use App\Models\CircleDuration;
 use App\Models\CircleSession;
 use App\Models\CircleSessionStudent;
@@ -52,11 +53,52 @@ class TeacherCircleController extends Controller
     {
         return CircleDuration::whereCircleId($circle->circle_id)->get()
             ->map(function ($item) {
-                $dayNumber = Carbon::parse($item->day)->dayOfWeek;
-                $nextDate = Carbon::now()->startOfWeek()->addDays($dayNumber)->setTimeFromTimeString($item->start_time);
+                // determine numeric day index (0 = Sunday, 6 = Saturday)
+                $dayNumber = null;
 
-                $diffInHoursBetweenStartTimeAndEndTime = Carbon::parse($item->end_time)->diffInHours(Carbon::parse($item->start_time));
-                if ($nextDate->lessThan(now()->subHours($diffInHoursBetweenStartTimeAndEndTime))) {
+                // if day is already numeric
+                if (is_numeric($item->day)) {
+                    $dayNumber = intval($item->day);
+                } else {
+                    // try parsing common English weekday names
+                    try {
+                        $dayNumber = Carbon::parse($item->day)->dayOfWeek;
+                    } catch (\Exception $e) {
+                        $dayNumber = null;
+                    }
+
+                    // fallback: common Arabic weekday names mapping
+                    if ($dayNumber === null) {
+                        $arabicDays = [
+                            'الأحد' => 0,
+                            'الاثنين' => 1,
+                            'الثلاثاء' => 2,
+                            'الأربعاء' => 3,
+                            'الخميس' => 4,
+                            'الجمعة' => 5,
+                            'السبت' => 6,
+                        ];
+                        $normalized = trim($item->day);
+                        $dayNumber = $arabicDays[$normalized] ?? null;
+                    }
+                }
+
+                // final fallback to today's weekday if nothing matched
+                if ($dayNumber === null) {
+                    $dayNumber = Carbon::now()->dayOfWeek;
+                }
+
+                // compute next date for that weekday and set start time
+                $now = Carbon::now();
+                $todayWeekday = $now->dayOfWeek;
+                $daysToAdd = ($dayNumber - $todayWeekday + 7) % 7;
+                $nextDate = $now->copy()->startOfDay()->addDays($daysToAdd)->setTimeFromTimeString($item->start_time);
+
+                // compute end datetime for that occurrence
+                $endDate = $nextDate->copy()->setTimeFromTimeString($item->end_time);
+
+                // if the end datetime has already passed, move to next week's occurrence
+                if ($endDate->lessThanOrEqualTo($now)) {
                     $nextDate->addWeek();
                 }
 
@@ -67,6 +109,7 @@ class TeacherCircleController extends Controller
             ->first();
     }
 
+
     public function getCircleStudents($circleId)
     {
         $teacher = auth('teacher_api')->user();
@@ -75,8 +118,8 @@ class TeacherCircleController extends Controller
             return responseJson("", "الحلقة غير متاحة", 404);
         }
         $filteredStudents = $teacherCircle->circle->students->map(function ($student) {
-            $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevel($student->level_id)->whereStatus(0)->whereRelation("studentCircle", "status", 0)->get();
-            if ($tasks->count() > 0 && $student->exams()->whereStatus(ExamStatusEnum::PENDING)->exists()) {
+            $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevelId($student->level_id)->whereStatus(0)->whereRelation("studentCircle", "status", 0)->get();
+            if ($tasks->count() > 0 && !$student->exams()->whereStatus(ExamStatusEnum::PENDING)->exists()) {
                 return $this->getStudentProgress($tasks, $student);
             }
         })->filter(function ($student) {
@@ -114,18 +157,22 @@ class TeacherCircleController extends Controller
         if (!$nextDay)
             return responseJson("", "لا يوجد جلسات متاحة", 404);
 
-        // check if now not  between next_datetime and now + end_time
-        if ($nextDay->next_datetime->isFuture() && $nextDay->next_datetime->greaterThanOrEqualTo(now()->addHours($nextDay->end_time))) {
+        // determine the occurrence start and end datetimes
+        $start = $nextDay->next_datetime;
+        $end = $start->copy()->setTimeFromTimeString($nextDay->end_time);
+
+        // if the scheduled start is in the future, you can't start yet
+        if ($start->isFuture()) {
             return responseJson("", "لا يمكن بدء الجلسة في وقت لاحق", 400);
+        }
+
+        // if the scheduled end has already passed, the session is expired
+        if ($end->isPast()) {
+            return responseJson("", "لا يمكن بدء الجلسة في وقت سابق", 400);
         }
 
         if (CircleSession::whereCircleId($nextDay->circle_id)->whereTeacherId($teacher->id)->where('start_time', $nextDay->start_time)->exists()) {
             return responseJson("", "الجلسة لهذه الحلقة في هذا الوقت قد بدأت بالفعل", 400);
-        }
-
-
-        if ($nextDay->next_datetime->isPast()) {
-            return responseJson("", "لا يمكن بدء الجلسة في وقت سابق", 400);
         }
 
         $circleSession = CircleSession::create([
@@ -150,8 +197,8 @@ class TeacherCircleController extends Controller
 
 
         $teacherCircle->circle->students->each(function ($student) use ($circleSession, $data) {
-            $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevel($student->level_id)->whereStatus(0)->whereRelation("studentCircle", "status", 0)->get();
-            if ($tasks->count() > 0 && $student->exams()->whereStatus(ExamStatusEnum::PENDING)->exists()) {
+            $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevelId($student->level_id)->whereStatus(0)->whereRelation("studentCircle", "status", 0)->get();
+            if ($tasks->count() > 0 && !$student->exams()->whereStatus(ExamStatusEnum::PENDING)->exists()) {
                 $firstTask = $tasks->first();
                 CircleSessionStudent::create([
                     'circle_session_id' => $circleSession->id,
@@ -177,7 +224,7 @@ class TeacherCircleController extends Controller
     {
         $teacher = auth('teacher_api')->user();
         $session = CircleSession::whereTeacherId($teacher->id)->whereStatus(FreeSessionStatusEnum::ACTIVE)->first();
-        return responseJson(new CircleSessionResource($session));
+        return responseJson($session ? new CircleSessionResource($session) : "");
     }
 
     public function endCircleSession($id)
@@ -242,19 +289,19 @@ class TeacherCircleController extends Controller
             if (request()->action == 'not_attended') {
                 $title = "لم تحضر الجلسة";
                 $message = "لم تحضر الجلسة الخاصة بك مع المعلم {$teacherName} داخل مسار الحلقات.";
-                sendNotification([$student], [], 'not-attended', $icon, $title, $message);
+                sendNotification($student, [], 'not-attended', $icon, $title, $message);
             }
 
             if (request()->action == 'passed') {
                 $title = "تم اجتياز المهمة";
                 $message = "تهانينا! لقد تم اجتياز مهمتك في الحلقة بواسطة {$teacherName}.";
-                sendNotification([$student], [], 'passed-session', $icon, $title, $message);
+                sendNotification($student, [], 'passed-session', $icon, $title, $message);
             }
 
             if (request()->action == 'failed') {
                 $title = "لم تنجح الجلسة";
                 $message = "لم يتم اجتياز هذه الجلسة، يرجى المحاولة مرة أخرى مع المعلم {$teacherName}.";
-                sendNotification([$student], [], 'failed-session', $icon, $title, $message);
+                sendNotification($student, [], 'failed-session', $icon, $title, $message);
             }
         }
 
@@ -264,9 +311,9 @@ class TeacherCircleController extends Controller
                 'status' => 1,
             ]);
 
-            $count = StudentLevelTask::whereStudentId($session->student_id)->whereLevel($studentTask->level_id)->whereStatus(0)->count();
+            $count = StudentLevelTask::whereStudentId($session->student_id)->whereLevelId($studentTask->level_id)->whereStatus(0)->count();
             if ($count == 0) {
-                $tasks = StudentLevelTask::whereStudentId($session->student_id)->whereLevel($studentTask->level_id)->whereStatus(1)->get();
+                $tasks = StudentLevelTask::whereStudentId($session->student_id)->whereLevelId($studentTask->level_id)->whereStatus(1)->get();
                 $firstTask = $tasks->first();
                 $lastTask = $tasks->last();
                 $levelName = $studentTask->level?->name ?? "المستوى";
@@ -281,17 +328,25 @@ class TeacherCircleController extends Controller
                 $title = "تم إنشاء امتحان";
                 $message = "امتحان على $levelName داخل مسار الحلقات والذي يبدأ من " . $firstTask->fromSurah?->name . " ( " . $firstTask->fromAyah?->text . " )  الى " . $lastTask->toSurah?->name . " ( " . $lastTask->toAyah?->text . " ) ";
                 sendNotification($student, [], 'exam-created', $icon, $title, $message);
+
+
+            if ($parent = $student->parent) {
+                $childName = $student->name ?? $student->phone;
+                $titleParent = "تم اضافة امتحان ل {$childName} في المسار الحلقات";
+                $messageParent = "الطالب {$childName} اتم مستوى في المسار الحلقات وتم اضافة {$message}، من فضلك قم بمراجعة صفحة الامتحانات.";
+                sendNotification($parent, [], 'exam-added-for-child', asset('assets/images/brand-logos/toggle-white.png'), $titleParent, $messageParent);
+            }
             }
         }
 
-        return responseJson(new CircleSessionResource($session), __('messages.Updated Successfully'));
+        return responseJson(new CircleSessionStudentResource($session), __('messages.Updated Successfully'));
     }
 
 
     public function rateStudent($id)
     {
         request()->validate(['comment' => 'nullable', 'rate' => 'required|integer|in:1,2,3,4,5']);
-        $session = CircleSessionStudent::wwhereNotNull("attends")->whereRelation("circleSession", "teacher_id", auth('teacher_api')->id())->find($id);
+        $session = CircleSessionStudent::whereNotNull("attends")->whereRelation("circleSession", "teacher_id", auth('teacher_api')->id())->find($id);
         if (!$session)
             return responseJson("", "هذه الجلسة لم تنتهي حتى الان", 400);
 
@@ -306,14 +361,26 @@ class TeacherCircleController extends Controller
             "rated_type" => Student::class,
             "model_id" => $session->id,
             "model_type" => CircleSessionStudent::class,
-            "ratedby_id" => auth('teacher_api')->id(),
-            "ratedby_type" => Teacher::class,
+            "rateby_id" => auth('teacher_api')->id(),
+            "rateby_type" => Teacher::class,
         ]);
 
         $student = $session->student;
         if ($student)
             $student->update(['rate' => round($student->ratings()->avg('rate'), 1), 'number_of_rates' => $student->number_of_rates + 1]);
 
+
+        $teacher = auth("teacher_api")->user();
+
+        if ($parent = $student->parent) {
+            $childName = $student->name ?? $student->phone;
+            $teacherName = $teacher->name ?? $teacher->phone;
+            $rate = request()->rate;
+            $comment = request()->comment ?? '';
+            $titleParent = "تم تقييم {$childName} في تسميع داخل مسار الحلقات";
+            $messageParent = "قام المعلم {$teacherName} بتقييم {$childName} بدرجة {$rate} من 5" . ($comment ? "، والتعليق: {$comment}" : "");
+            sendNotification($parent, [], 'child-rated-by-teacher', asset('assets/images/brand-logos/toggle-white.png'), $titleParent, $messageParent);
+        }
         return responseJson("", 'تم التقييم بنجاح');
     }
 

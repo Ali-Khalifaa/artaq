@@ -29,7 +29,7 @@ class StudentCircleController extends Controller
     public function currentLevelDetails()
     {
         $student = auth('student_api')->user();
-        $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevel($student->level_id)->whereRelation("studentCircle", "status", 0)->get();
+        $tasks = StudentLevelTask::whereStudentId($student->id)->whereLevelId($student->level_id)->whereRelation("studentCircle", "status", 0)->get();
         $firstTask = $tasks->first();
         $lastTask = $tasks->last();
         $totalCount = $tasks->count();
@@ -38,7 +38,7 @@ class StudentCircleController extends Controller
             'level' => $student->level?->name."",
             'preservation_method' => $student->preservationMethod?->name."",
             "manhag" => $firstTask?->fromSurah?->name . " ( " . $firstTask?->fromAyah?->text . " )  الى " . $lastTask?->toSurah?->name . " ( " . $lastTask?->toAyah?->text . " ) ",
-            "precentage" => round($completedCount * 100 / $totalCount),
+            "precentage" => $totalCount == 0 ? 0 : round($completedCount * 100 / $totalCount),
         ]);
     }
 
@@ -50,11 +50,13 @@ class StudentCircleController extends Controller
         $student = auth('student_api')->user();
 
         $studentCircle = StudentCircle::whereStatus(0)->whereStudentId($student->id)->first();
+        if(!$studentCircle)
+            return responseJson("","لا يوجد حاليا جلسات قادمة",200);
         $nextTask = StudentLevelTask::whereStudentId($student->id)->whereStatus(0)->whereStudentCircleId($studentCircle->id)->first();
         $nextDay = $this->getNextDay($studentCircle);
 
-        $teacher = $studentCircle->circle->teachers->first();
-        return [
+        $teacher = $studentCircle?->circle?->teachers?->first();
+        return responseJson([
             "teacher" => new TeacherResource($teacher),
             "date_time" => $nextDay->next_datetime."",
             "date_time" => $nextDay->next_datetime."",
@@ -63,7 +65,7 @@ class StudentCircleController extends Controller
             "day" => __('messages.'.$nextDay->day) ,
             "manhag" => $nextTask?->fromSurah?->name . " ( " . $nextTask?->fromAyah?->text . " )  الى " . $nextTask?->toSurah?->name . " ( " . $nextTask?->toAyah?->text . " ) ",
             "review" => $nextTask?->reviewFromSurah?->name . " ( " . $nextTask?->reviewFromAyah?->text . " )  الى " . $nextTask?->reviewToSurah?->name . " ( " . $nextTask?->reviewToAyah?->text . " ) ",
-        ];
+        ]);
     }
 
     public function currentCircleSession(){
@@ -81,11 +83,52 @@ class StudentCircleController extends Controller
     {
         return CircleDuration::whereCircleId($studentCircle->circle_id)->get()
             ->map(function ($item) {
-                $dayNumber = Carbon::parse($item->day)->dayOfWeek;
-                $nextDate = Carbon::now()->startOfWeek()->addDays($dayNumber)->setTimeFromTimeString($item->start_time);
+                // determine numeric day index (0 = Sunday, 6 = Saturday)
+                $dayNumber = null;
 
-                $diffInHoursBetweenStartTimeAndEndTime = Carbon::parse($item->end_time)->diffInHours(Carbon::parse($item->start_time));
-                if ($nextDate->lessThan(now()->subHours($diffInHoursBetweenStartTimeAndEndTime))) {
+                // if day is already numeric
+                if (is_numeric($item->day)) {
+                    $dayNumber = intval($item->day);
+                } else {
+                    // try parsing common English weekday names
+                    try {
+                        $dayNumber = Carbon::parse($item->day)->dayOfWeek;
+                    } catch (\Exception $e) {
+                        $dayNumber = null;
+                    }
+
+                    // fallback: common Arabic weekday names mapping
+                    if ($dayNumber === null) {
+                        $arabicDays = [
+                            'الأحد' => 0,
+                            'الاثنين' => 1,
+                            'الثلاثاء' => 2,
+                            'الأربعاء' => 3,
+                            'الخميس' => 4,
+                            'الجمعة' => 5,
+                            'السبت' => 6,
+                        ];
+                        $normalized = trim($item->day);
+                        $dayNumber = $arabicDays[$normalized] ?? null;
+                    }
+                }
+
+                // final fallback to today's weekday if nothing matched
+                if ($dayNumber === null) {
+                    $dayNumber = Carbon::now()->dayOfWeek;
+                }
+
+                // compute next date for that weekday and set start time
+                $now = Carbon::now();
+                $todayWeekday = $now->dayOfWeek;
+                $daysToAdd = ($dayNumber - $todayWeekday + 7) % 7;
+                $nextDate = $now->copy()->startOfDay()->addDays($daysToAdd)->setTimeFromTimeString($item->start_time);
+
+                // compute end datetime for that occurrence
+                $endDate = $nextDate->copy()->setTimeFromTimeString($item->end_time);
+
+                // if the end datetime has already passed, move to next week's occurrence
+                if ($endDate->lessThanOrEqualTo($now)) {
                     $nextDate->addWeek();
                 }
 
@@ -99,6 +142,8 @@ class StudentCircleController extends Controller
     public function getCircleSchedual(){
         $student = auth('student_api')->user();
         $studentCircle = StudentCircle::whereStatus(0)->whereStudentId($student->id)->first();
+        if(!$studentCircle)
+            return responseJson("","لا يوجد حاليا جلسات قادمة",200);
         $circles = CircleDuration::whereCircleId($studentCircle->circle_id)->get();
         return responseJson(CircleSchedualResource::collection($circles));
     }
@@ -206,8 +251,8 @@ class StudentCircleController extends Controller
             "rated_type" => Teacher::class,
             "model_id" => $session->id,
             "model_type" => StudentLevelTask::class,
-            "ratedby_id" => auth('student_api')->id(),
-            "ratedby_type" => Student::class,
+            "rateby_id" => auth('student_api')->id(),
+            "rateby_type" => Student::class,
         ]);
 
         if ($teacher)

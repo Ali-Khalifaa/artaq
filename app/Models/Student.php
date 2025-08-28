@@ -12,7 +12,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Facades\Artisan;
 
 class Student extends Authenticatable implements JWTSubject
 {
@@ -113,10 +112,13 @@ class Student extends Authenticatable implements JWTSubject
         return $this->belongsTo(City::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(StudentParent::class, 'phone', 'guardian_phone');
+    }
+
     public function memorizationAmount()
     {
-        Artisan::call("route:clear");
-        Artisan::call("optimize:clear");
         return $this->belongsTo(MemorizationAmount::class);
     }
 

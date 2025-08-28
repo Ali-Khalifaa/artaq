@@ -60,6 +60,8 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
 
 
             Route::post('accept-call', [HomeController::class, 'acceptCall']);
+            Route::get('next-exam', [HomeController::class, 'getNextExam']);
+            Route::get('prev-exams', [HomeController::class, 'getPrevExams']);
 
 
             Route::get('student-details', [AuthStudentController::class, 'studentDetails']);

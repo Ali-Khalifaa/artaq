@@ -94,6 +94,7 @@ class GeneralNotification extends Notification implements ShouldBroadcast
         return (new BroadcastMessage([
             'data' => [
                 'timeDate' => now()->format('Y-m-d H:i'),
+                'page_vue_name' => $this->pageVueName,
                 'message' => $message,
                 'title' => $title,
                 'data' => is_array($this->data) && count($this->data) == 0? ['id' => 0]:$this->data,

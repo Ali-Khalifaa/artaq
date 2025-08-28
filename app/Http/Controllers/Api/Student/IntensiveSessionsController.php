@@ -182,8 +182,8 @@ class IntensiveSessionsController extends Controller
             "rated_type" => Teacher::class,
             "model_id" => $session->id,
             "model_type" => IntensiveSession::class,
-            "ratedby_id" => auth('student_api')->id(),
-            "ratedby_type" => Student::class,
+            "rateby_id" => auth('student_api')->id(),
+            "rateby_type" => Student::class,
         ]);
 
         if ($teacher)

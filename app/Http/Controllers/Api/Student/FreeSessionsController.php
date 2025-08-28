@@ -69,6 +69,12 @@ class FreeSessionsController extends Controller
 
     public function getActiveTeachers()
     {
+        $student = auth("student_api")->user();
+        if($student->track_id == 3){
+            $controller = new IntensiveSessionsController();
+            return $controller->getActiveTeachers();
+        }
+
         $this->searchForTeachersRequest();
         $teachers = Teacher::searchAndFilter()->whereDoesntHave("freeSessions",function($q){
             $q->where("status",FreeSessionStatusEnum::ACTIVE);
@@ -87,7 +93,7 @@ class FreeSessionsController extends Controller
     public function previousSessions()
     {
         $this->searchForSessionsRequest();
-        $sessions = FreeSession::whereIn('status',[FreeSessionStatusEnum::COMPLETED,FreeSessionStatusEnum::CANCELED,FreeSessionStatusEnum::ACTIVE])->whereStudentId(auth("student_api")->id())->latest()->paginate(10);
+        $sessions = FreeSession::searchAndFilter()->whereIn('status',[FreeSessionStatusEnum::COMPLETED,FreeSessionStatusEnum::CANCELED,FreeSessionStatusEnum::ACTIVE])->whereStudentId(auth("student_api")->id())->latest()->paginate(10);
         return responseJson(FreeSessionResource::collection($sessions->items()),'',200,getPaginates($sessions));
     }
 
@@ -185,8 +191,8 @@ class FreeSessionsController extends Controller
             "rated_type" => Teacher::class,
             "model_id" => $freeSession->id,
             "model_type" => FreeSession::class,
-            "ratedby_id" => auth('student_api')->id(),
-            "ratedby_type" => Student::class,
+            "rateby_id" => auth('student_api')->id(),
+            "rateby_type" => Student::class,
         ]);
 
         $teacher = Teacher::find($freeSession->teacher_id);

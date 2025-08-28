@@ -18,7 +18,8 @@ class IntensiveSessionResource extends JsonResource
             "id"  => $this->id,
             "teacher"       => new TeacherResource($intensiveRequest?->teacher),
             "manhag" => $this->intensiveStudy->fromSurah?->name." ( ".$this->intensiveStudy->fromAyah?->text." )  الى ". $this->intensiveStudy->toSurah?->name." ( ".$this->intensiveStudy->toAyah?->text." ) ",
-            "tasme3" => $this->fromSurah?->name." ( ".$this->fromAyah?->text." )  الى ". $this->toSurah?->name." ( ".$this->toAyah?->text." ) ",
+            "tasme3" =>
+           $this->fromSurah?->name? ($this->fromSurah?->name." ( ".$this->fromAyah?->text." )  الى ". $this->toSurah?->name." ( ".$this->toAyah?->text." ) ") : "",
             "number_of_mins" => $this->number_of_mins."",
             "date" => $this->date."",
             "rating" => $rating ? [

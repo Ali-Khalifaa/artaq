@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api\Student;
 
+use App\Enums\RequestActionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\Student\CompleteStudentRegisterRequest;
 use App\Http\Resources\Api\Student\StudentResource;
+use App\Models\IntensiveRequest;
 use App\Models\Student;
+use App\Models\StudentCircle;
 use App\Services\TwilioService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -155,6 +158,13 @@ class AuthStudentController extends Controller implements HasMiddleware
                 }
             }],
         ]);
+
+        if(IntensiveRequest::whereStudentId($student->id)->whereStatus(RequestActionEnum::ACCEPT)->exists())
+            return responseJson("","انت الان مشترك في المسار المكثف يجب عليك اتمامه اولا او التواصل مع خدمة العملاء",400);
+
+        if(StudentCircle::whereStudentId($student->id)->whereStatus(0)->exists())
+            return responseJson("","انت الان مشترك في مسار الحلقات يجب عليك اتمامه اولا او التواصل مع خدمة العملاء",400);
+
         $student->update([
             'track_id' => request()->track_id,
             'level_id' => request()->track_id == 2 && request()->level_id ? request()->level_id : null,
