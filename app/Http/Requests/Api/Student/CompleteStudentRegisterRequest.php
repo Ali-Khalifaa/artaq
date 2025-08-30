@@ -50,7 +50,6 @@ class CompleteStudentRegisterRequest extends FormRequest
                 }
             }],
             'track_id' => 'required|exists:tracks,id',
-            'phone' => 'required|string|max:15',
             'guardian' => 'nullable|string',
             'guardian_phone' => 'nullable|string|max:15',
 
