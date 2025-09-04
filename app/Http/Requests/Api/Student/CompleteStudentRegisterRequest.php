@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\Student;
 
+use App\Models\Setting;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompleteStudentRegisterRequest extends FormRequest
@@ -23,7 +24,7 @@ class CompleteStudentRegisterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules =  [
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'level_id' => [
@@ -41,7 +42,7 @@ class CompleteStudentRegisterRequest extends FormRequest
                     }
                 },
             ],
-             'preservation_method_id' => ['required_if:track_id,2,3', function ($attribute, $value, $fail) {
+            'preservation_method_id' => ['required_if:track_id,2,3', function ($attribute, $value, $fail) {
                 if ($this->track_id == 3 && !in_array($value, [4, 3])) {
                     $fail('اتجاه الحفظ غير صالح للمسار المكثف');
                 }
@@ -50,10 +51,8 @@ class CompleteStudentRegisterRequest extends FormRequest
                 }
             }],
             'track_id' => 'required|exists:tracks,id',
-            'phone' => 'required|string|max:15',
             'guardian' => 'nullable|string',
             'guardian_phone' => 'nullable|string|max:15',
-
             'gender' => 'required|in:male,female',
             'nationality_id' => 'required|exists:nationalities,id',
             'country_id' => 'required|exists:countries,id',
@@ -63,5 +62,12 @@ class CompleteStudentRegisterRequest extends FormRequest
             'id_number' => "required|max:255|unique:students,id_number," . $this->route('student'),
             'juz_count' => 'nullable|integer|min:0|max:30',
         ];
+
+        if (Setting::first()?->login_method == "email") {
+            $rules['phone'] = "required|unique:students,phone";
+        } else {
+            $rules['email'] = "required|unique:students,email";
+        }
+        return $rules;
     }
 }

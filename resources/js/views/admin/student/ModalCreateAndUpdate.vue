@@ -62,6 +62,23 @@
                                 </error-message>
                             </template>
                         </div>
+                         <div class="col-md-6">
+                            <label class="form-label">{{ $t('global.email') }}</label>
+                            <input type="email" class="form-control" v-model.trim="v$.email.$model"
+                                :class="{ 'is-invalid': v$.email.$error || errors[`email`], 'is-valid': !v$.email.$invalid  && !errors[`email`] }"
+                                :placeholder="$t('global.email')">
+                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.email.required.$invalid">{{
+                                    $t('global.emailIsRequired') }} <br /></span>
+
+                            </div>
+                            <template v-if="errors['email']">
+                                <error-message v-for="(errorMessage, index) in errors['email']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
 
                         <div class="col-md-6 mt-3">
                             <label class="form-label">{{ $t('global.guardian') }}</label>
@@ -71,11 +88,11 @@
                                     'is-valid': !v$.guardian.$invalid && !errors[`guardian`]
                                 }">
 
-                            <div class="invalid-feedback">
+                            <!-- <div class="invalid-feedback">
                                 <span v-if="v$.guardian.required.$invalid">{{ $t('validation.fieldRequired') }}<br />
                                 </span>
 
-                            </div>
+                            </div> -->
                             <template v-if="errors[`guardian`]">
                                 <error-message v-for="(errorMessage, index) in errors[`guardian`]" :key="index">
                                     {{ errorMessage }}
@@ -89,7 +106,7 @@
                                 :class="{ 'is-invalid': v$.guardian_phone.$error || errors[`guardian_phone`], 'is-valid': !v$.guardian_phone.$invalid  && !errors[`guardian_phone`] }"
                                 :placeholder="$t('global.guardian_phone')">
                             <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
-                            <div class="invalid-feedback">
+                            <!-- <div class="invalid-feedback">
                                 <span v-if="v$.guardian_phone.required.$invalid">{{
                                     $t('global.PhoneIsRequired') }} <br /></span>
                                 <span v-if="v$.guardian_phone.minLength.$invalid">{{
@@ -100,7 +117,7 @@
                                     $t('global.PhoneIsMustHaveAtMost') }} {{
                                         v$.guardian_phone.maxLength.$params.max
                                     }} {{ $t('global.Letters') }} </span>
-                            </div>
+                            </div> -->
                             <template v-if="errors['guardian_phone']">
                                 <error-message v-for="(errorMessage, index) in errors['guardian_phone']" :key="index">
                                     {{ errorMessage }}
@@ -664,6 +681,7 @@ export default {
             submitdata.data.birth_date = '';
             submitdata.data.level_id = '';
             submitdata.data.phone = '';
+            submitdata.data.email = '';
             submitdata.data.guardian = '';
             submitdata.data.guardian_phone = '';
             submitdata.data.preservation_method_id = '';
@@ -696,6 +714,7 @@ export default {
                     submitdata.data.name = props.dataRow.name;
                     submitdata.data.birth_date = props.dataRow.birth_date;
                     submitdata.data.phone = props.dataRow.phone;
+                    submitdata.data.email = props.dataRow.email;
                     submitdata.data.guardian = props.dataRow.guardian;
                     submitdata.data.guardian_phone = props.dataRow.guardian_phone;
 
@@ -735,6 +754,7 @@ export default {
                 birth_date: '',
                 level_id: '',
                 phone: '',
+                email: '',
                 guardian: '',
                 guardian_phone: '',
                 preservation_method_id: '',
@@ -829,13 +849,16 @@ export default {
                     minLength: minLength(10),
                     maxLength: maxLength(20)
                 },
-                guardian: {
+                email: {
                     required
                 },
+                guardian: {
+                    // required
+                },
                 guardian_phone: {
-                    required,
-                    minLength: minLength(10),
-                    maxLength: maxLength(20)
+                    // required,
+                    // minLength: minLength(10),
+                    // maxLength: maxLength(20)
                 },
                 preservation_method_id: {
                     // required
@@ -911,6 +934,7 @@ export default {
             formData.append('phone', this.data.phone ?? '');
             formData.append('id_number', this.data.id_number ?? '');
             formData.append('juz_count', this.data.juz_count ?? '');
+            formData.append('email', this.data.email ?? '');
             formData.append('guardian', this.data.guardian ?? '');
             formData.append('guardian_phone', this.data.guardian_phone ?? '');
             formData.append('preservation_method_id', this.data.preservation_method_id ?? '');

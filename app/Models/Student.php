@@ -43,6 +43,7 @@ class Student extends Authenticatable implements JWTSubject
         'password',
         'id_number',
         'juz_count',
+        'email',
         'code',
     ];
 

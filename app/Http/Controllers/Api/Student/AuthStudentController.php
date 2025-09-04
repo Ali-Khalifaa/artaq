@@ -7,16 +7,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\Student\CompleteStudentRegisterRequest;
 use App\Http\Resources\Api\Student\StudentResource;
+use App\Mail\NewRegisterMail;
 use App\Models\IntensiveRequest;
+use App\Models\Setting;
 use App\Models\Student;
 use App\Models\StudentCircle;
 use App\Services\TwilioService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Mail;
 
 class AuthStudentController extends Controller implements HasMiddleware
 {
-    public function __construct(private TwilioService $twilioService) {}
+    public $settingLoginMethod;
+    public function __construct(private TwilioService $twilioService)
+    {
+        $this->settingLoginMethod = Setting::first()->login_method;
+    }
 
     public static function middleware(): array
     {
@@ -29,7 +36,11 @@ class AuthStudentController extends Controller implements HasMiddleware
 
     public function login(LoginRequest $request)
     {
-        $student = Student::firstOrCreate(['phone' => $request->phone], ['phone' => $request->phone, 'status' => 1]);
+        if ($this->settingLoginMethod == 'email') {
+            $student = Student::firstOrCreate(['email' => $request->username], ['email' => $request->username, 'status' => 1]);
+        } else {
+            $student = Student::firstOrCreate(['phone' => $request->username], ['phone' => $request->username, 'status' => 1]);
+        }
 
         if ($student) {
             if ($student->status) {
@@ -38,10 +49,13 @@ class AuthStudentController extends Controller implements HasMiddleware
                     'code_expired_at' => now()->addMinutes(5),
                 ]);
 
-                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $student->otp_code]));
-
-                // Mail::to($student->email)->send(new NewRegisterMail($student->name, $student->otp_code));
-                return responseJson(['phone' => $student->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $student->phone]), 200);
+                if ($this->settingLoginMethod == 'email') {
+                    Mail::to($student->email)->send(new NewRegisterMail($student->name, $student->otp_code));
+                    return responseJson(['username' => $student->email], "لقد قمنا بأرسال رمز الى بريدك الالكتروني $student->email من فضلك قم بفحصه", 200);
+                } else {
+                    // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $student->otp_code]));
+                    return responseJson(['username' => $student->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $student->phone]), 200);
+                }
             } else {
                 return responseJson(null, __('messages.Your account is not activated please contact with support'), 400);
             }
@@ -55,11 +69,14 @@ class AuthStudentController extends Controller implements HasMiddleware
     public function activateAccount()
     {
         request()->validate([
-            'phone'       => ['required', 'exists:students'],
+            'username'       => ['required', 'exists:students,' . ($this->settingLoginMethod == 'email' ? 'email' : 'phone')],
             'otp_code'       => 'required|numeric|digits:4'
         ]);
-        $student = Student::wherePhone(request()->phone)->first();
-
+        if ($this->settingLoginMethod == 'email') {
+            $student = Student::whereEmail(request()->email)->first();
+        } else {
+            $student = Student::wherePhone(request()->phone)->first();
+        }
         if ($student->otp_code == request()->otp_code || 1234 == request()->otp_code) {
             if ($student->code_expired_at < now()) {
                 return responseJson(null, __('messages.The code is expired'), 400);
@@ -98,15 +115,24 @@ class AuthStudentController extends Controller implements HasMiddleware
 
     public function resendOtp()
     {
+        if ($this->settingLoginMethod == 'email') {
+            $student = Student::whereEmail(request()->email)->first();
+        } else {
+            $student = Student::wherePhone(request()->phone)->first();
+        }
         $student = Student::wherePhone(request()->phone)->first();
         if ($student->otp_code) {
             $student->update([
                 "otp_code" => rand(1111, 9999),
                 "code_expired_at" => now()->addMinutes(5),
             ]);
-            // $this->twilioService->sendSms(request()->phone, __("messages.Your otp code is :otp",['otp' => $student->otp_code]));
-            // Mail::to($student->email)->send(new ResendOTPMail($student->name, $student->otp_code));
-            return responseJson(['phone' => $student->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $student->phone]), 400);
+            if ($this->settingLoginMethod == 'email') {
+                Mail::to($student->email)->send(new NewRegisterMail($student->name, $student->otp_code));
+                return responseJson(['username' => $student->email], "لقد قمنا بأرسال رمز الى بريدك الالكتروني $student->email من فضلك قم بفحصه", 200);
+            } else {
+                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $student->otp_code]));
+                return responseJson(['username' => $student->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $student->phone]), 200);
+            }
         } else {
             return responseJson(null, '', 400);
         }
@@ -159,11 +185,11 @@ class AuthStudentController extends Controller implements HasMiddleware
             }],
         ]);
 
-        if(IntensiveRequest::whereStudentId($student->id)->whereStatus(RequestActionEnum::ACCEPT)->exists())
-            return responseJson("","انت الان مشترك في المسار المكثف يجب عليك اتمامه اولا او التواصل مع خدمة العملاء",400);
+        if (IntensiveRequest::whereStudentId($student->id)->whereStatus(RequestActionEnum::ACCEPT)->exists())
+            return responseJson("", "انت الان مشترك في المسار المكثف يجب عليك اتمامه اولا او التواصل مع خدمة العملاء", 400);
 
-        if(StudentCircle::whereStudentId($student->id)->whereStatus(0)->exists())
-            return responseJson("","انت الان مشترك في مسار الحلقات يجب عليك اتمامه اولا او التواصل مع خدمة العملاء",400);
+        if (StudentCircle::whereStudentId($student->id)->whereStatus(0)->exists())
+            return responseJson("", "انت الان مشترك في مسار الحلقات يجب عليك اتمامه اولا او التواصل مع خدمة العملاء", 400);
 
         $student->update([
             'track_id' => request()->track_id,

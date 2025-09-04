@@ -15,6 +15,7 @@ class StudentExamResource extends JsonResource
             "student"       => [
                 "id" => $this->student->id,
                 "name" => $this->student->name,
+                "email" => $this->student->email,
                 "image" => $this->student->image,
                 "phone" => $this->student->phone,
                 "gender" => $this->student->gender,

@@ -43,6 +43,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">{{ $t('global.Three-part name') }}</th>
+                                        <th scope="col">{{ $t('global.email') }}</th>
                                         <th scope="col">{{ $t('global.nationality') }}</th>
                                         <th scope="col">{{ $t('global.country') }}</th>
                                         <th scope="col">{{ $t('global.level') }}</th>
@@ -72,6 +73,7 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>{{ item.email }}</td>
                                         <td>{{ item.nationality?.name }}</td>
                                         <td>{{ item.country?.name }}</td>
                                         <td>{{ item.level?.name }}</td>

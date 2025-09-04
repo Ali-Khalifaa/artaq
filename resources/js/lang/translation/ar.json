@@ -145,6 +145,7 @@
         "send_notification_to": "ارسال اشعار ل",
         "name": "الاسم",
         "phone": "الجوال",
+        "login_method": "طريقة تسجيل الدخول للموبيل",
         "admins": "المدراء",
         "banners": "الاعلانات",
         "payment_methods": "طرق الدفع",

@@ -6,27 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\Teacher\CompleteTeacherRegisterRequest;
 use App\Http\Resources\Api\Teacher\TeacherResource;
+use App\Mail\NewRegisterMail;
+use App\Models\Setting;
 use App\Models\Teacher;
 use App\Services\TwilioService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Mail;
 
 class AuthTeacherController extends Controller implements HasMiddleware
 {
-    public function __construct(private TwilioService $twilioService){}
-
+    public $settingLoginMethod;
+    public function __construct(private TwilioService $twilioService)
+    {
+        $this->settingLoginMethod = Setting::first()->login_method;
+    }
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:teacher_api', only: ['logout','teacherDetails','register']),
-            new Middleware('guest:teacher_api', except: ['logout','teacherDetails','register']),
+            new Middleware('auth:teacher_api', only: ['logout', 'teacherDetails', 'register']),
+            new Middleware('guest:teacher_api', except: ['logout', 'teacherDetails', 'register']),
         ];
     }
 
 
     public function login(LoginRequest $request)
     {
-        $teacher = Teacher::firstOrCreate(['phone' => $request->phone],['phone' => $request->phone,'status' => 1]);
+        if ($this->settingLoginMethod == 'email') {
+            $teacher = Teacher::firstOrCreate(['email' => $request->username], ['email' => $request->username, 'status' => 1]);
+        } else {
+            $teacher = Teacher::firstOrCreate(['phone' => $request->username], ['phone' => $request->username, 'status' => 1]);
+        }
 
         if ($teacher) {
             if ($teacher->status) {
@@ -35,18 +45,19 @@ class AuthTeacherController extends Controller implements HasMiddleware
                     'code_expired_at' => now()->addMinutes(5),
                 ]);
 
-                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
-
-                // Mail::to($teacher->email)->send(new NewRegisterMail($teacher->name, $teacher->otp_code));
-                return responseJson(['phone' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 200);
-            }
-            else {
+                if ($this->settingLoginMethod == 'email') {
+                    Mail::to($teacher->email)->send(new NewRegisterMail($teacher->name, $teacher->otp_code));
+                    return responseJson(['username' => $teacher->email], "لقد قمنا بأرسال رمز الى بريدك الالكتروني $teacher->email من فضلك قم بفحصه", 200);
+                } else {
+                    // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
+                    return responseJson(['username' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 200);
+                }
+            } else {
                 return responseJson(null, __('messages.Your account is not activated please contact with support'), 400);
             }
         } else {
             return responseJson(null, __('messages.Your phone is not registered'), 400);
         }
-
     }
 
 
@@ -54,10 +65,15 @@ class AuthTeacherController extends Controller implements HasMiddleware
     public function activateAccount()
     {
         request()->validate([
-            'phone'       => ['required','exists:teachers'],
+            'username'       => ['required', 'exists:teachers,' . ($this->settingLoginMethod == 'email' ? 'email' : 'phone')],
             'otp_code'       => 'required|numeric|digits:4'
         ]);
-        $teacher = Teacher::wherePhone(request()->phone)->first();
+
+        if ($this->settingLoginMethod == 'email') {
+            $teacher = Teacher::whereEmail(request()->username)->first();
+        } else {
+            $teacher = Teacher::wherePhone(request()->username)->first();
+        }
 
         if ($teacher->otp_code == request()->otp_code  || request()->otp_code == 1234) {
             if ($teacher->code_expired_at < now()) {
@@ -103,25 +119,35 @@ class AuthTeacherController extends Controller implements HasMiddleware
 
     public function resendOtp()
     {
-        $teacher = Teacher::wherePhone(request()->phone)->first();
+        if ($this->settingLoginMethod == 'email') {
+            $teacher = Teacher::whereEmail(request()->username)->first();
+        } else {
+            $teacher = Teacher::wherePhone(request()->username)->first();
+        }
         if ($teacher->otp_code) {
             $teacher->update([
                 "otp_code" => rand(1111, 9999),
                 "code_expired_at" => now()->addMinutes(5),
             ]);
-            // $this->twilioService->sendSms(request()->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
-            // Mail::to($teacher->email)->send(new ResendOTPMail($teacher->name, $teacher->otp_code));
-                return responseJson(['phone' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 400);
-        }else{
-            return responseJson(null,'',400);
+
+            if ($this->settingLoginMethod == 'email') {
+                Mail::to($teacher->email)->send(new NewRegisterMail($teacher->name, $teacher->otp_code));
+                return responseJson(['username' => $teacher->email], "لقد قمنا بأرسال رمز الى بريدك الالكتروني $teacher->email من فضلك قم بفحصه", 200);
+            } else {
+                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
+                return responseJson(['username' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 200);
+            }
+        } else {
+            return responseJson(null, '', 400);
         }
     }
 
-    public function register(CompleteTeacherRegisterRequest $request){
+    public function register(CompleteTeacherRegisterRequest $request)
+    {
         $user = auth('teacher_api')->user();
         $data = $request->validated();
         $data['password'] = bcrypt($user->phone);
         $user->update($data);
-        return responseJson(new TeacherResource($user),__('messages.Updated Successfully'));
+        return responseJson(new TeacherResource($user), __('messages.Updated Successfully'));
     }
 }

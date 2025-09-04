@@ -22,9 +22,11 @@ return new class extends Migration
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
 
-            $table->string('phone')->unique();
+            $table->string('phone')->nullable()->unique();
             $table->string('password')->nullable()->comment('كلمة المرور');
             $table->string('image')->nullable();
+            $table->string('email')->nullable();
+            $table->string('code')->nullable()->comment('كود ولي الامر ');
             $table->integer('otp_code')->nullable();
             $table->timestamp('code_expired_at')->nullable();
             $table->boolean('status')->default(true);
