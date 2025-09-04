@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\Teacher;
 
+use App\Models\Setting;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompleteTeacherRegisterRequest extends FormRequest
@@ -25,7 +26,7 @@ class CompleteTeacherRegisterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules =  [
             'name' => 'required|string|max:255',
             'id_number' => 'nullable|string|max:20|unique:teachers,id_number,' . $this->route('teacher'),
             'gender' => 'required',
@@ -42,5 +43,12 @@ class CompleteTeacherRegisterRequest extends FormRequest
             'Quran_licenses' => 'nullable|numeric|min:0',
             'cv' => 'nullable|file|mimes:pdf,jpeg,png,jpg,gif,svg',
         ];
+
+        if (Setting::first()?->login_method == "email") {
+            $rules['phone'] = "required|unique:teachers,phone";
+        } else {
+            $rules['email'] = "required|unique:teachers,email";
+        }
+        return $rules;
     }
 }

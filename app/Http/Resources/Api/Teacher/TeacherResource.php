@@ -15,7 +15,7 @@ class TeacherResource extends JsonResource
     {
         return [
             "id"  => $this->id,
-            "name"       => $this->name??$this->phone,
+            "name"       => $this->name??($this->phone ?? $this->email) ."" ,
             "id_number" => $this->id_number."",
             "phone" => $this->phone,
             "gender" => $this->gender."",
@@ -23,6 +23,8 @@ class TeacherResource extends JsonResource
             "country_id" => $this->country_id."",
             "city_id" => $this->city_id."",
             "image" => $this->image."",
+            "email" => $this->email."",
+            "code" => $this->code."",
             "rate" => $this->rate."",
             "number_of_rates" => $this->number_of_rates."",
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),

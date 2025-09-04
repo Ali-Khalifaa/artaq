@@ -15,7 +15,7 @@ class TeacherResource extends JsonResource
     {
         return [
             "id"  => $this->id,
-            "name"       => $this->name."",
+            "name"       => $this->name??($this->phone??$this->email)."",
             "phone" => $this->phone."",
             "image" => $this->image."",
             "nationality" => new NationalityResource($this->whenLoaded('nationality')),

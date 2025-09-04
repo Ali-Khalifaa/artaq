@@ -15,6 +15,7 @@ class SettingSeeder extends Seeder
         Setting::truncate();
         Setting::create([
             'subscription_amount'=> 50,
+            'login_method'=> "email",
         ]);
 
     }

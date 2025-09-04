@@ -17,7 +17,7 @@ class StudentResource extends JsonResource
     {
         return [
             "id"  => $this->id,
-            "name"       =>  $this->name??$this->phone,
+            "name"       =>  $this->name??($this->phone ?? $this->email),
             "birth_date" => $this->birth_date ? Carbon::parse($this->birth_date)->format('Y-m-d') : "",
             'age' => $this->birth_date ? Carbon::parse($this->birth_date)->age : "",
             "track" => $this->track?->name."",
@@ -30,6 +30,7 @@ class StudentResource extends JsonResource
             "level_id" => $this->level_id."",
             "preservation_method_id" => $this->preservation_method_id."",
             "phone" => $this->phone,
+            "email" => $this->email,
             "guardian_phone" => $this->guardian_phone."",
             "memorization_type_id" => $this->memorization_type_id."",
             "gender" => $this->gender."",
@@ -39,6 +40,7 @@ class StudentResource extends JsonResource
             "memorization_amount_id" => $this->memorization_amount_id."",
             "image" => $this->image."",
             "status" => $this->status."",
+            "code" => $this->code."",
             "rate" => $this->rate."",
             "number_of_rates" => $this->number_of_rates."",
             "memorization_type" => $this->memorizationType ? new MemorizationAmountResource($this->memorizationType):"",

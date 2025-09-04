@@ -24,6 +24,7 @@ class SettingRequest extends FormRequest
         $id = $this->method() == 'PUT' ? last($this->segments()) : null;
         return [
             'subscription_amount' => 'required|numeric',
+            'login_method' => 'required|in:email,phone',
         ];
     }
 }

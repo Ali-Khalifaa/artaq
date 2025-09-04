@@ -43,6 +43,7 @@ class Teacher extends Authenticatable implements JWTSubject
         'juz_count',
         'experience_years',
         'Quran_licenses',
+        'email',
         'salary',
         'cv',
         'code',

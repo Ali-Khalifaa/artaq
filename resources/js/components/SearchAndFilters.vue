@@ -1,7 +1,7 @@
 <template>
     <div class="card-title row col-10">
         <div class="col-md-3">
-            <input class="form-control py-2 me-2"  v-model="search"  @input="$emit('search',search)" :placeholder="$t('global.Search')">
+            <input class="form-control py-2 me-2"  v-model="search"  @input="$emit('search',search)" :placeholder="$t('global.Search')" type="search" autocomplete="off" name="search" autocorrect="off" autocapitalize="off" spellcheck="false">
         </div>
 
         <slot></slot>

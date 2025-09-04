@@ -16,7 +16,51 @@
         <div class="card custom-card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12 mt-3">
+                    <div class="col-md-6 mt-3">
+                        <label class="form-label">{{$t('global.login_method')}}</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    id="login_method_email"
+                                    value="email"
+                                    v-model="v$.login_method.$model"
+                                    :class="{
+                                        'is-invalid': v$.login_method.$error || errors['login_method'],
+                                        'is-valid': !v$.login_method.$invalid && !errors['login_method']
+                                    }"
+                                />
+                                <label class="form-check-label" for="login_method_email">{{$t('global.email')}}</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    id="login_method_phone"
+                                    value="phone"
+                                    v-model="v$.login_method.$model"
+                                    :class="{
+                                        'is-invalid': v$.login_method.$error || errors['login_method'],
+                                        'is-valid': !v$.login_method.$invalid && !errors['login_method']
+                                    }"
+                                />
+                                <label class="form-check-label" for="login_method_phone">{{$t('global.phone')}}</label>
+                            </div>
+                        </div>
+
+                        <div class="invalid-feedback d-block">
+                             <span v-if="v$.login_method.required.$invalid">{{ $t('validation.fieldRequired') }}</span>
+                        </div>
+
+                        <template v-if="errors['login_method']">
+                            <error-message v-for="(errorMessage, index) in errors['login_method']" :key="index">
+                                {{ errorMessage }}
+                            </error-message>
+                        </template>
+                    </div>
+                    <div class="col-md-6 mt-3">
                         <label for="subscription_amount" class="form-label">{{$t('global.subscription_amount')}}</label>
                         <input type="number" step="any" class="form-control" id="subscription_amount" :placeholder="$t('global.subscription_amount')"
                             v-model.trim="v$.subscription_amount.$model"
@@ -68,6 +112,7 @@ export default {
 
         function defaultData(){
            submitdata.data.subscription_amount = '';
+           submitdata.data.login_method = '';
            loading.value = false;
            errors.value = [];
         }
@@ -79,6 +124,7 @@ export default {
                         loading.value = true;
                         let l = res.data.data;
                         submitdata.data.subscription_amount = l.subscription_amount;
+                        submitdata.data.login_method = l.login_method;
 
                     })
                     .catch((err) => {
@@ -99,6 +145,7 @@ export default {
          let submitdata =  reactive({
             data:{
                 subscription_amount: '',
+                login_method: '',
             }
         });
 
@@ -108,6 +155,9 @@ export default {
                     required,
                     numeric,
                     min: minValue(0)
+                },
+                login_method: {
+                    required,
                 },
 
             }
@@ -126,6 +176,7 @@ export default {
 
         let formData = new FormData();
             formData.append('subscription_amount', this.data.subscription_amount);
+            formData.append('login_method', this.data.login_method);
             formData.append('_method','PUT');
         if(!this.v$.$error) {
             this.loading = true;

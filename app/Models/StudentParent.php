@@ -72,5 +72,14 @@ class StudentParent extends Authenticatable implements JWTSubject
     }
 
 
+    // Automatically set code attribute only on create
+    protected static function booted()
+    {
+        static::creating(function ($parent) {
+            if (empty($parent->code)) {
+                $parent->code = $parent->createSerialNumber(self::class, 'Parent');
+            }
+        });
+    }
 
 }

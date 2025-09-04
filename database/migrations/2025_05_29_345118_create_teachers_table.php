@@ -18,7 +18,8 @@ return new class extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('phone')->unique();
+            $table->string('phone')->nullable()->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('id_number')->unique()->comment('رقم الهوية');
             $table->enum('gender', ['male', 'female'])->nullable()->comment('جنس المعلم');
             $table->foreignIdFor(Admin::class)->nullable()->comment('المدير المباشر');

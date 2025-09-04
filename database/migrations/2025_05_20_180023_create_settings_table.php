@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->decimal('subscription_amount')->default(0);
+            $table->string('login_method')->default("email");
             $table->timestamps();
         });
 

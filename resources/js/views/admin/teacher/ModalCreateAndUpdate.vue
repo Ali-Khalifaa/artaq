@@ -84,6 +84,23 @@
                                 </error-message>
                             </template>
                         </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">{{ $t('global.email') }}</label>
+                            <input type="email" class="form-control" v-model.trim="v$.email.$model"
+                                :class="{ 'is-invalid': v$.email.$error || errors[`email`], 'is-valid': !v$.email.$invalid  && !errors[`email`] }"
+                                :placeholder="$t('global.email')">
+                            <div class="valid-feedback">{{ $t('global.LooksGood') }}</div>
+                            <div class="invalid-feedback">
+                                <span v-if="v$.email.required.$invalid">{{
+                                    $t('global.emailIsRequired') }} <br /></span>
+
+                            </div>
+                            <template v-if="errors['email']">
+                                <error-message v-for="(errorMessage, index) in errors['email']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
 
                         <div class="col-md-6 mt-3">
                             <label class="form-label">{{ $t('global.selectNationality') }}</label>
@@ -572,6 +589,7 @@ export default {
         function defaultData() {
             submitdata.data.status = true;
             submitdata.data.name = '';
+            submitdata.data.email = '';
             submitdata.data.id_number = '';
             submitdata.data.phone = '';
             submitdata.data.email = '';
@@ -608,6 +626,7 @@ export default {
                     submitdata.data.phone = props.dataRow.phone;
                     submitdata.data.email = props.dataRow.email;
                     submitdata.data.id_number = props.dataRow.id_number;
+                    submitdata.data.email = props.dataRow.email;
                     submitdata.data.nationality_id = props.dataRow.nationality_id;
                     submitdata.data.track_id = props.dataRow.track_id;
                     submitdata.data.country_id = props.dataRow.country_id;
@@ -650,6 +669,7 @@ export default {
                 country_id: '',
                 city_id: '',
                 gender: 'male',
+                email: '',
                 id_number: '',
                 password: '',
                 confirmation: '',
@@ -731,6 +751,9 @@ export default {
                     required
                 },
                 id_number: {
+                    required
+                },
+                email: {
                     required
                 },
                  phone: {
@@ -838,6 +861,7 @@ export default {
             formData.append('status', this.data.status ? 1 : 0);
             formData.append('name', this.data.name ?? '');
             formData.append('id_number', this.data.id_number ?? '');
+            formData.append('email', this.data.email ?? '');
             formData.append('birth_date', this.data.birth_date ?? '');
             formData.append('email', this.data.email ?? '');
             formData.append('phone', this.data.phone ?? '');

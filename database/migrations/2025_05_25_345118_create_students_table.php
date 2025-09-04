@@ -25,7 +25,8 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->foreignIdFor(Level::class)->nullable();
             $table->foreignIdFor(Track::class)->nullable()->comment('المسار');
-            $table->string('phone')->unique();
+            $table->string('phone')->nullable()->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('guardian_phone')->nullable()->comment('جوال ولى امره');
             $table->foreignIdFor(PreservationMethod::class)->nullable()->comment('نوع الحفظ');
             $table->enum('gender', ['male', 'female'])->nullable()->comment('جنس الطالب');

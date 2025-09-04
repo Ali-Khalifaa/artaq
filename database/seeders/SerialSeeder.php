@@ -26,10 +26,16 @@ class SerialSeeder extends Seeder
             'prefix' => 'TEA-',
             'start_number' => 1000,
         ]);
-        
+
         Serial::create([
             'type' => 'Admin',
             'prefix' => 'ADM-',
+            'start_number' => 1000,
+        ]);
+
+        Serial::create([
+            'type' => 'Parent',
+            'prefix' => 'PAR-',
             'start_number' => 1000,
         ]);
 
