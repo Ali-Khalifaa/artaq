@@ -70,14 +70,16 @@ class GeneralController extends Controller
     public function logout()
     {
         auth()->logout();
-        return responseJson(null, '', 200);
+        return responseJson("", '', 200);
     }
 
     public function deleteAccount()
     {
         $model = auth()->user();
-        $model->delete();
-        return responseJson(null, '', 200);
+        if(!$model)
+            return responseJson("","انتهت صلاحية المستخدم",400);
+        $model?->delete();
+        return responseJson("", '', 200);
     }
 
     public function surahs()

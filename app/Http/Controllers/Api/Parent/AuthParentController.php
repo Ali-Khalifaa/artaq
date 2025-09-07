@@ -111,10 +111,10 @@ class AuthParentController extends Controller implements HasMiddleware
             'token_type'   => 'bearer',
             'parent_api'         => [
                 "id" => $parent->id,
-                "email" => $parent->email,
-                "code" => $parent->code,
-                "phone" => $parent->phone,
-                "image" => $parent->image,
+                "email" => $parent->email."",
+                "code" => $parent->code."",
+                "phone" => $parent->phone."",
+                "image" => $parent->image."",
             ],
         ];
     }
