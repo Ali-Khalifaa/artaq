@@ -134,7 +134,7 @@ class AuthTeacherController extends Controller implements HasMiddleware
                 Mail::to($teacher->email)->send(new NewRegisterMail($teacher->name, $teacher->otp_code));
                 return responseJson(['username' => $teacher->email], "لقد قمنا بأرسال رمز الى بريدك الالكتروني $teacher->email من فضلك قم بفحصه", 200);
             } else {
-                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
+                // $this->twilioService->sendSms(request()->username, __("messages.Your otp code is :otp",['otp' => $teacher->otp_code]));
                 return responseJson(['username' => $teacher->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $teacher->phone]), 200);
             }
         } else {
