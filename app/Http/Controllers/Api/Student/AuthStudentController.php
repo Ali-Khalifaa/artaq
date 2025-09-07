@@ -96,7 +96,6 @@ class AuthStudentController extends Controller implements HasMiddleware
 
     public function logout()
     {
-        auth('student_api')->user();
         auth('student_api')->logout();
         return responseJson(null, '', 200);
     }

@@ -98,7 +98,6 @@ class AuthParentController extends Controller implements HasMiddleware
 
     public function logout()
     {
-        auth('parent_api')->user();
         auth('parent_api')->logout();
         return responseJson(null, '', 200);
     }
