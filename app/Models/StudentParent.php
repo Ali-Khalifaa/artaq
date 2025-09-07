@@ -23,6 +23,7 @@ class StudentParent extends Authenticatable implements JWTSubject
      * The attributes that are mass assignable.
      */
     protected $fillable = [
+        'email',
         'phone',
         'otp_code',
         'code_expired_at',

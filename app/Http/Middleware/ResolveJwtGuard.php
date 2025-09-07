@@ -10,7 +10,7 @@ class ResolveJwtGuard
 {
     public function handle($request, Closure $next)
     {
-        $guards = ['student_api', 'teacher_api'];
+        $guards = ['student_api', 'teacher_api','parent_api'];
 
         foreach ($guards as $guard) {
             try {

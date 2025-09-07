@@ -32,6 +32,7 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
     Route::get('cities', [GeneralController::class, 'cities']);
     Route::get('surahs', [GeneralController::class, 'surahs']);
     Route::get('ayahs', [GeneralController::class, 'ayahs']);
+    Route::get('login-method', [GeneralController::class, 'getSettingLoginMethod']);
 
     Route::post('login', [GeneralController::class, 'login']);
     Route::post('verify-otp', [GeneralController::class, 'activateAccount']);
@@ -43,6 +44,9 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
         Route::post('send-message', [ChatChannelController::class, 'sendMessage']);
         Route::post('create-or-get-channel/{modelId}', [ChatChannelController::class, 'createOrGetChannel']);
         Route::post('broadcasting/auth', [BroadcastController::class, 'authenticate']);
+        Route::post('logout', [GeneralController::class, 'logout']);
+        Route::post('delete-account', [GeneralController::class, 'deleteAccount']);
+
     });
 
     Route::group(['prefix' => 'student'], function () {
@@ -63,9 +67,9 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
             Route::get('next-exam', [HomeController::class, 'getNextExam']);
             Route::get('prev-exams', [HomeController::class, 'getPrevExams']);
 
+            Route::post('logout', [AuthStudentController::class, 'logout']);
 
             Route::get('student-details', [AuthStudentController::class, 'studentDetails']);
-            Route::post('logout', [AuthStudentController::class, 'logout']);
             Route::post('complete-register', [AuthStudentController::class, 'completeRegister']);
             Route::post('update-gender', [AuthStudentController::class, 'updateGender']);
             Route::post('update-track', [AuthStudentController::class, 'updateTrack']);

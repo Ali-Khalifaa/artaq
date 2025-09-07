@@ -23,6 +23,7 @@ use App\Models\Level;
 use App\Models\MemorizationAmount;
 use App\Models\Nationality;
 use App\Models\PreservationMethod;
+use App\Models\Setting;
 use App\Models\Surah;
 use App\Models\Track;
 
@@ -66,10 +67,31 @@ class GeneralController extends Controller
         }
     }
 
+    public function logout()
+    {
+        auth()->logout();
+        return responseJson("", '', 200);
+    }
+
+    public function deleteAccount()
+    {
+        $model = auth()->user();
+        if(!$model)
+            return responseJson("","انتهت صلاحية المستخدم",400);
+        $model?->delete();
+        return responseJson("", '', 200);
+    }
+
     public function surahs()
     {
         $data = Surah::get();
         return responseJson(SurahResource::collection($data));
+    }
+
+    public function getSettingLoginMethod()
+    {
+        $data = Setting::first()?->login_method??'email';
+        return responseJson($data);
     }
 
     public function ayahs()
