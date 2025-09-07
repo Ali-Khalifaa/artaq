@@ -73,9 +73,9 @@ class AuthStudentController extends Controller implements HasMiddleware
             'otp_code'       => 'required|numeric|digits:4'
         ]);
         if ($this->settingLoginMethod == 'email') {
-            $student = Student::whereEmail(request()->email)->first();
+            $student = Student::whereEmail(request()->username)->first();
         } else {
-            $student = Student::wherePhone(request()->phone)->first();
+            $student = Student::wherePhone(request()->username)->first();
         }
         if ($student->otp_code == request()->otp_code || 1234 == request()->otp_code) {
             if ($student->code_expired_at < now()) {
@@ -115,11 +115,10 @@ class AuthStudentController extends Controller implements HasMiddleware
     public function resendOtp()
     {
         if ($this->settingLoginMethod == 'email') {
-            $student = Student::whereEmail(request()->email)->first();
+            $student = Student::whereEmail(request()->username)->first();
         } else {
-            $student = Student::wherePhone(request()->phone)->first();
+            $student = Student::wherePhone(request()->username)->first();
         }
-        $student = Student::wherePhone(request()->phone)->first();
         if ($student->otp_code) {
             $student->update([
                 "otp_code" => rand(1111, 9999),
@@ -129,7 +128,7 @@ class AuthStudentController extends Controller implements HasMiddleware
                 Mail::to($student->email)->send(new NewRegisterMail($student->name, $student->otp_code));
                 return responseJson(['username' => $student->email], "لقد قمنا بأرسال رمز الى بريدك الالكتروني $student->email من فضلك قم بفحصه", 200);
             } else {
-                // $this->twilioService->sendSms($request->phone, __("messages.Your otp code is :otp",['otp' => $student->otp_code]));
+                // $this->twilioService->sendSms(request()->username, __("messages.Your otp code is :otp",['otp' => $student->otp_code]));
                 return responseJson(['username' => $student->phone], __("messages.We have sent an otp code to your phone :phone.Please check your phone", ['phone' => $student->phone]), 200);
             }
         } else {
