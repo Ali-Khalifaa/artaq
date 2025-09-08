@@ -16,6 +16,8 @@ class DigitalBadge extends Model
 
     protected $table = "digital_badges";
 
+    protected $casts = ['created_at' => "datetime"];
+
     public function getImageAttribute($value): string
     {
         return asset('upload/general/'.$value);
