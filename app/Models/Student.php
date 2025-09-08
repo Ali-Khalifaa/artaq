@@ -144,4 +144,12 @@ class Student extends Authenticatable implements JWTSubject
         return $this->hasMany(StudentExam::class,"student_id");
     }
 
+     public function certificates(){
+        return $this->hasMany(Certificate::class,"student_id");
+    }
+
+    public function digitalBadges(){
+        return $this->belongsToMany(DigitalBadge::class,'student_digital_badges','student_id','digital_badge_id','id','id')->withTimestamps();
+    }
+
 }

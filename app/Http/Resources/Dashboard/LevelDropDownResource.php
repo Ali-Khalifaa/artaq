@@ -13,13 +13,14 @@ class LevelDropDownResource extends JsonResource
         return [
             "id"  => $this->id,
             "name"       => $this->name,
-            "first_sour" => $this->whenLoaded('levelTasks')->first()?->fromSurah?->name,
-            "first_ayah" => $this->whenLoaded('levelTasks')->first()?->fromAyah?->number_in_surah,
-            "first_page" => $this->whenLoaded('levelTasks')->first()?->fromAyah?->page,
-            "last_sour"  => $this->whenLoaded('levelTasks')->last()?->toSurah?->name,
-            "last_ayah" => $this->whenLoaded('levelTasks')->last()?->toAyah?->number_in_surah,
-            "last_page"  => $this->whenLoaded('levelTasks')->last()?->toAyah?->page,
-            "juz" => $this->whenLoaded('levelTasks')->first()?->fromAyah?->juz,
+            // "level_tasks" => LevelTaskResource::collection($this->whenLoaded('levelTasks')->load('fromSurah','toSurah','fromAyah','toAyah','reviewFromSurah','reviewToSurah','reviewFromAyah','reviewToAyah')),
+            // "first_sour" => $this->whenLoaded('levelTasks')->first()?->fromSurah?->name,
+            // "first_ayah" => $this->whenLoaded('levelTasks')->first()?->fromAyah?->number_in_surah,
+            // "first_page" => $this->whenLoaded('levelTasks')->first()?->fromAyah?->page,
+            // "last_sour"  => $this->whenLoaded('levelTasks')->last()?->toSurah?->name,
+            // "last_ayah" => $this->whenLoaded('levelTasks')->last()?->toAyah?->number_in_surah,
+            // "last_page"  => $this->whenLoaded('levelTasks')->last()?->toAyah?->page,
+            // "juz" => $this->whenLoaded('levelTasks')->first()?->fromAyah?->juz,
         ];
     }
 }

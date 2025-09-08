@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\StudentCertificateRequest;
+use App\Http\Requests\Dashboard\StudentDigitalBadgeRequest;
 use App\Http\Requests\Dashboard\StudentRequest;
+use App\Http\Resources\Dashboard\ShowStudentResource;
 use App\Http\Resources\Dashboard\StudentResource;
+use App\Models\Certificate;
 use App\Models\Nationality;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -45,8 +49,9 @@ class StudentController extends Controller implements HasMiddleware
 
     public function show($id)
     {
-        $student = Student::find($id);
-        return responseJson($student,'Data exited successfully',200);
+        $student = Student::with('country','nationality','level','memorizationAmount','city','track','preservationMethod','circles','exams','certificates','digitalBadges')->find($id);
+
+        return responseJson(new ShowStudentResource($student), 'Data exited successfully', 200);
     }
 
     public function update(StudentRequest $request, $id)
@@ -75,4 +80,26 @@ class StudentController extends Controller implements HasMiddleware
         $student->delete();
         return responseJson([],'Deleted Successfully',200);
     }
+
+    public function addCertificate(StudentCertificateRequest $request)
+    {
+        $data = $request->validated();
+         if($request->hasFile('image')){
+            $data['image'] = store_single_image($request->image);
+        }
+        $student = Certificate::create($data);
+        return responseJson($student,'Updated Successfully',200);
+    }
+
+    public function addDigitalBadge(StudentDigitalBadgeRequest $request)
+    {
+        $data = $request->validated();
+        $student = Student::find($data['student_id']);
+        if (!$student) {
+            return responseJson([],'Data not found',404);
+        }
+        $student->digitalBadges()->syncWithoutDetaching($data['digital_badge_id']);
+        return responseJson($student,'Updated Successfully',200);
+    }
+
 }

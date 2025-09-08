@@ -1093,7 +1093,13 @@
         "Supervisor": "المشرف",
         "examTime": "وقت الامتحان",
         "examLink": "رابط الامتحان",
-        "degree": "الدرجة"
+        "degree": "الدرجة",
+        "Student data":"بيانات الطالب",
+        "StudentExams": "امتحانات الطالب",
+        "selectDigitalBadge":"اختر الشاره الرقمية",
+        "certificates":"الشهادات",
+        "studentDigitalBadges":"الشارات الرقمية للطلاب",
+        "selectTeatcher":"اختر المعلم"
 
     },
     "role_and_permissions":{
@@ -1163,6 +1169,8 @@
         "add admin to teacher" : "تعديل المسؤل عن المعلم",
         "add circle to teacher" : "تعديل حلقات المعلم",
         "teacher send notification" : "ارسال اشعار الى المعلم",
+        "add digital badges to teacher" : "اضافة شارات رقمية للمعلم",
+        "add bonuses to teacher" : "اضافة مكافأت للمعلم",
 
         "Levels" : "المستويات",
         "level read" : "عرض المستويات",
@@ -1214,6 +1222,8 @@
         "student send notification" : "ارسال اشعار الى الطالب",
         "student without circle read" : "عرض الطلاب بدون حلقة",
         "add circle to student" : "اضافة حلقة للطالب",
+        "add certificate to student" : "اضافة شهادة للطالب",
+        "add digital badges to student" : "اضافة شارات رقمية للطالب",
 
         "Circles" : "الحلقات",
         "circle read" : "عرض الحلقات",

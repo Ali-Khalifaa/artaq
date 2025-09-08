@@ -69,9 +69,13 @@ class LevelTaskController extends Controller implements HasMiddleware
         return responseJson([],'Deleted Successfully',200);
     }
 
-     public function dropdown()
+     public function dropdown(Request $request)
     {
-        $level = LevelTask::all();
+        if ($request->level_id) {
+            $level = LevelTask::where('level_id', $request->level_id)->with('fromSurah','toSurah','fromAyah','toAyah','reviewFromSurah','reviewToSurah','reviewFromAyah','reviewToAyah')->get();
+        } else {
+            $level = LevelTask::all();
+        }
 
         return responseJson(LevelTaskResource::collection($level),'',200);
     }

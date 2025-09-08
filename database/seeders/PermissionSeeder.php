@@ -91,6 +91,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'student send notification',  'category' => 'Students'],
             ['name' => 'student without circle read',  'category' => 'Students'],
             ['name' => 'add circle to student',  'category' => 'Students'],
+            ['name' => 'add certificate to student',  'category' => 'Students'],
+            ['name' => 'add digital badges to student',  'category' => 'Students'],
 
             ['name' => 'teacher read',  'category' => 'Teachers'],
             ['name' => 'teacher create',  'category' => 'Teachers'],
@@ -99,6 +101,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'teacher send notification',  'category' => 'Teachers'],
             ['name' => 'add admin to teacher',  'category' => 'Teachers'],
             ['name' => 'add circle to teacher',  'category' => 'Teachers'],
+            ['name' => 'add digital badges to teacher',  'category' => 'Teachers'],
+            ['name' => 'add bonuses to teacher',  'category' => 'Teachers'],
 
             ['name' => 'circle type read',  'category' => 'Circles'],
             ['name' => 'circle type create',  'category' => 'Circles'],

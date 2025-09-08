@@ -25,4 +25,8 @@ class DigitalBadge extends Model
     {
         return $this->belongsTo(Level::class);
     }
+
+    public function students(){
+        return $this->belongsToMany(Student::class,'student_digital_badges','digital_badge_id','student_id','id','id')->withTimestamps();
+    }
 }

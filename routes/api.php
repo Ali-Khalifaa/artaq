@@ -92,13 +92,17 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::get('levels/dropdown',[LevelController::class,'dropdown']);
         Route::apiResource('levels', LevelController::class);
 
+        Route::get('level-tasks-dropdown',[LevelTaskController::class,'dropdown']);
         Route::apiResource('level-tasks', LevelTaskController::class);
 
+         Route::get('digital-badges-dropdown',[DigitalBadgeController::class,'dropdown']);
         Route::apiResource('digital-badges', DigitalBadgeController::class);
 
         Route::apiResource('teacher-badges', TeacherBadgeController::class);
 
         Route::apiResource('student', StudentController::class);
+        Route::post('add-certificate',[StudentController::class,'addCertificate']);
+        Route::post('add-digital-badge',[StudentController::class,'addDigitalBadge']);
 
         Route::apiResource('teacher', TeacherController::class);
         Route::put('change-admin-teacher/{id}',[TeacherController::class,'changeAdmin']);
@@ -117,6 +121,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('circles', CircleController::class);
         Route::get('circles-dropdown',[CircleController::class,'dropdown']);
         Route::get('circles-without-teacher/{id}',[CircleController::class,'circlesWithoutTeacher']);
+        Route::get('teacher-without-circles/{id}',[CircleController::class,'teacherWithoutCircles']);
+        Route::put('modify-teacher/{id}',[CircleController::class,'modifyTeacher']);
 
         Route::apiResource('quran', QuranController::class);
         Route::get('surah-dropdown',[QuranController::class,'getSurahDropdown']);

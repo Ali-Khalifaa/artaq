@@ -67,8 +67,8 @@
                                                         <a href="javascript:void(0);">{{item.name}}</a>
                                                     </div>
                                                     <div class="mb-1">
-                                                        <span class="text-muted d-block">{{item.phone}} ({{item.country?.phone_code}})</span>
-                                                        <span class="text-muted">{{$t('global.'+item.gender)}}</span>
+                                                        <span class="text-muted d-block">{{item.phone}} {{item.country ? '('+item.country?.phone_code + ')' : ''}}</span>
+                                                        <span class="text-muted">{{item.gender ? $t('global.'+item.gender) : ''}}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -100,13 +100,33 @@
                                                     :title="$t('global.update')">
                                                     <i class="ri-edit-line"></i>
                                                 </button>
+                                                <button @click.prevent="showDataModel(item)"
+                                                        data-bs-toggle="modal" data-bs-target="#show"
+                                                        class="btn btn-icon btn-sm btn-success-transparent rounded-pill"
+                                                        :title="$t('global.show')">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button v-if="permission.includes('add certificate to student')"
+                                                    @click.prevent="showAddCertificateMode(item)"
+                                                    data-bs-toggle="modal" data-bs-target="#add-certificate-modal"
+                                                        class="btn btn-icon btn-sm btn-primary-transparent rounded-pill"
+                                                        :title="$t('role_and_permissions.add certificate to student')">
+                                                    <i class="ri-award-line"></i>
+                                                </button>
+                                                <button v-if="permission.includes('add digital badges to student')"
+                                                    @click.prevent="showAddDigitalBadgesMode(item)"
+                                                    data-bs-toggle="modal" data-bs-target="#add-admin-modal"
+                                                        class="btn btn-icon btn-sm btn-success-transparent rounded-pill"
+                                                        :title="$t('role_and_permissions.add digital badges to student')">
+                                                    <i class="ri-medal-line"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="8">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="9">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -126,6 +146,9 @@
         <!-- End:: data table -->
         <ModalCreateAndUpdate v-model="modalShow" :type="type" :dataRow="dataRow" @created="getData(pagePaginate)" />
         <SendNotification :selectedUser="selectedUser" :type="'App\\Models\\Student'" />
+        <Show v-model="showData" :dataRow="dataRow" type="order" @created="getData(pagePaginate)" />
+        <AddCertificate v-model="showAddCertificate" :type="type" :dataRow="dataRow" @created="getData(pagePaginate)" />
+        <AddDigitalBadges v-model="showAddDigitalBadges" :type="type" :dataRow="dataRow" @created="getData(pagePaginate)" />
     </div>
 </template>
 
@@ -134,16 +157,21 @@ import { onBeforeMount, inject, ref } from "vue";
 import crud from "../../../composable/crud_structure";
 import ModalCreateAndUpdate from "./ModalCreateAndUpdate.vue"
 import SendNotification from "../../../components/general/SendNotification.vue"
+import Show from "./Show.vue";
+import AddCertificate from "./AddCertificate.vue";
+import AddDigitalBadges from "./AddDigitalBadges.vue";
 export default {
     name: "index",
     components: {
-        ModalCreateAndUpdate, SendNotification
+        ModalCreateAndUpdate, SendNotification,Show,AddCertificate,AddDigitalBadges
     },
     setup() {
         const emitter = inject('emitter');
         const selectedUser = ref({});
+        let showAddCertificate = ref(false);
+        let showAddDigitalBadges = ref(false);
 
-        const { getData, loading, data, dataPaginate, permission, uri, showModelCreate, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate} = crud();
+        const { getData, loading, data, dataPaginate, permission, uri, showModelCreate, showEditMode, showModelReason, deleteData, search, type, dataRow, modalShow, reasonShow ,pagePaginate,showDataModel,showData} = crud();
 
         search.value = {
             searchKey: '',
@@ -189,8 +217,19 @@ export default {
             getData();
         });
 
+        let showAddCertificateMode = (row) => {
+            dataRow.value=row;
+            type.value='create';
+            showAddCertificate.value=true;
+        }
+        let showAddDigitalBadgesMode = (row) => {
+            dataRow.value=row;
+            type.value='create';
+            showAddDigitalBadges.value=true;
+        }
 
-        return { getData, loading, search, permission, deleteData, showEditMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate};
+
+        return { getData, loading, search, permission, deleteData, showEditMode, showModelCreate, showModelReason, data, dataPaginate, type, dataRow, modalShow, reasonShow, selectedUser ,pagePaginate,showDataModel,showData,showAddCertificate,showAddCertificateMode,showAddDigitalBadgesMode,showAddDigitalBadges};
 
     }
 }

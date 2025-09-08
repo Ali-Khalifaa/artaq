@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Enums\ExamStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\CircleRequest;
+use App\Http\Requests\Dashboard\ModifyTeacherCirclesRequest;
 use App\Http\Resources\Dashboard\CircleResource;
 use App\Http\Resources\Dashboard\StudentResource;
 use App\Models\Circle;
@@ -35,7 +36,7 @@ class CircleController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $nationality = Circle::with('circleType')->searchAndFilter()->latest()->paginate(10);
+        $nationality = Circle::with('circleType','teachers')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(CircleResource::collection($nationality->items()), '', 200, getPaginates($nationality));
     }
@@ -112,6 +113,13 @@ class CircleController extends Controller implements HasMiddleware
 
         return responseJson($circles, '', 200);
     }
+    public function teacherWithoutCircles($id)
+    {
+        $circle = Circle::find($id);
+        $teachers = Teacher::where('gender', $circle->gender)->get();
+
+        return responseJson($teachers, '', 200);
+    }
 
     public function studentWithoutCircles()
     {
@@ -168,6 +176,21 @@ class CircleController extends Controller implements HasMiddleware
         }
 
         return responseJson("","",200);
+    }
+
+
+    public function modifyTeacher(ModifyTeacherCirclesRequest $request, $id)
+    {
+        $circle = Circle::find($id);
+        if (!$circle) {
+            return responseJson([],'Data not found',404);
+        }
+
+         $data = $request->validated();
+
+        $circle->teachers()->sync($data['teacher_id']);
+
+        return responseJson([], 'Circles updated successfully', 200);
     }
 
 

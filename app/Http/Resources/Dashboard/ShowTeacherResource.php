@@ -28,7 +28,7 @@ class ShowTeacherResource extends JsonResource
             "country" => new CountryResource($this->whenLoaded('country')),
             "city" => new CityResource($this->whenLoaded('city')),
             "circles" => CircleResource::collection(
-                $this->whenLoaded('circles')->load('circleType')
+                $this->whenLoaded('circles')->load('circleType', 'students')
             ),
             "juz_count" => $this->juz_count,
             "experience_years" => $this->experience_years,

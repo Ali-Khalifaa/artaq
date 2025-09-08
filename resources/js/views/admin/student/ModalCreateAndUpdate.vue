@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">{{ $t('global.Three-part name') }}</label>
                             <input type="text" class="form-control" v-model="v$.name.$model"
                                 :placeholder="$t('global.name')" :class="{
@@ -38,7 +38,7 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6">
+                         <div class="col-md-4">
                             <label class="form-label">{{ $t('global.phone') }}</label>
                             <input type="text" class="form-control" v-model.trim="v$.phone.$model"
                                 :class="{ 'is-invalid': v$.phone.$error || errors[`phone`], 'is-valid': !v$.phone.$invalid  && !errors[`phone`] }"
@@ -62,7 +62,7 @@
                                 </error-message>
                             </template>
                         </div>
-                         <div class="col-md-6">
+                         <div class="col-md-4">
                             <label class="form-label">{{ $t('global.email') }}</label>
                             <input type="email" class="form-control" v-model.trim="v$.email.$model"
                                 :class="{ 'is-invalid': v$.email.$error || errors[`email`], 'is-valid': !v$.email.$invalid  && !errors[`email`] }"
@@ -80,7 +80,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.guardian') }}</label>
                             <input type="text" class="form-control" v-model="v$.guardian.$model"
                                  :class="{
@@ -100,7 +100,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.guardian_phone') }}</label>
                             <input type="text" class="form-control" v-model.trim="v$.guardian_phone.$model"
                                 :class="{ 'is-invalid': v$.guardian_phone.$error || errors[`guardian_phone`], 'is-valid': !v$.guardian_phone.$invalid  && !errors[`guardian_phone`] }"
@@ -125,7 +125,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <div class="row">
                                 <label class="form-label mb-1">{{$t('global.gender')}}</label>
                                 <div class="col-xl-6">
@@ -147,7 +147,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectNationality') }}</label>
 
                             <Select v-model="data.nationality_id" :filterFields="['id','name']" :options="nationalities" filter
@@ -168,7 +168,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.birth_date') }}</label>
                             <input type="text" class="form-control" id="date" v-model="v$.birth_date.$model"
                                  :class="{
@@ -188,7 +188,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.id_number') }}</label>
                             <input type="text" class="form-control" v-model="v$.id_number.$model"
                                  :class="{
@@ -208,7 +208,7 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-3">
+                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectCountry') }}</label>
 
                             <Select v-model="data.country_id" :filterFields="['id','name']" @change="getCitiesByCountryId" :options="countries" filter
@@ -229,7 +229,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectCity') }}</label>
 
                             <Select v-model="data.city_id" :filterFields="['id','name']" :options="cities" filter
@@ -247,7 +247,7 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-3">
+                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectMemorizationAmount') }}</label>
 
                             <Select v-model="data.memorization_amount_id" :filterFields="['id','name']" :options="amounts" filter
@@ -268,7 +268,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectTrack') }}</label>
 
                             <Select v-model="data.track_id" :filterFields="['id','name']" @change="getMemorizationType" :options="tracks" filter
@@ -289,7 +289,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectMemorizationType') }}</label>
 
                             <Select v-model="data.preservation_method_id" :filterFields="['id','name']" @change="getLevels" :options="types" filter
@@ -310,7 +310,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectLevel') }}</label>
 
                             <Select v-model="data.level_id" :filterFields="['id','name']" @change="levelDetail" :options="levels" filter
@@ -329,40 +329,62 @@
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
+                        </div>
+                        <div class="col-md-12 mt-3">
 
-                            <div class="table-responsive" v-if="data.level_id && level_details">
-                                <table class="table text-nowrap table-success table-striped">
-                                    <thead>
+                            <div class="table-responsive" v-if="data.level_id && level_details" style="max-height: 350px; overflow: auto;">
+                                <table class="table text-nowrap table-success table-striped" style="min-width: 900px;">
+                                    <thead style="position: sticky; top: 0; z-index: 2; background: #fff;">
+                                        <tr>
+                                            <th colspan="2"></th>
+                                            <th colspan="4" class="text-center bg-primary-transparent">{{ $t('global.Preservation') }}</th>
+                                            <th colspan="4" class="text-center bg-danger-transparent">{{ $t('global.review') }}</th>
+                                        </tr>
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">{{ $t('global.Juz') }}</th>
-                                            <th scope="col">{{ $t('global.surah_name') }}</th>
-                                            <th scope="col">{{ $t('global.Ayah_number') }}</th>
-                                            <th scope="col">{{ $t('global.page_num') }}</th>
+
+                                            <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.fromSurah') }}</th>
+                                            <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.Ayah') }}</th>
+                                            <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.toSurah') }}</th>
+                                            <th scope="col" class="text-center bg-primary-transparent">{{ $t('global.Ayah') }}</th>
+
+                                            <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.fromSurah') }}</th>
+                                            <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.Ayah') }}</th>
+                                            <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.toSurah') }}</th>
+                                            <th scope="col" class="text-center bg-danger-transparent">{{ $t('global.Ayah') }}</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">{{ $t('global.from') }}</th>
-                                            <td>{{level_details.juz}}</td>
-                                            <td>{{level_details.first_sour}}</td>
-                                            <td>{{level_details.first_ayah}}</td>
-                                            <td>{{level_details.first_page}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">{{ $t('global.to') }}</th>
-                                             <td>{{level_details.juz}}</td>
-                                            <td>{{level_details.last_sour}}</td>
-                                            <td>{{level_details.last_ayah}}</td>
-                                            <td>{{level_details.last_page}}</td>
-                                        </tr>
+                                    <tbody v-if="level_details && level_details.length">
+                                        <tr v-for="(item,index) in level_details" :key="item.id">
+                                            <td scope="row">{{index + 1}}</td>
+                                            <td>{{makeNumberArabic(item.from_ayah?.juz)}}</td>
 
+                                            <td class="text-center bg-primary-transparent">{{item.from_surah?.name}}</td>
+                                            <td class="text-center bg-primary-transparent">
+                                                {{makeNumberArabic(item.from_ayah?.number_in_surah)}}
+                                            </td>
+                                            <td class="text-center bg-primary-transparent">{{item.to_surah?.name}}</td>
+                                            <td class="text-center bg-primary-transparent">
+                                                {{makeNumberArabic(item.to_ayah?.number_in_surah)}}
+                                            </td>
+
+                                            <td class="text-center bg-danger-transparent">{{item.review_from_surah?.name}}</td>
+                                            <td class="text-center bg-danger-transparent">
+                                                {{makeNumberArabic(item.review_from_ayah?.number_in_surah)}}
+                                            </td>
+                                            <td class="text-center bg-danger-transparent">{{item.review_to_surah?.name}}</td>
+                                            <td class="text-center bg-danger-transparent">
+                                                {{makeNumberArabic(item.review_to_ayah?.number_in_surah)}}
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
 
-                        <div class="col-md-6  mt-3">
+                        <div class="col-md-4  mt-3">
                             <label class="form-label">{{ $t('global.password')}}</label>
                             <input type="password" v-model.trim="v$.password.$model" id="validationCustom09"
                                 :class="['form-control', { 'is-invalid': v$.password.$error || errors[`password`], 'is-valid': !v$.password.$invalid&& !errors[`password`] }]"
@@ -390,7 +412,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6  mt-3">
+                        <div class="col-md-4  mt-3">
                             <label class="form-label">{{ $t('global.password_confirmation')}}</label>
                             <input type="password" v-model.trim="v$.confirmation.$model" id="validationCustom10"
                                 :class="['form-control', { 'is-invalid': v$.confirmation.$error || errors[`confirmation`], 'is-valid': !v$.confirmation.$invalid && !errors[`confirmation`] }]"
@@ -411,7 +433,7 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-3">
+                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.juz_count') }}</label>
                             <input type="number" class="form-control" @input="makeMaxNumber('juz_count',30)" v-model="v$.juz_count.$model"
                                  :class="{
@@ -432,7 +454,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-4">
+                        <div class="col-md-4 mt-4">
                             <div class="custom-toggle-switch d-flex align-items-center mb-4">
                                 <input id="toggleswitchPrimary" v-model="data.status" type="checkbox">
                                 <label for="toggleswitchPrimary" class="label-primary"></label><span class="ms-3">{{
@@ -560,7 +582,7 @@ export default {
             loading.value = true;
             levels.value = [];
             submitdata.data.level_id = '';
-            level_details.value = '';
+            level_details.value = [];
 
             adminApi.get(`dashboard/levels/dropdown?preservation_method_id=${submitdata.data.preservation_method_id}`)
                 .then((res) => {
@@ -907,8 +929,25 @@ export default {
 
         function levelDetail() {
             if (submitdata.data.level_id) {
-                level_details.value = levels.value.find((l) => l.id == submitdata.data.level_id);
+                 adminApi.get(`dashboard/level-tasks-dropdown?level_id=${submitdata.data.level_id}`)
+                    .then((res) => {
+                        let l = res.data.data;
+                        level_details.value = l;
+                    })
+                    .catch((err) => {
+                        console.log(err.response.data);
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    })
             }
+        }
+
+        let makeNumberArabic = (num) => {
+            if (typeof num !== 'number') {
+                return num; // Return as is if not a number
+            }
+            return num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
         }
 
         return {
@@ -916,7 +955,7 @@ export default {
             loading, is_disabled, types,amounts,
             resetModal, empty, preview, resetModalHidden,
             imageUpload, image, ...toRefs(submitdata),
-            v$, numberOfImage, requiredn, errors,getLevels,tracks,getMemorizationType,makeMaxNumber
+            v$, numberOfImage, requiredn, errors,getLevels,tracks,getMemorizationType,makeMaxNumber,makeNumberArabic
         };
     },
     methods: {

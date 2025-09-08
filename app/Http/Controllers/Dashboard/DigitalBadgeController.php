@@ -68,4 +68,11 @@ class DigitalBadgeController extends Controller implements HasMiddleware
         $digitalBadge->delete();
         return responseJson([],'Deleted Successfully',200);
     }
+
+    public function dropdown()
+    {
+        $digitalBadge = DigitalBadge::all();
+
+        return responseJson(DigitalBadgeResource::collection($digitalBadge),'',200);
+    }
 }

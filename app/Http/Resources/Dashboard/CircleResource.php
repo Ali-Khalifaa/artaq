@@ -18,6 +18,10 @@ class CircleResource extends JsonResource
             "teacher_name" => $this->whenLoaded('teachers', function () {
                 return $this->teachers()->first() ? $this->teachers()->first()->name : null;
             }),
+            "students_count" => $this->whenLoaded('students', function () {
+                return $this->students->count();
+            }),
+            "students" => StudentResource::collection($this->whenLoaded('students')),
             "gender" => $this->gender,
             "end_time" => $this->end_time,
             "start_time" => $this->start_time,
@@ -28,6 +32,12 @@ class CircleResource extends JsonResource
                     'start_time' => $duration->start_time,
                     'end_time' => $duration->end_time,
                 ];
+            }),
+            "teacher_id" => $this->whenLoaded('teachers', function () {
+                return $this->teachers()->first() ? $this->teachers()->first()->id : null;
+            }),
+            "teacher_name" => $this->whenLoaded('teachers', function () {
+                return $this->teachers()->first() ? $this->teachers()->first()->name : null;
             }),
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d  (H:i)'),
         ];

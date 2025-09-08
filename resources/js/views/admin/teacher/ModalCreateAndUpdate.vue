@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">{{ $t('global.Three-part name') }}</label>
                             <input type="text" class="form-control" v-model="v$.name.$model"
                                 :placeholder="$t('global.name')" :class="{
@@ -38,7 +38,7 @@
                             </template>
                         </div>
 
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                             <div class="row">
                                 <label class="form-label mb-1">{{$t('global.gender')}}</label>
                                 <div class="col-xl-6">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4">
                             <label class="form-label">{{ $t('global.phone') }}</label>
                             <input type="text" class="form-control" v-model.trim="v$.phone.$model"
                                 :class="{ 'is-invalid': v$.phone.$error || errors[`phone`], 'is-valid': !v$.phone.$invalid  && !errors[`phone`] }"
@@ -84,7 +84,7 @@
                                 </error-message>
                             </template>
                         </div>
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.email') }}</label>
                             <input type="email" class="form-control" v-model.trim="v$.email.$model"
                                 :class="{ 'is-invalid': v$.email.$error || errors[`email`], 'is-valid': !v$.email.$invalid  && !errors[`email`] }"
@@ -102,7 +102,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectNationality') }}</label>
 
                             <Select v-model="data.nationality_id" :filterFields="['id','name']" :options="nationalities" filter
@@ -123,7 +123,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.id_number') }}</label>
                             <input type="text" class="form-control" v-model="v$.id_number.$model"
                                  :class="{
@@ -143,7 +143,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.birth_date') }}</label>
                             <input type="text" class="form-control" id="date" v-model="v$.birth_date.$model"
                                  :class="{
@@ -163,7 +163,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectCountry') }}</label>
 
                             <Select v-model="data.country_id" :filterFields="['id','name']" @change="getCitiesByCountryId" :options="countries" filter
@@ -184,7 +184,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.selectCity') }}</label>
 
                             <Select v-model="data.city_id" :filterFields="['id','name']" :options="cities" filter
@@ -202,7 +202,7 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-3">
+                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.email') }}</label>
                             <input type="email" class="form-control" v-model.trim="v$.email.$model"
                                 :class="{ 'is-invalid': v$.email.$error || errors[`email`], 'is-valid' : !v$.email.$invalid && !errors[`email`]}"
@@ -221,7 +221,7 @@
                             </template>
                         </div>
 
-                         <div class="col-md-6 mt-3">
+                         <div class="col-md-4 mt-3">
                             <label class="form-label">{{ $t('global.hourly_wage') }}</label>
                             <input type="number" step="any" class="form-control" v-model="v$.salary.$model"
                                  :class="{
@@ -305,7 +305,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6  mt-3">
+                        <div class="col-md-4  mt-3">
                             <label class="form-label">{{ $t('global.password')}}</label>
                             <input type="password" v-model.trim="v$.password.$model" id="validationCustom09"
                                 :class="['form-control', { 'is-invalid': v$.password.$error || errors[`password`], 'is-valid': !v$.password.$invalid&& !errors[`password`] }]"
@@ -333,7 +333,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6  mt-3">
+                        <div class="col-md-4  mt-3">
                             <label class="form-label">{{ $t('global.password_confirmation')}}</label>
                             <input type="password" v-model.trim="v$.confirmation.$model" id="validationCustom10"
                                 :class="['form-control', { 'is-invalid': v$.confirmation.$error || errors[`confirmation`], 'is-valid': !v$.confirmation.$invalid && !errors[`confirmation`] }]"
@@ -354,7 +354,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6 mt-4">
+                        <div class="col-md-4 mt-5">
                             <div class="custom-toggle-switch d-flex align-items-center mb-4">
                                 <input id="toggleswitchPrimary" v-model="data.status" type="checkbox">
                                 <label for="toggleswitchPrimary" class="label-primary"></label><span class="ms-3">{{

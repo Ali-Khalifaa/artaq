@@ -33,12 +33,14 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    
                                     <th scope="col">{{ $t('global.circleName') }}</th>
                                     <th scope="col">{{ $t('global.circleType') }}</th>
                                     <th scope="col">{{ $t('global.StudentType') }}</th>
                                     <th scope="col">{{ $t('global.start_time') }}</th>
                                     <th scope="col">{{ $t('global.end_time') }}</th>
                                     <th scope="col">{{ $t('global.status') }}</th>
+                                    <th scope="col">{{ $t('global.teacher') }}</th>
                                     <th scope="col">{{ $t('global.created_at') }}</th>
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
@@ -46,6 +48,7 @@
                                 <tbody v-if="data && data.length">
                                 <tr v-for="(item,index) in data" :key="item.id">
                                     <td scope="row">{{index + 1}}</td>
+                                    
                                     <td>{{item.name}}</td>
                                     <td>{{item.circle_type?.name}}</td>
                                     <td>{{$t('global.'+item.gender)}}</td>
@@ -57,6 +60,7 @@
                                             <span class="badge rounded-pill bg-danger-transparent" v-else>{{
                                                 $t('global.Inactive') }}</span>
                                         </td>
+                                    <td>{{item.teacher_name ?? '---'}}</td>
                                     <td>{{item.created_at}}</td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
@@ -71,13 +75,21 @@
                                              <a href="#" @click.prevent="deleteData(item.id,index)" v-if="permission.includes('circle delete')"
                                                class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i
                                                 class="ri-delete-bin-line"></i></a>
+
+                                                <button v-if="permission.includes('add circle to teacher')"
+                                                    @click.prevent="showAddCircleMode(item)"
+                                                    data-bs-toggle="modal" data-bs-target="#add-circle-modal"
+                                                        class="btn btn-icon btn-sm btn-success-transparent rounded-pill"
+                                                        title="اضافة معلم للحلقة">
+                                                    <i class="ri-add-circle-line"></i>
+                                                </button>
                                         </div>
                                     </td>
                                 </tr>
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <th class="text-center" colspan="9">{{ $t('global.NoDataFound') }}</th>
+                                        <th class="text-center" colspan="10">{{ $t('global.NoDataFound') }}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -96,6 +108,7 @@
         </div>
         <!-- End:: data table -->
         <ModalCreateAndUpdate v-model="modalShow" :type="type" :dataRow="dataRow" @created="getData(pagePaginate)"/>
+        <addCircle v-model="showAddCircle" :dataRow="dataRow" @created="getData(pagePaginate)" />
     </div>
 </template>
 
@@ -103,14 +116,16 @@
 import {onBeforeMount,inject,watch,ref,computed} from "vue";
 import ModalCreateAndUpdate from "./ModalCreateAndUpdate.vue"
 import crud from "../../../composable/crud_structure";
+import addCircle from "./addCircle.vue"
 
 export default {
     name: "index",
     components:{
-        ModalCreateAndUpdate
+        ModalCreateAndUpdate,addCircle
     },
     setup(){
         const emitter = inject('emitter');
+        let showAddCircle = ref(false);
 
         const {getData,loading,data,dataPaginate,permission,uri,showModelCreate,showEditMode,showModelReason,deleteData,search,type,dataRow,modalShow,reasonShow,pagePaginate} = crud();
 
@@ -132,8 +147,14 @@ export default {
             getData();
         });
 
+        let showAddCircleMode = (row) => {
+            dataRow.value=row;
+            type.value='edit';
+            showAddCircle.value=true;
+        }
 
-        return {getData,loading,search,permission,deleteData,showEditMode,showModelCreate,showModelReason,data,dataPaginate,type,dataRow,modalShow,reasonShow,pagePaginate};
+
+        return {getData,loading,search,permission,deleteData,showEditMode,showModelCreate,showModelReason,data,dataPaginate,type,dataRow,modalShow,reasonShow,pagePaginate,showAddCircleMode};
 
     }
 }
