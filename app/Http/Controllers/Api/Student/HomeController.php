@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Api\Student;
 
 use App\Enums\ExamStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Student\DigitalBadgesResource;
+use App\Http\Resources\Api\Student\StudentCertificateResource;
 use App\Http\Resources\Api\Student\StudentExamResource;
+use App\Models\Certificate;
+use App\Models\DigitalBadge;
 use App\Models\StudentExam;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -36,11 +40,22 @@ class HomeController extends Controller implements HasMiddleware
         return responseJson($exam ? new StudentExamResource($exam):"");
     }
 
-
     public function getPrevExams(){
         $student = auth("student_api")->user();
         $exams = StudentExam::where("status","!=",ExamStatusEnum::PENDING)->whereStudentId($student->id)->get();
         return responseJson(StudentExamResource::collection($exams));
+    }
+
+    public function digitalBadges(){
+        $student = auth("student_api")->user();
+        $digitalBadges = DigitalBadge::whereStudentId($student->id)->get();
+        return responseJson(DigitalBadgesResource::collection($digitalBadges));
+    }
+
+    public function certificates(){
+        $student = auth("student_api")->user();
+        $Certificates = Certificate::whereStudentId($student->id)->get();
+        return responseJson(StudentCertificateResource::collection($Certificates));
     }
 
 

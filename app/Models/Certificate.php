@@ -15,6 +15,8 @@ class Certificate extends Model
 
     protected $table = "certificates";
 
+    protected $casts = ['created_at' => "datetime"];
+
     public function getImageAttribute($value): string
     {
         return asset('upload/general/'.$value);

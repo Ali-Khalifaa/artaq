@@ -7,10 +7,12 @@ use App\Http\Resources\Api\Student\LevelResource;
 use App\Http\Resources\Api\Student\MemorizationAmountResource;
 use App\Http\Resources\Api\Student\PreservationMethodResource;
 use App\Http\Resources\Api\Student\TrackResource;
+use App\Http\Resources\Api\Teacher\DigitalBadgesResource;
 use App\Http\Resources\Api\Teacher\TeacherResource;
 use App\Models\Level;
 use App\Models\MemorizationAmount;
 use App\Models\PreservationMethod;
+use App\Models\TeacherBadge;
 use App\Models\Track;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -57,6 +59,10 @@ class HomeController extends Controller implements HasMiddleware
         return responseJson(MemorizationAmountResource::collection($data));
     }
 
-
+    public function digitalBadges(){
+        $teacher = auth('teacher_api')->user();
+        $digitalBadges = TeacherBadge::whereTeacherId($teacher->id)->get();
+        return responseJson(DigitalBadgesResource::collection($digitalBadges));
+    }
 
 }

@@ -66,6 +66,8 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
             Route::post('accept-call', [HomeController::class, 'acceptCall']);
             Route::get('next-exam', [HomeController::class, 'getNextExam']);
             Route::get('prev-exams', [HomeController::class, 'getPrevExams']);
+            Route::get('digital-badges', [HomeController::class, 'digitalBadges']);
+            Route::get('certificates', [HomeController::class, 'certificates']);
 
             Route::post('logout', [AuthStudentController::class, 'logout']);
 
