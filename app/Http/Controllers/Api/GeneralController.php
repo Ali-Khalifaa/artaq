@@ -150,4 +150,13 @@ class GeneralController extends Controller
         })->get();
         return responseJson(CityResource::collection($data));
     }
+
+    public function downloadQuran()
+    {
+        $filePath = public_path('quran.pdf');
+        if (!file_exists($filePath)) {
+            return responseJson('', 'File not found', 404);
+        }
+        return response()->download($filePath, 'quran.pdf');
+    }
 }

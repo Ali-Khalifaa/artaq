@@ -38,6 +38,8 @@ Route::group(['middleware' => [ChangeLang::class]], function () {
     Route::post('verify-otp', [GeneralController::class, 'activateAccount']);
     Route::post('resend-otp', [GeneralController::class, 'resendOtp']);
 
+    Route::get('download-quran', [GeneralController::class, 'downloadQuran']);
+
     Route::group(['middleware' => [ResolveJwtGuard::class]], function () {
         Route::get('get-channels', [ChatChannelController::class, 'getChannels']);
         Route::get('get-messages/{chatChannel}', [ChatChannelController::class, 'getMessages']);
