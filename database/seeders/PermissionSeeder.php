@@ -137,6 +137,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'add time to exam',  'category' => 'Exams'],
             ['name' => 'add degree to exam',  'category' => 'Exams'],
 
+            ['name' => 'parent read',  'category' => 'Parents'],
+            ['name' => 'parent create',  'category' => 'Parents'],
+            ['name' => 'parent edit',  'category' => 'Parents'],
+            ['name' => 'parent delete',  'category' => 'Parents'],
+
         ];
 
         foreach ($permissions as $permission) {

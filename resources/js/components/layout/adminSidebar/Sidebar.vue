@@ -49,6 +49,13 @@
                         </router-link>
                     </li>
 
+                    <li class="slide" v-show="permission.includes('parent read')">
+                        <router-link :to="{name:'parent'}" class="side-menu__item">
+                            <i class="bx bx-user-voice side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.parents')}}</span>
+                        </router-link>
+                    </li>
+
                     <li class="slide" v-show="permission.includes('student read')">
                         <router-link :to="{name:'student'}" class="side-menu__item">
                             <i class="bx bx-user side-menu__icon"></i>

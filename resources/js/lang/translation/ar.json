@@ -1099,7 +1099,9 @@
         "selectDigitalBadge":"اختر الشاره الرقمية",
         "certificates":"الشهادات",
         "studentDigitalBadges":"الشارات الرقمية للطلاب",
-        "selectTeatcher":"اختر المعلم"
+        "selectTeatcher":"اختر المعلم",
+        "parents":"اولياء الامور",
+        "children":"الابناء"
 
     },
     "role_and_permissions":{
@@ -1121,6 +1123,12 @@
         "role create" : "اضافة ادوار المدراء",
         "role edit" : "تعديل ادوار المدراء",
         "role delete" : "حذف ادوار المدراء",
+
+        "Parents" : "اولياء الامور",
+        "parent read" : "عرض اولياء الامور",
+        "parent create" : "اضافة اولياء الامور",
+        "parent edit" : "تعديل اولياء الامور",
+        "parent delete" : "حذف اولياء الامور",
 
         "Exams" : "الامتحانات",
         "exam read" : "عرض الامتحانات",

@@ -20,6 +20,7 @@ use App\Http\Controllers\Dashboard\PreservationMethodController;
 use App\Http\Controllers\Dashboard\NationalityController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\OfficialHolidayController;
+use App\Http\Controllers\Dashboard\ParentController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\QuranController;
 use App\Http\Controllers\Dashboard\RoleController;
@@ -99,6 +100,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
         Route::apiResource('digital-badges', DigitalBadgeController::class);
 
         Route::apiResource('teacher-badges', TeacherBadgeController::class);
+
+        Route::apiResource('parent', ParentController::class);
 
         Route::apiResource('student', StudentController::class);
         Route::post('add-certificate',[StudentController::class,'addCertificate']);
