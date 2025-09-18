@@ -29,6 +29,8 @@ Route::group(['prefix' => 'teacher', 'middleware' => [ChangeLang::class]], funct
         Route::post('register', [AuthTeacherController::class, 'register']);
         Route::post('logout', [AuthTeacherController::class, 'logout']);
         Route::post('update-work-status', [HomeController::class, 'updateWorkStatus']);
+        Route::get('digital-badges', [HomeController::class, 'digitalBadges']);
+
         Route::get('current-session', [FreeSessionsController::class, 'getCurrentSession']);
         Route::get('get-session-requests', [FreeSessionsController::class, 'getFreeSessionRequests']);
         Route::post('accept-session/{id}', [FreeSessionsController::class, 'acceptSessionRequest']);
@@ -63,7 +65,6 @@ Route::group(['prefix' => 'teacher', 'middleware' => [ChangeLang::class]], funct
             Route::post('rate-student/{circleSessionStudentId}', [TeacherCircleController::class, 'rateStudent']);
             Route::get('previous-circle-sessions', [TeacherCircleController::class, 'previousSessions']);
             Route::post('call-student/{circleSessionStudentId}', [TeacherCircleController::class, 'callStudent']);
-
         });
         Route::controller(NotificationController::class)->group(function () {
             Route::get('all-notifications', 'getAllNot');
