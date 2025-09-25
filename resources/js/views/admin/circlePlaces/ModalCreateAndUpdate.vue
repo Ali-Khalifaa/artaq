@@ -11,7 +11,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <!-- <div class="col-md-6 ">
+                        <div class="col-md-6 ">
                             <label for="name" class="form-label">{{$t('label.title')}}</label>
                             <input type="text" class="form-control" id="name" :placeholder="$t('label.title')"
                                 v-model.trim="v$.name.$model"
@@ -25,29 +25,9 @@
                                     {{ errorMessage }}
                                 </error-message>
                             </template>
-                        </div> -->
-
-                        <div class="col-md-12">
-                            <label class="form-label">{{ $t('label.description') }}</label>
-                            <textarea
-                                class="form-control summernote"
-                                rows="6"
-                                v-model.trim="v$.description.$model"
-                                :class="{'is-invalid': v$.description.$error ||errors[`description`],
-                                'is-valid':!v$.description.$invalid && !errors[`description`]}">
-                            </textarea>
-                            <div class="invalid-feedback">
-                                <span v-if="v$.description.required.$invalid">{{ $t('validation.fieldRequired') }}<br /> </span>
-                            </div>
-                            <template v-if="errors[`description`]">
-                                <error-message v-for="(errorMessage, index) in errors[`description`]" :key="index">
-                                    {{ errorMessage }}
-                                </error-message>
-                            </template>
                         </div>
-                        
+
                     </div>
-                    
                 </div>
                 <div class="modal-footer">
                     <button v-if="type != 'edit'" :disabled="!is_disabled"
@@ -74,7 +54,7 @@ import useVuelidate from "@vuelidate/core";
 import adminApi from "../../../api/adminAxios";
 
 export default {
-    name: "ModalCreateAndUpdate",
+    name: "CircleTypesModal",
     props: {
         type: {default: 'create'},
         dataRow: {default: ''},
@@ -104,8 +84,7 @@ export default {
         });
 
        function defaultData(){
-        //    submitdata.data.name = '';
-           submitdata.data.description = '';
+           submitdata.data.name = '';
            is_disabled.value = false;
            loading.value = false;
            errors.value = [];
@@ -117,8 +96,7 @@ export default {
                 if (props.type != 'edit') {
                 } else {
                     id.value = props.dataRow.id;
-                    // submitdata.data.name = props.dataRow.name;
-                    submitdata.data.description = props.dataRow.description;
+                    submitdata.data.name = props.dataRow.name;
                 }
             }, 50);
         }
@@ -131,15 +109,13 @@ export default {
         //start design
         let submitdata =  reactive({
             data:{
-                // name: '',
-                description: '',
+                name: '',
             }
         });
 
         const rules = computed(() => {
             return {
-                // name: {required},
-                description: {required},
+                name: {required},
             }
         });
 
@@ -154,13 +130,12 @@ export default {
         this.errors = {};
 
         let formData = new FormData();
-        // formData.append('name', this.data.name);
-        formData.append('description', this.data.description);
+        formData.append('name', this.data.name);
         if (this.type !== 'edit') {
             if (!this.v$.$error) {
                 this.is_disabled = false;
                 this.loading = true;
-                adminApi.post(`dashboard/tracks`, formData)
+                adminApi.post(`dashboard/circle-places`, formData)
                     .then((res) => {
                         Swal.fire({
                             icon: 'success',
@@ -187,7 +162,7 @@ export default {
             this.is_disabled = false;
             this.loading = true;
             formData.append('_method','PUT');
-            adminApi.post(`dashboard/tracks/${this.id}`,formData)
+            adminApi.post(`dashboard/circle-places/${this.id}`,formData)
                 .then((res) => {
                     Swal.fire({
                         icon: 'success',

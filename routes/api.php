@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\AuthDashboardController;
 use App\Http\Controllers\Dashboard\BackupController;
 use App\Http\Controllers\Dashboard\BannerController;
 use App\Http\Controllers\Dashboard\CircleController;
+use App\Http\Controllers\Dashboard\CirclePlaceController;
 use App\Http\Controllers\Dashboard\CircleTypeController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\CountryController;
@@ -113,6 +114,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         Route::get('circle-types-dropdown',[CircleTypeController::class,'dropdown']);
         Route::apiResource('circle-types', CircleTypeController::class);
+
+        Route::get('circle-places-dropdown',[CirclePlaceController::class,'dropdown']);
+        Route::apiResource('circle-places', CirclePlaceController::class);
 
         Route::get('tracks-dropdown',[TrackController::class,'dropdown']);
         Route::apiResource('tracks', TrackController::class);

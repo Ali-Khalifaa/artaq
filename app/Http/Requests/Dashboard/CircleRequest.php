@@ -26,6 +26,8 @@ class CircleRequest extends FormRequest
         return [
             'name' => "required|string|max:255|unique:circles,name," . $this->route('circle'),
             'circle_type_id' => 'nullable|exists:circle_types,id',
+            'circle_place_id' => 'nullable|exists:circle_places,id',
+            'admin_id' => 'nullable|exists:admins,id',
             'gender' => 'required',
             'start_time' => 'required',
             'end_time' => 'required|after_or_equal:start_time',

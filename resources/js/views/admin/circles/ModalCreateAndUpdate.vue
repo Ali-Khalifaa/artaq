@@ -11,7 +11,48 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ $t('global.selectCirclePlace') }}</label>
+
+                            <Select v-model="data.circle_place_id" :filterFields="['id','title']" :options="places" filter
+                                    :invalid="v$.circle_place_id.$error || errors[`circle_place_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.circle_place_id.$error || errors[`circle_place_id`], 'is-valid': !v$.circle_place_id.$invalid && !errors[`circle_place_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+
+                            </div>
+                            <template v-if="errors['circle_place_id']">
+                                <error-message v-for="(errorMessage, index) in errors['circle_place_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
                         <div class="col-md-6 ">
+                            <label class="form-label">{{ $t('global.selectAdmin') }}</label>
+
+                            <Select v-model="data.admin_id" :filterFields="['id','name','phone']" :options="admins" filter
+                                    :invalid="v$.admin_id.$error || errors[`admin_id`]"
+                                        optionLabel="name" optionValue="id"
+                                    :class="['w-full w-100', { 'is-invalid': v$.admin_id.$error || errors[`admin_id`], 'is-valid': !v$.admin_id.$invalid && !errors[`admin_id`] }]">
+
+                            </Select>
+                            <div class="invalid-feedback">
+
+                            </div>
+                            <template v-if="errors['admin_id']">
+                                <error-message v-for="(errorMessage, index) in errors['admin_id']" :key="index">
+                                    {{ errorMessage }}
+                                </error-message>
+                            </template>
+                        </div>
+
+
+                        <div class="col-md-6 mt-3">
                             <label for="name" class="form-label">{{$t('global.circleName')}}</label>
                             <input type="text" class="form-control" id="name" :placeholder="$t('global.circleName')"
                                 v-model.trim="v$.name.$model"
@@ -27,7 +68,7 @@
                             </template>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-3">
                             <label class="form-label">{{ $t('global.selectCircleType') }}</label>
 
                             <Select v-model="data.circle_type_id" :filterFields="['id','title']" :options="types" filter
@@ -222,6 +263,8 @@ export default {
         const {t} = useI18n({});
         const id = ref(null);
         let types = ref([]);
+        let places = ref([]);
+        const admins = ref([]);
 
         let days = ref([
             { id: 'Saturday', title: 'السبت' },
@@ -246,6 +289,8 @@ export default {
        function defaultData(){
            submitdata.data.name = '';
            submitdata.data.circle_type_id = '';
+           submitdata.data.admin_id = '';
+           submitdata.data.circle_place_id = '';
            submitdata.data.gender = 'male';
            submitdata.data.add_duration = false;
            submitdata.data.duration = [{'day' : 'Saturday','start_time':'','end_time':''}];
@@ -272,6 +317,37 @@ export default {
                     loading.value = false;
                 })
         }
+         let getPlaces = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/circle-places-dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    places.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
+
+        let getAdmins = () => {
+            loading.value = true;
+
+            adminApi.get(`dashboard/admins-dropdown`)
+                .then((res) => {
+                    let l = res.data.data;
+                    admins.value = l;
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                })
+                .finally(() => {
+                    loading.value = false;
+                })
+        }
 
         function addDetail() {
             submitdata.data.duration.push({
@@ -288,11 +364,15 @@ export default {
             defaultData();
             setTimeout(async () => {
                 getType();
+                getPlaces();
+                getAdmins();
                 if (props.type != 'edit') {
                 } else {
                     id.value = props.dataRow.id;
                     submitdata.data.name = props.dataRow.name;
                     submitdata.data.circle_type_id = props.dataRow.circle_type_id;
+                    submitdata.data.admin_id = props.dataRow.admin_id;
+                    submitdata.data.circle_place_id = props.dataRow.circle_place_id;
                     submitdata.data.gender = props.dataRow.gender;
                     submitdata.data.start_time = props.dataRow.start_time;
                     submitdata.data.end_time = props.dataRow.end_time;
@@ -313,6 +393,8 @@ export default {
             data:{
                 name: '',
                 circle_type_id: '',
+                admin_id: '',
+                circle_place_id: '',
                  status: true,
                 gender: 'male',
                 add_duration: false,
@@ -328,6 +410,8 @@ export default {
             return {
                 name: {required},
                 circle_type_id: {},
+                admin_id: {},
+                circle_place_id: {},
                 start_time: {
                     required: requiredIf(function (model) {
                             return !submitdata.data.add_duration;
@@ -353,7 +437,7 @@ export default {
             }
         }
 
-        return {t,id,changeTimeInDuration,types,days,addDetail,removeDetail,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors};
+        return {t,id,changeTimeInDuration,types,days,addDetail,removeDetail,loading,is_disabled,resetModal,resetModalHidden,...toRefs(submitdata),v$,errors,places,admins};
     },
     methods: {
         AddSubmit() {
@@ -364,6 +448,8 @@ export default {
         let formData = new FormData();
         formData.append('name', this.data.name);
         formData.append('circle_type_id', this.data.circle_type_id ?? '');
+        formData.append('admin_id', this.data.admin_id ?? '');
+        formData.append('circle_place_id', this.data.circle_place_id ?? '');
         formData.append('gender', this.data.gender ?? '');
         formData.append('start_time', this.data.start_time);
         formData.append('end_time', this.data.end_time);

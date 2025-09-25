@@ -32,6 +32,7 @@ return [
     "completed_rest"=>"تم الانتهاء",
     "student"=>"الطلاب",
     'teacher'=>'المعلمين',
+    'parent'=>'اولياء الامور',
 
 
 

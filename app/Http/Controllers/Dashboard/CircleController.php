@@ -36,7 +36,7 @@ class CircleController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $nationality = Circle::with('circleType','teachers')->searchAndFilter()->latest()->paginate(10);
+        $nationality = Circle::with('circleType','teachers','admin','circlePlace')->searchAndFilter()->latest()->paginate(10);
 
         return responseJson(CircleResource::collection($nationality->items()), '', 200, getPaginates($nationality));
     }

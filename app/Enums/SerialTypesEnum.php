@@ -7,6 +7,7 @@ enum SerialTypesEnum: string
     case STUDENT = 'Student';
     case TEACHER = 'Teacher';
     case ADMIN = 'Admin';
+    case PARENT = 'Parent';
 
     public function label(): string
     {
@@ -14,6 +15,7 @@ enum SerialTypesEnum: string
             self::STUDENT =>  __('label.student'),
             self::TEACHER => __('label.teacher'),
             self::ADMIN => __('label.admin'),
+            self::PARENT => __('label.parent'),
         };
     }
 

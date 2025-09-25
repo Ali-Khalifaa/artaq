@@ -110,6 +110,13 @@
                         </router-link>
                     </li>
 
+                    <li class="slide" v-show="permission.includes('circle place read')">
+                        <router-link :to="{name:'circlePlaces'}" class="side-menu__item">
+                            <i class="bx bx-map-pin side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.circlePlaces')}}</span>
+                        </router-link>
+                    </li>
+
                     <li class="slide" v-show="permission.includes('circle read')">
                         <router-link :to="{name:'circles'}" class="side-menu__item">
                             <i class="bx bx-circle side-menu__icon"></i>

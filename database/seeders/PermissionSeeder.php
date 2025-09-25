@@ -109,6 +109,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'circle type edit',  'category' => 'Circles'],
             ['name' => 'circle type delete',  'category' => 'Circles'],
 
+            ['name' => 'circle place read',  'category' => 'Circles'],
+            ['name' => 'circle place create',  'category' => 'Circles'],
+            ['name' => 'circle place edit',  'category' => 'Circles'],
+            ['name' => 'circle place delete',  'category' => 'Circles'],
+
             ['name' => 'circle read',  'category' => 'Circles'],
             ['name' => 'circle create',  'category' => 'Circles'],
             ['name' => 'circle edit',  'category' => 'Circles'],

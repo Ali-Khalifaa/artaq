@@ -33,7 +33,8 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    
+
+                                    <th scope="col">{{ $t('global.circlePlace') }}</th>
                                     <th scope="col">{{ $t('global.circleName') }}</th>
                                     <th scope="col">{{ $t('global.circleType') }}</th>
                                     <th scope="col">{{ $t('global.StudentType') }}</th>
@@ -41,6 +42,7 @@
                                     <th scope="col">{{ $t('global.end_time') }}</th>
                                     <th scope="col">{{ $t('global.status') }}</th>
                                     <th scope="col">{{ $t('global.teacher') }}</th>
+                                    <th scope="col">{{ $t('global.admin') }}</th>
                                     <th scope="col">{{ $t('global.created_at') }}</th>
                                     <th scope="col">{{ $t('global.action') }}</th>
                                 </tr>
@@ -48,7 +50,7 @@
                                 <tbody v-if="data && data.length">
                                 <tr v-for="(item,index) in data" :key="item.id">
                                     <td scope="row">{{index + 1}}</td>
-                                    
+                                    <td>{{item.circle_place?.name ?? '---'}}</td>
                                     <td>{{item.name}}</td>
                                     <td>{{item.circle_type?.name}}</td>
                                     <td>{{$t('global.'+item.gender)}}</td>
@@ -61,6 +63,7 @@
                                                 $t('global.Inactive') }}</span>
                                         </td>
                                     <td>{{item.teacher_name ?? '---'}}</td>
+                                    <td>{{ item.admin?.name ?? '---' }}</td>
                                     <td>{{item.created_at}}</td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
@@ -136,6 +139,16 @@ export default {
             searchInRelations: [
                 {
                     relation: 'circleType',
+                    columns: ['name'],
+                    searchInRelationTranslations:false
+                },
+                {
+                    relation: 'circlePlace',
+                    columns: ['name'],
+                    searchInRelationTranslations:false
+                },
+                {
+                    relation: 'admin',
                     columns: ['name'],
                     searchInRelationTranslations:false
                 }

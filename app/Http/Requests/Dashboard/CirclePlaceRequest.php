@@ -4,7 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TrackRequest extends FormRequest
+class CirclePlaceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class TrackRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => "required|string|max:255|unique:tracks,name," . $this->route('track'),
-            'description' => 'nullable|string',
+            'name' => "required|string|max:255|unique:circle_places,name," . $this->route('circle_place'),
         ];
     }
 }

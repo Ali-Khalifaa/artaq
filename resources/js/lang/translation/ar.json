@@ -1101,7 +1101,10 @@
         "studentDigitalBadges":"الشارات الرقمية للطلاب",
         "selectTeatcher":"اختر المعلم",
         "parents":"اولياء الامور",
-        "children":"الابناء"
+        "children":"الابناء",
+        "circlePlaces":"اماكن الحلقات",
+        "selectCirclePlace":"اختر مكان الحلقة",
+        "circlePlace":"مكان الحلقة"
 
     },
     "role_and_permissions":{
@@ -1243,6 +1246,11 @@
         "circle type create" : "اضافة برامج الحلقات",
         "circle type edit" : "تعديل برامج الحلقات",
         "circle type delete" : "حذف برامج الحلقات",
+
+        "circle place read" : "عرض اماكن الحلقات",
+        "circle place create" : "اضافة اماكن الحلقات",
+        "circle place edit" : "تعديل اماكن الحلقات",
+        "circle place delete" : "حذف اماكن الحلقات",
 
         "Quran" : "القرآن الكريم",
         "quran read" : "عرض القرآن الكريم",

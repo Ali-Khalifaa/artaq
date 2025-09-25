@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Admin;
+use App\Models\CirclePlace;
 use App\Models\CircleType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,6 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->enum('gender', ['male', 'female'])->nullable()->comment('جنس الطالب');
             $table->foreignIdFor(CircleType::class)->nullable()->comment('نوع الحلقة');
+            $table->foreignIdFor(Admin::class)->nullable()->comment('المشرف على الحلقة');
+            $table->foreignIdFor(CirclePlace::class)->nullable()->comment('مكان الحلقة');
             $table->time('start_time')->comment('وقت البداية');
             $table->time('end_time')->comment('وقت النهاية');
             $table->boolean('status')->default(true);

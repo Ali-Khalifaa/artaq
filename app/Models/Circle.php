@@ -25,6 +25,15 @@ class Circle extends Model
     {
         return $this->belongsTo(CircleType::class);
     }
+    public function circlePlace()
+    {
+        return $this->belongsTo(CirclePlace::class);
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 
     public function teachers()
     {

@@ -89,6 +89,11 @@ class Admin extends Authenticatable implements JWTSubject
         return $this->hasMany(Teacher::class, 'admin_id');
     }
 
+    public function circles()
+    {
+        return $this->hasMany(Circle::class, 'admin_id');
+    }
+
     // Automatically set code attribute only on create
     protected static function booted()
     {
