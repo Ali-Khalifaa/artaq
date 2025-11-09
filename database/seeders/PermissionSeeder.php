@@ -147,6 +147,12 @@ class PermissionSeeder extends Seeder
             ['name' => 'parent edit',  'category' => 'Parents'],
             ['name' => 'parent delete',  'category' => 'Parents'],
 
+            ['name' => 'privacy read',  'category' => 'Privacies'],
+            ['name' => 'privacy edit',  'category' => 'Privacies'],
+
+            ['name' => 'policy read',  'category' => 'Policies'],
+            ['name' => 'policy edit',  'category' => 'Policies'],
+
         ];
 
         foreach ($permissions as $permission) {

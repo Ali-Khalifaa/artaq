@@ -1104,8 +1104,10 @@
         "children":"الابناء",
         "circlePlaces":"اماكن الحلقات",
         "selectCirclePlace":"اختر مكان الحلقة",
-        "circlePlace":"مكان الحلقة"
-
+        "circlePlace":"مكان الحلقة",
+        "privacies" : "سياسة الخصوصية",
+        "policies" : "الشروط والاحكام",
+        "content" : "المحتوى"
     },
     "role_and_permissions":{
         "Banners" : "الاعلانات",
@@ -1254,6 +1256,14 @@
 
         "Quran" : "القرآن الكريم",
         "quran read" : "عرض القرآن الكريم",
+
+        "Privacies" : "سياسة الخصوصية",
+        "privacy read" : "عرض سياسة الخصوصية",
+        "privacy edit" : "تعديل سياسة الخصوصية",
+
+        "Policies" : "الشروط والاحكام",
+        "policy read" : "عرض الشروط والاحكام",
+        "policy edit" : "تعديل الشروط والاحكام",
 
         "Database Backup": "نسخه احتياطيه لقاعدة البيانات",
         "database backup create":"اضافة نسخه احتياطيه لقاعدة البيانات",

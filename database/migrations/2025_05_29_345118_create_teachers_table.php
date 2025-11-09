@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('phone')->nullable()->unique();
-            $table->string('email')->nullable()->unique();
+            $table->string('email')->unique()->nullable()->comment('البريد الإلكتروني');
             $table->string('id_number')->unique()->comment('رقم الهوية');
             $table->enum('gender', ['male', 'female'])->nullable()->comment('جنس المعلم');
             $table->foreignIdFor(Admin::class)->nullable()->comment('المدير المباشر');
@@ -34,7 +34,6 @@ return new class extends Migration
             $table->boolean('status')->default(true);
 
             $table->date('birth_date')->nullable();
-            $table->string('email')->unique()->nullable()->comment('البريد الإلكتروني');
             $table->integer('juz_count')->default(0)->comment('عدد الأجزاء التي حفظها المعلم');
             $table->integer('experience_years')->default(0)->comment('سنوات الخبرة');
             $table->integer('Quran_licenses')->default(0)->comment('عدد الإجازات القرآنية');

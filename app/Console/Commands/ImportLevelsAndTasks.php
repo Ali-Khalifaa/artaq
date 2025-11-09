@@ -17,27 +17,27 @@ class ImportLevelsAndTasks extends Command
     {
         Level::truncate();
         LevelTask::truncate();
-        $fromNaasToFathaaPath = public_path('from_naas_to_fathaa.xlsx');
+        $fromNaasToFathaaPath = public_path('from_naas_to_fathaa_new.xlsx');
         $data = Excel::toArray([], $fromNaasToFathaaPath);
         foreach($data as $key =>  $row){
               $level = Level::create(['name' => "مستوى " . ($key + 1), 'preservation_method_id' => 2]);
             foreach($row as $item){
-                if(isset($item[3]) && isset($item[4]) && is_integer($item[4]) && isset($item[5]) && isset($item[6]) && is_integer($item[6]) && isset($item[7]) && isset($item[8]) && is_integer($item[8]) && isset($item[9]) && isset($item[10]) && is_integer($item[10])){
+                if(isset($item[2]) && isset($item[3]) && is_integer($item[3]) && isset($item[4]) && isset($item[5]) && is_integer($item[5]) && isset($item[10]) && isset($item[11]) && is_integer($item[11]) && isset($item[12]) && isset($item[13]) && is_integer($item[13])){
 
-                    $item[3] = str_replace(['أ', 'إ','آ'], 'ا', $item[3]);
-                    $item[5] = str_replace(['أ', 'إ','آ'], 'ا', $item[5]);
-                    $item[7] = str_replace(['أ', 'إ','آ'], 'ا', $item[7]);
-                    $item[9] = str_replace(['أ', 'إ','آ'], 'ا', $item[9]);
+                    $item[2] = str_replace(['أ', 'إ','آ'], 'ا', $item[2]);
+                    $item[4] = str_replace(['أ', 'إ','آ'], 'ا', $item[4]);
+                    $item[10] = str_replace(['أ', 'إ','آ'], 'ا', $item[10]);
+                    $item[12] = str_replace(['أ', 'إ','آ'], 'ا', $item[12]);
 
-                    $fromSurah = Surah::where('normalized_name','like',"%" . $item[3] . "%")->first();
-                    $fromAyah = $fromSurah ? $fromSurah->ayahs()->where('number_in_surah', $item[4])->first() : null;
-                    $toSurah = Surah::where('normalized_name','like',"%" . $item[5] . "%")->first();
-                    $toAyah = $toSurah ? $toSurah->ayahs()->where('number_in_surah', $item[6])->first() : null;
+                    $fromSurah = Surah::where('normalized_name','like',"%" . $item[2] . "%")->first();
+                    $fromAyah = $fromSurah ? $fromSurah->ayahs()->where('number_in_surah', $item[3])->first() : null;
+                    $toSurah = Surah::where('normalized_name','like',"%" . $item[4] . "%")->first();
+                    $toAyah = $toSurah ? $toSurah->ayahs()->where('number_in_surah', $item[5])->first() : null;
 
-                    $reviewFromSurah = Surah::where('normalized_name', 'like', '%' . $item[7] . '%')->first();
-                    $reviewFromAyah = $reviewFromSurah ? $reviewFromSurah->ayahs()->where('number_in_surah', $item[8])->first() : null;
-                    $reviewToSurah = Surah::where('normalized_name', 'like', '%' . $item[9] . '%')->first();
-                    $reviewToAyah = $reviewToSurah ? $reviewToSurah->ayahs()->where('number_in_surah', $item[10])->first() : null;
+                    $reviewFromSurah = Surah::where('normalized_name', 'like', '%' . $item[10] . '%')->first();
+                    $reviewFromAyah = $reviewFromSurah ? $reviewFromSurah->ayahs()->where('number_in_surah', $item[11])->first() : null;
+                    $reviewToSurah = Surah::where('normalized_name', 'like', '%' . $item[12] . '%')->first();
+                    $reviewToAyah = $reviewToSurah ? $reviewToSurah->ayahs()->where('number_in_surah', $item[13])->first() : null;
 
                     if($fromSurah && $toSurah && $fromAyah && $toAyah)
                         LevelTask::create([
@@ -58,27 +58,27 @@ class ImportLevelsAndTasks extends Command
         }
 
 
-        $fromFathaToNasPath = public_path('from_fathaa_to_naas.xlsx');
+        $fromFathaToNasPath = public_path('from_fathaa_to_naas_new.xlsx');
         $data = Excel::toArray([], $fromFathaToNasPath);
         foreach($data as $key =>  $row){
               $level = Level::create(['name' => "مستوى " . ($key + 1), 'preservation_method_id' => 1]);
             foreach($row as $item){
-                if(isset($item[2]) && isset($item[3]) && isset($item[4]) && isset($item[5]) && isset($item[6]) && isset($item[7]) && isset($item[8]) && isset($item[9])){
-                    // Handle possible Arabic character variations (e.g., أ vs ا)
+               if(isset($item[2]) && isset($item[3]) && is_integer($item[3]) && isset($item[4]) && isset($item[5]) && is_integer($item[5]) && isset($item[10]) && isset($item[11]) && is_integer($item[11]) && isset($item[12]) && isset($item[13]) && is_integer($item[13])){
+
                     $item[2] = str_replace(['أ', 'إ','آ'], 'ا', $item[2]);
                     $item[4] = str_replace(['أ', 'إ','آ'], 'ا', $item[4]);
-                    $item[6] = str_replace(['أ', 'إ','آ'], 'ا', $item[6]);
-                    $item[8] = str_replace(['أ', 'إ','آ'], 'ا', $item[8]);
-                    
+                    $item[10] = str_replace(['أ', 'إ','آ'], 'ا', $item[10]);
+                    $item[12] = str_replace(['أ', 'إ','آ'], 'ا', $item[12]);
+
                     $fromSurah = Surah::where('normalized_name','like',"%" . $item[2] . "%")->first();
                     $fromAyah = $fromSurah ? $fromSurah->ayahs()->where('number_in_surah', $item[3])->first() : null;
                     $toSurah = Surah::where('normalized_name','like',"%" . $item[4] . "%")->first();
                     $toAyah = $toSurah ? $toSurah->ayahs()->where('number_in_surah', $item[5])->first() : null;
 
-                    $reviewFromSurah = Surah::where('normalized_name','like',"%" . $item[6] . "%")->first();
-                    $reviewFromAyah = $reviewFromSurah ? $reviewFromSurah->ayahs()->where('number_in_surah', $item[7])->first() : null;
-                    $reviewToSurah = Surah::where('normalized_name','like',"%" . $item[8] . "%")->first();
-                    $reviewToAyah = $reviewToSurah ? $reviewToSurah->ayahs()->where('number_in_surah', $item[9])->first() : null;
+                    $reviewFromSurah = Surah::where('normalized_name', 'like', '%' . $item[10] . '%')->first();
+                    $reviewFromAyah = $reviewFromSurah ? $reviewFromSurah->ayahs()->where('number_in_surah', $item[11])->first() : null;
+                    $reviewToSurah = Surah::where('normalized_name', 'like', '%' . $item[12] . '%')->first();
+                    $reviewToAyah = $reviewToSurah ? $reviewToSurah->ayahs()->where('number_in_surah', $item[13])->first() : null;
 
                     if($fromSurah && $toSurah && $fromAyah && $toAyah)
                         LevelTask::create([

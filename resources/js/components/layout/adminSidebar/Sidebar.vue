@@ -245,6 +245,20 @@
                         </router-link>
                     </li>
 
+                    <li class="slide" v-show="permission.includes('policy read')">
+                        <router-link :to="{name:'policy'}" class="side-menu__item">
+                            <i class="bx bx-file side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.policies')}}</span>
+                        </router-link>
+                    </li>
+
+                    <li class="slide" v-show="permission.includes('privacy read')">
+                        <router-link :to="{name:'privacy'}" class="side-menu__item">
+                            <i class="bx bx-lock side-menu__icon"></i>
+                            <span class="side-menu__label">{{$t('global.privacies')}}</span>
+                        </router-link>
+                    </li>
+
                      <li class="slide" v-show="permission.includes('setting read')">
                         <router-link :to="{name:'setting'}" class="side-menu__item">
                             <i class="bx bx-cog side-menu__icon" aria-hidden="true"></i>

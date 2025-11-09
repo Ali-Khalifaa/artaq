@@ -22,6 +22,8 @@ use App\Http\Controllers\Dashboard\NationalityController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\OfficialHolidayController;
 use App\Http\Controllers\Dashboard\ParentController;
+use App\Http\Controllers\Dashboard\PolicyController;
+use App\Http\Controllers\Dashboard\PrivacyController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\QuranController;
 use App\Http\Controllers\Dashboard\RoleController;
@@ -153,6 +155,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => [ChangeLang::class]], fun
 
         // JoinUs
         Route::apiResource('join-us', JoinUsController::class);
+
+        // privacy
+        Route::apiResource('privacy', PrivacyController::class);
+
+        // policy
+        Route::apiResource('policy', PolicyController::class);
 
         // Language resource
         Route::resource('language', LanguageController::class);

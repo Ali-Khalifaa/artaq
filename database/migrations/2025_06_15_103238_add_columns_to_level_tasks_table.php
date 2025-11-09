@@ -14,10 +14,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('level_tasks', function (Blueprint $table) {
-            $table->foreignIdFor(Surah::class, 'review_from_surah_id')->nullable();
-            $table->foreignIdFor(Surah::class, 'review_to_surah_id')->nullable();
-            $table->foreignIdFor(Ayah::class, 'review_from_ayah_id')->nullable();
-            $table->foreignIdFor(Ayah::class, 'review_to_ayah_id')->nullable();
+            // $table->foreignIdFor(Surah::class, 'review_from_surah_id')->nullable();
+            // $table->foreignIdFor(Surah::class, 'review_to_surah_id')->nullable();
+            // $table->foreignIdFor(Ayah::class, 'review_from_ayah_id')->nullable();
+            // $table->foreignIdFor(Ayah::class, 'review_to_ayah_id')->nullable();
         });
     }
 
@@ -27,14 +27,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('level_tasks', function (Blueprint $table) {
-            $table->dropForeign(['review_from_surah_id']);
-            $table->dropColumn('review_from_surah_id');
-            $table->dropForeign(['review_to_surah_id']);
-            $table->dropColumn('review_to_surah_id');
-            $table->dropForeign(['review_from_ayah_id']);
-            $table->dropColumn('review_from_ayah_id');
-            $table->dropForeign(['review_to_ayah_id']);
-            $table->dropColumn('review_to_ayah_id');
+            // $table->dropForeign(['review_from_surah_id']);
+            // $table->dropColumn('review_from_surah_id');
+            // $table->dropForeign(['review_to_surah_id']);
+            // $table->dropColumn('review_to_surah_id');
+            // $table->dropForeign(['review_from_ayah_id']);
+            // $table->dropColumn('review_from_ayah_id');
+            // $table->dropForeign(['review_to_ayah_id']);
+            // $table->dropColumn('review_to_ayah_id');
         });
     }
 };

@@ -34,6 +34,8 @@ import studentWithoutCircles from "./adminRoute/studentWithoutCircles.js";
 import studentExams from "./adminRoute/studentExams.js";
 import parent from "./adminRoute/parent.js";
 import circlePlaces from "./adminRoute/circlePlaces.js";
+import policy from "./adminRoute/policy.js";
+import privacy from "./adminRoute/privacy.js";
 
 import role from "./adminRoute/role.js";
 import Notification from '../views/admin/notification/notification.vue';
@@ -91,6 +93,8 @@ const routes = [
             ...studentExams,
             ...parent,
             ...circlePlaces,
+            ...policy,
+            ...privacy,
         ]
     },
     {
